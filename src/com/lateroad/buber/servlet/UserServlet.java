@@ -1,22 +1,19 @@
 package com.lateroad.buber.servlet;
 
-import javax.servlet.ServletException;
+import com.lateroad.buber.logic.command.CommandManager;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public class UserServlet extends HttpServlet {
-
-    public UserServlet() {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+        CommandManager.execute(req.getParameter("action"), req, resp, this);
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+        CommandManager.execute(req.getParameter("action"), req, resp, this);
     }
 }

@@ -13,6 +13,5 @@ public class ConnectorDB {
 //        String user = resource.getString("db.user");
 //        String pass = resource.getString("db.password");
         return DriverManager.getConnection("jdbc:mysql://localhost:3306/buber?useSSL=false", "root", "021929");
-
     }
 }

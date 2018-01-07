@@ -7,7 +7,7 @@ public class User extends Entity {
     private String password;
     private String role;
     private boolean isMuted;
-
+    private UserInfo userInfo;
 
     public User() {
     }
@@ -17,11 +17,12 @@ public class User extends Entity {
         this.password = password;
     }
 
-    public User(String login, String password, String role, boolean isMuted) {
+    public User(String login, String password, String role, boolean isMuted, UserInfo userInfo) {
         this.login = login;
         this.password = password;
         this.role = role;
         this.isMuted = isMuted;
+        this.userInfo = userInfo;
     }
 
     public String getLogin() {
@@ -56,6 +57,14 @@ public class User extends Entity {
         isMuted = muted;
     }
 
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,13 +73,13 @@ public class User extends Entity {
         return isMuted == user.isMuted &&
                 Objects.equals(login, user.login) &&
                 Objects.equals(password, user.password) &&
-                role.equals(user.role);
+                Objects.equals(role, user.role) &&
+                Objects.equals(userInfo, user.userInfo);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(login, password, role, isMuted);
+        return Objects.hash(login, password, role, isMuted, userInfo);
     }
 
     @Override
@@ -78,8 +87,9 @@ public class User extends Entity {
         return "User{" +
                 "login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", role=" + role +
+                ", role='" + role + '\'' +
                 ", isMuted=" + isMuted +
+                ", userInfo=" + userInfo +
                 '}';
     }
 }

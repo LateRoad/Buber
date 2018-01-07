@@ -23,11 +23,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Buber</a>
+            <a class="navbar-brand" href="/index.jsp">Buber</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/index.html">Домой</a></li>
                 <li><a href="#">Ехать</a></li>
                 <li><a href="#">Идти</a></li>
             </ul>
@@ -42,11 +41,11 @@
                     </ul>
                 </li>
                 <c:if test="${user != null }">
-                    <li><a href="/home.html">${user.login}</a></li>
-                    <li><a href="/logout.html"><span class="glyphicon glyphicon-log-out"></span> Выход</a></li>
+                    <li><a href="/home.jsp">${user.login}</a></li>
+                    <li><a href="/userServlet?action=signout" name="action" value="signout"><span class="glyphicon glyphicon-log-out"></span> Выход</a></li>
                 </c:if>
                 <c:if test="${user == null }">
-                    <li><a href="/signin.html"><span class="glyphicon glyphicon-log-in"></span> Вход</a></li>
+                    <li><a href="/signin.jsp"><span class="glyphicon glyphicon-log-in"></span> Вход</a></li>
                 </c:if>
             </ul>
         </div>

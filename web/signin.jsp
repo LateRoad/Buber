@@ -23,11 +23,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Buber</a>
+            <a class="navbar-brand" href="/index.jsp">Buber</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li><a href="/index.jsp">Домой</a></li>
                 <li><a href="#">Ехать</a></li>
                 <li><a href="#">Идти</a></li>
             </ul>
@@ -42,33 +41,43 @@
                     </ul>
                 </li>
                 <c:if test="${user != null }">
-                    <li><a href="/home.html">${user.login}</a></li>
-                    <li><a href="/logout.html"><span class="glyphicon glyphicon-log-out"></span> Выход</a></li>
+                    <li><a href="/home.jsp">${user.login}</a></li>
+                    <li><a href="/userServlet?action=signout" name="action" value="signout"><span
+                            class="glyphicon glyphicon-log-out"></span> Выход</a></li>
                 </c:if>
                 <c:if test="${user == null }">
-                    <li><a href="/signin.html"><span class="glyphicon glyphicon-log-in"></span> Вход</a></li>
+                    <li><a href="/signin.jsp"><span class="glyphicon glyphicon-log-in"></span> Вход</a></li>
                 </c:if>
             </ul>
         </div>
     </div>
 </nav>
 
-<div class="col-md-4 col-md-offset-4">
-    <form method="POST" style="width: 500px">
-        <div class="form-group">
-            <label for="inputLogin">Логин</label>
-            <input type="text" class="form-control" id="InputLogin" aria-describedby="loginHelp"
-                   placeholder="Введите логин" name="login">
-            <small id="loginHelp" class="form-text text-muted">Мы сохраним ваши данные в приватную базу данных.</small>
+<div class="container">
+    <h2>Вход</h2>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <form action="/auth-driver.jsp">
+                <h4>Водитель</h4>
+                <br>
+                <p>Следите за своим заработком, работайте в свободное для себя время.</p>
+                <br>
+                <button type="submit" class="btn btn-primary">Войти как водитель</button>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="inputPassword">Пароль</label>
-            <input type="password" class="form-control" id="inputPassword" placeholder="Пароль"
-                   name="password">
-        </div>
-        <button type="submit" name="action" value="signin" class="btn btn-primary">Войти</button>
-    </form>
-</div>
 
+        <div class="col-md-4 col-md-offset-4">
+            <form action="/auth-client.jsp">
+                <h4>Клиент</h4>
+                <br>
+                <p>Управляйте способами оплаты, просматривайте историю поездок и многое другое.</p>
+                <br>
+                <button type="submit" class="btn btn-primary">Войти как клиент</button>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
