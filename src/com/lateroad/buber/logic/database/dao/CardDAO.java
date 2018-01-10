@@ -70,6 +70,11 @@ public class CardDAO implements CommonDAO<Card> {
     }
 
     @Override
+    public Card find(String param1, String param2) throws SQLException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public List<Card> findAll() throws SQLException {
         List<Card> cards = new ArrayList<>();
         dbPool = DBPool.getInstance();

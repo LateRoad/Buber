@@ -8,7 +8,7 @@ public class CommandManager {
     private static CommandMap commandMap = CommandMap.getInstance();
 
 
-    public static String execute(String action, HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
-        return commandMap.getCommandsMap(action).execute(req, resp, servlet);
+    public static void execute(String action, HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
+        commandMap.getCommandsMap(action).execute(req, resp, servlet);
     }
 }

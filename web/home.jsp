@@ -42,7 +42,7 @@
                 </li>
                 <c:if test="${user != null }">
                     <li><a href="/home.jsp">${user.login}</a></li>
-                    <li><a href="/userServlet?action=signout" name="action" value="signout"><span class="glyphicon glyphicon-log-out"></span> Выход</a></li>
+                    <li><a href="/clientServlet?action=signout" name="action" value="signout"><span class="glyphicon glyphicon-log-out"></span> Выход</a></li>
                 </c:if>
                 <c:if test="${user == null }">
                     <li><a href="/signin.jsp"><span class="glyphicon glyphicon-log-in"></span> Вход</a></li>
@@ -51,6 +51,20 @@
         </div>
     </div>
 </nav>
-HOME.HTML
+<c:if test="${user.role == \"driver\"}">
+    ${user.login}
+    ${user.userInfo.name}
+    ${user.userInfo.surname}
+    ${user.userInfo.lastname}
+    ${user.userInfo.driverInfo.carNumber}
+</c:if>
+
+<c:if test="${user.role == \"client\"}">
+    ${user.login}
+    ${user.userInfo.name}
+    ${user.userInfo.surname}
+    ${user.userInfo.lastname}
+    ${user.userInfo.clientInfo.phoneNumber}
+</c:if>
 </body>
 </html>

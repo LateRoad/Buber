@@ -42,7 +42,7 @@
                 </li>
                 <c:if test="${user != null }">
                     <li><a href="/home.jsp">${user.login}</a></li>
-                    <li><a href="/userServlet?action=signout" name="action" value="signout"><span
+                    <li><a href="/clientServlet?action=signout" name="action" value="signout"><span
                             class="glyphicon glyphicon-log-out"></span> Выход</a></li>
                 </c:if>
                 <c:if test="${user == null }">
@@ -56,7 +56,7 @@
 <div class="container">
     <div class="col-md-4 col-md-offset-4">
         <h2>Входите как водитель</h2>
-        <form method="POST" action="/userServlet" style="width: 500px">
+        <form method="POST" action="/driverServlet" style="width: 500px">
             <div class="form-group">
                 <label for="inputLogin">Логин</label>
                 <input type="text" class="form-control" id="InputLogin" aria-describedby="loginHelp"

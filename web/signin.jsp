@@ -42,7 +42,7 @@
                 </li>
                 <c:if test="${user != null }">
                     <li><a href="/home.jsp">${user.login}</a></li>
-                    <li><a href="/userServlet?action=signout" name="action" value="signout"><span
+                    <li><a href="/clientServlet?action=signout" name="action" value="signout"><span
                             class="glyphicon glyphicon-log-out"></span> Выход</a></li>
                 </c:if>
                 <c:if test="${user == null }">

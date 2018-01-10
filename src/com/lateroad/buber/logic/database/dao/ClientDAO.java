@@ -82,6 +82,26 @@ public class ClientDAO implements CommonDAO<User> {
         return newUser;
     }
 
+    public User find(String login, String password) throws SQLException {
+        dbPool = DBPool.getInstance();
+        User newUser = null;
+        Connection connection = dbPool.getConnection();
+
+        try (PreparedStatement st = connection.prepareStatement(SQL_SELECT_CLIENT)) {
+            st.setString(1, login);
+            try (ResultSet resultSet = st.executeQuery()) {
+                while (resultSet.next()) {
+                    if (resultSet.getString("password").equals(password)) {
+                        newUser = createClient(resultSet);
+                    }
+                }
+            }
+        } finally {
+            dbPool.putConnection(connection);
+        }
+        return newUser;
+    }
+
     @Override
     public List<User> findAll() throws SQLException {
         List<User> users = new ArrayList<>();
@@ -167,14 +187,14 @@ public class ClientDAO implements CommonDAO<User> {
     private User createClient(ResultSet resultSet) throws SQLException {
         User user = new User();
         user.setLogin(resultSet.getString("login"));
-        user.setRole(resultSet.getString("role"));
+        user.setRole("client");
         user.getUserInfo().setName(resultSet.getString("name"));
         user.getUserInfo().setSurname(resultSet.getString("surname"));
         user.getUserInfo().setLastname(resultSet.getString("lastname"));
         user.getUserInfo().setEmail(resultSet.getString("email"));
-        user.getUserInfo().getDriverInfo().setReputation(resultSet.getInt("reputation"));
-        user.getUserInfo().getDriverInfo().setPhoneNumber(resultSet.getString("phone_number"));
-        user.getUserInfo().getDriverInfo().setTripsNumber(resultSet.getInt("trips_number"));
+        user.getUserInfo().getClientInfo().setReputation(resultSet.getInt("reputation"));
+        user.getUserInfo().getClientInfo().setPhoneNumber(resultSet.getString("phone_number"));
+        user.getUserInfo().getClientInfo().setTripsNumber(resultSet.getInt("trips_number"));
         return user;
     }
 }

@@ -8,6 +8,8 @@ import java.util.List;
 public interface CommonDAO<T extends Entity> {
     T find(T item) throws SQLException;
 
+    T find(String param1, String param2) throws SQLException;
+
     List<T> findAll() throws SQLException;
 
     void insert(T item) throws SQLException;

@@ -6,5 +6,5 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public interface ICommand {
-    String execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet);
+    void execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet);
 }

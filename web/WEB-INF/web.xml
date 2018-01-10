@@ -5,13 +5,30 @@
          version="3.1">
 
     <servlet>
-        <servlet-name>UserServlet</servlet-name>
-        <servlet-class>com.lateroad.buber.servlet.UserServlet</servlet-class>
+        <servlet-name>ClientServlet</servlet-name>
+        <servlet-class>com.lateroad.buber.servlet.ClientServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/userServlet</url-pattern>
+        <servlet-name>ClientServlet</servlet-name>
+        <url-pattern>/clientServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DriverServlet</servlet-name>
+        <servlet-class>com.lateroad.buber.servlet.DriverServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DriverServlet</servlet-name>
+        <url-pattern>/driverServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminServlet</servlet-name>
+        <servlet-class>com.lateroad.buber.servlet.AdminServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/adminServlet</url-pattern>
     </servlet-mapping>
 
 

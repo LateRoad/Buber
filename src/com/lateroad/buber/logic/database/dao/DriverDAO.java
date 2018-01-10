@@ -83,6 +83,26 @@ public class DriverDAO implements CommonDAO<User> {
         return newUser;
     }
 
+    public User find(String login, String password) throws SQLException {
+        dbPool = DBPool.getInstance();
+        User newUser = null;
+        Connection connection = dbPool.getConnection();
+
+        try (PreparedStatement st = connection.prepareStatement(SQL_SELECT_DRIVER)) {
+            st.setString(1, login);
+            try (ResultSet resultSet = st.executeQuery()) {
+                while (resultSet.next()) {
+                    if (resultSet.getString("password").equals(password)) {
+                        newUser = createDriver(resultSet);
+                    }
+                }
+            }
+        } finally {
+            dbPool.putConnection(connection);
+        }
+        return newUser;
+    }
+
     @Override
     public List<User> findAll() throws SQLException {
         List<User> users = new ArrayList<>();
@@ -173,7 +193,7 @@ public class DriverDAO implements CommonDAO<User> {
     private User createDriver(ResultSet resultSet) throws SQLException {
         User user = new User();
         user.setLogin(resultSet.getString("login"));
-        user.setRole(resultSet.getString("role"));
+        user.setRole("driver");
         user.getUserInfo().setName(resultSet.getString("name"));
         user.getUserInfo().setSurname(resultSet.getString("surname"));
         user.getUserInfo().setLastname(resultSet.getString("lastname"));

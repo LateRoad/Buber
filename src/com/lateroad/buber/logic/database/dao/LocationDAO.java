@@ -72,6 +72,11 @@ public class LocationDAO implements CommonDAO<Location> {
     }
 
     @Override
+    public Location find(String param1, String param2) throws SQLException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public List<Location> findAll() throws SQLException {
         List<Location> locations = new ArrayList<>();
         dbPool = DBPool.getInstance();

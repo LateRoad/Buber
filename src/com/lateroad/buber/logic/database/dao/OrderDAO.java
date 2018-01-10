@@ -71,6 +71,11 @@ public class OrderDAO implements CommonDAO<Order> {
     }
 
     @Override
+    public Order find(String param1, String param2) throws SQLException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public List<Order> findAll() throws SQLException {
         List<Order> orders = new ArrayList<>();
         dbPool = DBPool.getInstance();

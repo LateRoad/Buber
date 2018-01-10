@@ -11,18 +11,15 @@ import java.io.IOException;
 
 public class SignOutCommand implements ICommand {
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
+    public void execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
         req.getSession().invalidate();
         RequestDispatcher requestDispatcher = servlet.getServletContext().getRequestDispatcher("/index.jsp");
         try {
             requestDispatcher.forward(req, resp);
         } catch (ServletException e) {
             e.printStackTrace();
-            return "Fail";
         } catch (IOException e) {
             e.printStackTrace();
-            return "Fail";
         }
-        return "Success";
     }
 }

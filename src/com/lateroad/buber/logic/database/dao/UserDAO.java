@@ -1,6 +1,7 @@
 package com.lateroad.buber.logic.database.dao;
 
 import com.lateroad.buber.logic.database.DBPool;
+import com.lateroad.buber.logic.entity.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -45,6 +46,32 @@ public class UserDAO {
     private UserDAO() {
     }
 
+    public User find(String login, String password) throws SQLException {
+        dbPool = DBPool.getInstance();
+        User newUser = null;
+        Connection connection = dbPool.getConnection();
+
+        try (PreparedStatement st = connection.prepareStatement(SQL_SELECT_USER)) {
+            st.setString(1, login);
+            try (ResultSet resultSet = st.executeQuery()) {
+                while (resultSet.next()) {
+                    if (resultSet.getString("password").equals(password)) {
+                        newUser = createUser(resultSet);
+                    }
+                }
+            }
+        } finally {
+            dbPool.putConnection(connection);
+        }
+        return newUser;
+    }
+
+    private User createUser(ResultSet resultSet) throws SQLException {
+        User user = new User();
+        user.setLogin(resultSet.getString("login"));
+        user.setRole(resultSet.getString("role"));
+        return user;
+    }
 
 
     public boolean isExist(String login) throws SQLException {
