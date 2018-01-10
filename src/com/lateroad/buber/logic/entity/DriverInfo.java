@@ -2,23 +2,23 @@ package com.lateroad.buber.logic.entity;
 
 import java.util.Objects;
 
-public class DriverInfo {
+public class DriverInfo extends Entity {
     private String carNumber;
-    private String reputation;
+    private int reputation;
     private String phoneNumber;
-    private String tripsNumber;
+    private int tripsNumber;
     private String driverLicense;
-    private boolean isOnline;
-    private boolean isBusy;
 
-    public DriverInfo(String carNumber, String reputation, String phoneNumber, String tripsNumber, String driverLicense, boolean isOnline, boolean isBusy) {
+
+    public DriverInfo() {
+    }
+
+    public DriverInfo(String carNumber, int reputation, String phoneNumber, int tripsNumber, String driverLicense) {
         this.carNumber = carNumber;
         this.reputation = reputation;
         this.phoneNumber = phoneNumber;
         this.tripsNumber = tripsNumber;
         this.driverLicense = driverLicense;
-        this.isOnline = isOnline;
-        this.isBusy = isBusy;
     }
 
     public String getCarNumber() {
@@ -29,11 +29,11 @@ public class DriverInfo {
         this.carNumber = carNumber;
     }
 
-    public String getReputation() {
+    public int getReputation() {
         return reputation;
     }
 
-    public void setReputation(String reputation) {
+    public void setReputation(int reputation) {
         this.reputation = reputation;
     }
 
@@ -45,11 +45,11 @@ public class DriverInfo {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getTripsNumber() {
+    public int getTripsNumber() {
         return tripsNumber;
     }
 
-    public void setTripsNumber(String tripsNumber) {
+    public void setTripsNumber(int tripsNumber) {
         this.tripsNumber = tripsNumber;
     }
 
@@ -61,39 +61,23 @@ public class DriverInfo {
         this.driverLicense = driverLicense;
     }
 
-    public boolean isOnline() {
-        return isOnline;
-    }
-
-    public void setOnline(boolean online) {
-        isOnline = online;
-    }
-
-    public boolean isBusy() {
-        return isBusy;
-    }
-
-    public void setBusy(boolean busy) {
-        isBusy = busy;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DriverInfo that = (DriverInfo) o;
-        return isOnline == that.isOnline &&
-                isBusy == that.isBusy &&
+        return reputation == that.reputation &&
+                tripsNumber == that.tripsNumber &&
                 Objects.equals(carNumber, that.carNumber) &&
-                Objects.equals(reputation, that.reputation) &&
                 Objects.equals(phoneNumber, that.phoneNumber) &&
-                Objects.equals(tripsNumber, that.tripsNumber) &&
                 Objects.equals(driverLicense, that.driverLicense);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(carNumber, reputation, phoneNumber, tripsNumber, driverLicense, isOnline, isBusy);
+
+        return Objects.hash(carNumber, reputation, phoneNumber, tripsNumber, driverLicense);
     }
 
     @Override
@@ -104,8 +88,6 @@ public class DriverInfo {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", tripsNumber='" + tripsNumber + '\'' +
                 ", driverLicense='" + driverLicense + '\'' +
-                ", isOnline=" + isOnline +
-                ", isBusy=" + isBusy +
                 '}';
     }
 }

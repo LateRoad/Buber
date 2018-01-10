@@ -1,18 +1,27 @@
 package com.lateroad.buber.logic.database.dao;
 
 import com.lateroad.buber.logic.database.DBPool;
-import com.lateroad.buber.logic.entity.User;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class UserDAO extends AbstractDAO<User> {
-    public static final String SQL_SELECT_ALL_USERS = "SELECT * FROM user";
-    public static final String SQL_SELECT_ALL_DRIVERS = "SELECT * FROM user_info WHERE is_driver=1;";
-    public static final String SQL_FIND_BY_LOGIN = "SELECT * FROM user WHERE login=? AND password =?";
+public class UserDAO {
+    private static final String SQL_SELECT_USER = "SELECT * FROM `buber`.`user` AS u WHERE u.`login` = ?";
+
+    private static final String SQL_SELECT_USER_IF_ONLINE = "  SELECT * FROM `buber`.`user` AS u WHERE u.`login` = ? AND `is_online = 1`";
+
+    private static final String SQL_UPDATE_USER =
+            "UPDATE `buber`.`user` " +
+                    "SET `is_online` = ?, `is_muted` = ?" +
+                    "WHERE `user`.`login` = ?;";
+
+
+    private DBPool dbPool = DBPool.getInstance();
+
 
     private static UserDAO instance = null;
     private static ReentrantLock lock = new ReentrantLock();
@@ -33,99 +42,48 @@ public class UserDAO extends AbstractDAO<User> {
         return instance;
     }
 
-//    public User findAbonentByLastName(String name) {
-//        User user = new User();
-//        Connection cn = null;
-//        PreparedStatement st = null;
-//        try {
-//            cn = DBPool.getConnection();
-//            st = cn.prepareStatement(SQL_SELECT_ALL_USERS);
-//            ResultSet resultSet = st.executeQuery();
-//            resultSet.next();
-//            user.setLogin(resultSet.getString("login"));
-//            user.setPassword(resultSet.getString("password"));
-//            user.setRole(resultSet.getString("role"));
-//            user.setMuted(resultSet.getBoolean("is_muted"));
-//        } catch (SQLException e) {
-//            System.err.println("SQL exception (command or table failed): " + e);
-//        } finally {
-//            close(st);
-//// код возвращения экземпляра Connection в пул
-//        }
-//        return user;
-//    }
-
-
-    public boolean isExist(String login) {
-        return false;
+    private UserDAO() {
     }
 
-    @Override
-    public User find(User wantedUser) {
-        DBPool dbPool = DBPool.getInstance();
-        User user = null;
+
+
+    public boolean isExist(String login) throws SQLException {
+        Connection connection = dbPool.getConnection();
+        return isConsist(login, connection, SQL_SELECT_USER);
+    }
+
+
+    public boolean isOnline(String login) throws SQLException {
+        Connection connection = dbPool.getConnection();
+        return isConsist(login, connection, SQL_SELECT_USER_IF_ONLINE);
+    }
+
+    public void update(String login, boolean isOnline, boolean isMuted) throws SQLException {
+        dbPool = DBPool.getInstance();
         Connection connection = dbPool.getConnection();
 
-        try(PreparedStatement st = connection.prepareStatement(SQL_FIND_BY_LOGIN)){
-            st.setString(1, wantedUser.getLogin());
-            st.setString(2, wantedUser.getPassword());
-            ResultSet resultSet = st.executeQuery();
-            while (resultSet.next()) {
-                user = new User();
-                user.setLogin(resultSet.getString("login"));
-                user.setPassword(resultSet.getString("password"));
-                user.setRole(resultSet.getString("role"));
-                user.setMuted(resultSet.getBoolean("is_muted"));
-            }
-        } catch (SQLException e) {
-            System.err.println("SQL exception (command or table failed): " + e);
+        try (PreparedStatement st = connection.prepareStatement(SQL_UPDATE_USER)) {
+            st.setBoolean(1, isOnline);
+            st.setBoolean(2, isMuted);
+            st.setString(3, login);
+            st.executeUpdate();
         } finally {
             dbPool.putConnection(connection);
         }
-       return user;
     }
 
-    @Override
-    public List<User> findAll() {
-        List<User> users = new ArrayList<>();
-        DBPool dbPool = DBPool.getInstance();
-        Connection cn = dbPool.getConnection();
-        try(Statement st = cn.createStatement();
-            ResultSet resultSet = st.executeQuery(SQL_SELECT_ALL_USERS);) {
-            while (resultSet.next()) {
-                User user = new User();
-                user.setLogin(resultSet.getString("login"));
-                user.setPassword(resultSet.getString("password"));
-                user.setRole(resultSet.getString("role"));
-                user.setMuted(resultSet.getBoolean("is_muted"));
-                users.add(user);
+
+
+    private boolean isConsist(String login, Connection connection, String sqlSelectUser) throws SQLException {
+        boolean isExist;
+        try (PreparedStatement st = connection.prepareStatement(sqlSelectUser)) {
+            st.setString(1, login);
+            try (ResultSet resultSet = st.executeQuery()) {
+                isExist = resultSet.next();
             }
-        } catch (SQLException e) {
-            System.err.println("SQL exception (command or table failed): " + e);
         } finally {
-            dbPool.putConnection(cn);
+            dbPool.putConnection(connection);
         }
-        return users;
+        return isExist;
     }
-
-    @Override
-    public void insert(User entity) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public User update(User entity) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public User delete(User entity) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public User delete(int id) {
-        throw new UnsupportedOperationException();
-    }
-
 }

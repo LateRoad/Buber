@@ -2,34 +2,33 @@ package com.lateroad.buber.logic.entity;
 
 import java.util.Objects;
 
-public class ClientInfo {
-    private String tripsNumber;
-    private String reputation;
+public class ClientInfo extends Entity {
+    private int tripsNumber;
+    private int reputation;
     private String phoneNumber;
-    private boolean isOnline;
-    private boolean isWait;
 
-    public ClientInfo(String tripsNumber, String reputation, String phoneNumber, boolean isOnline, boolean isWait) {
+    public ClientInfo() {
+    }
+
+    public ClientInfo(int tripsNumber, int reputation, String phoneNumber) {
         this.tripsNumber = tripsNumber;
         this.reputation = reputation;
         this.phoneNumber = phoneNumber;
-        this.isOnline = isOnline;
-        this.isWait = isWait;
     }
 
-    public String getTripsNumber() {
+    public int getTripsNumber() {
         return tripsNumber;
     }
 
-    public void setTripsNumber(String tripsNumber) {
+    public void setTripsNumber(int tripsNumber) {
         this.tripsNumber = tripsNumber;
     }
 
-    public String getReputation() {
+    public int getReputation() {
         return reputation;
     }
 
-    public void setReputation(String reputation) {
+    public void setReputation(int reputation) {
         this.reputation = reputation;
     }
 
@@ -41,38 +40,20 @@ public class ClientInfo {
         this.phoneNumber = phoneNumber;
     }
 
-    public boolean isOnline() {
-        return isOnline;
-    }
-
-    public void setOnline(boolean online) {
-        isOnline = online;
-    }
-
-    public boolean isWait() {
-        return isWait;
-    }
-
-    public void setWait(boolean wait) {
-        isWait = wait;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClientInfo that = (ClientInfo) o;
-        return isOnline == that.isOnline &&
-                isWait == that.isWait &&
-                Objects.equals(tripsNumber, that.tripsNumber) &&
-                Objects.equals(reputation, that.reputation) &&
+        return tripsNumber == that.tripsNumber &&
+                reputation == that.reputation &&
                 Objects.equals(phoneNumber, that.phoneNumber);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(tripsNumber, reputation, phoneNumber, isOnline, isWait);
+        return Objects.hash(tripsNumber, reputation, phoneNumber);
     }
 
     @Override
@@ -81,8 +62,6 @@ public class ClientInfo {
                 "tripsNumber='" + tripsNumber + '\'' +
                 ", reputation='" + reputation + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", isOnline=" + isOnline +
-                ", isWait=" + isWait +
                 '}';
     }
 }

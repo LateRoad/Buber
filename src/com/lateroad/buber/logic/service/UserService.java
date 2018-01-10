@@ -1,10 +1,7 @@
 package com.lateroad.buber.logic.service;
 
-import com.lateroad.buber.logic.database.dao.UserDAO;
 import com.lateroad.buber.logic.entity.User;
 import com.lateroad.buber.logic.exception.UserNotFoundException;
-
-import java.io.IOException;
 
 public class UserService {
     UserDAO userDAO = UserDAO.getInstance();

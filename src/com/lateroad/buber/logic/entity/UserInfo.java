@@ -2,19 +2,27 @@ package com.lateroad.buber.logic.entity;
 
 import java.util.Objects;
 
-public class UserInfo {
+public class UserInfo extends Entity{
     private String name;
     private String surname;
     private String lastname;
     private String email;
     private DriverInfo driverInfo;
     private ClientInfo clientInfo;
+    private Location location;
+
+    public UserInfo() {
+        driverInfo = new DriverInfo();
+        clientInfo = new ClientInfo();
+    }
 
     public UserInfo(String name, String surname, String lastname, String email) {
         this.name = name;
         this.surname = surname;
         this.lastname = lastname;
         this.email = email;
+        driverInfo = new DriverInfo();
+        clientInfo = new ClientInfo();
     }
 
     public String getName() {
@@ -65,6 +73,14 @@ public class UserInfo {
         this.clientInfo = clientInfo;
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,12 +91,13 @@ public class UserInfo {
                 Objects.equals(lastname, userInfo.lastname) &&
                 Objects.equals(email, userInfo.email) &&
                 Objects.equals(driverInfo, userInfo.driverInfo) &&
-                Objects.equals(clientInfo, userInfo.clientInfo);
+                Objects.equals(clientInfo, userInfo.clientInfo) &&
+                Objects.equals(location, userInfo.location);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname, lastname, email, driverInfo, clientInfo);
+        return Objects.hash(name, surname, lastname, email, driverInfo, clientInfo, location);
     }
 
     @Override
@@ -92,6 +109,7 @@ public class UserInfo {
                 ", email='" + email + '\'' +
                 ", driverInfo=" + driverInfo +
                 ", clientInfo=" + clientInfo +
+                ", location=" + location +
                 '}';
     }
 }
