@@ -44,6 +44,7 @@ public class SignInCommand implements ICommand {
         HttpSession session = req.getSession();
         String login = req.getParameter("login");
         String password = req.getParameter("password");
+        RequestDispatcher requestDispatcher;
 
         if (login != null && password != null) {
             User user = null;
@@ -55,7 +56,12 @@ public class SignInCommand implements ICommand {
             if (user != null) {
                 System.out.println(user);
                 session.setAttribute("user", user);
-                RequestDispatcher requestDispatcher = servlet.getServletContext().getRequestDispatcher("/home.jsp");
+
+                if ("admin".equals(user.getRole())) {
+                    requestDispatcher = servlet.getServletContext().getRequestDispatcher("/users.jsp");
+                } else {
+                    requestDispatcher = servlet.getServletContext().getRequestDispatcher("/home.jsp");
+                }
                 try {
                     requestDispatcher.forward(req, resp);
                 } catch (ServletException e) {
