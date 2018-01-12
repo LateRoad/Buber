@@ -26,10 +26,10 @@ public class AuthFilter implements Filter {
         String uri = ((HttpServletRequest) request).getRequestURI();
         HttpSession session = ((HttpServletRequest) request).getSession();
 
-        User user = (User)session.getAttribute("PRINCIPAL");
+        User user = (User)session.getAttribute("user");
         if(user != null){
-            if("/login.html".equals(uri) || "/signin.jsp".equals(uri)){
-                ((HttpServletResponse)response).sendRedirect("/index.html");
+            if("/signin.html".equals(uri) || "/signin.jsp".equals(uri)){
+                ((HttpServletResponse)response).sendRedirect("/index.jsp");
                 return;
             }
             else{
@@ -43,7 +43,7 @@ public class AuthFilter implements Filter {
         }
 
 //?????
-        ((HttpServletResponse)response).sendRedirect("login.html?loginorpassword=invalid");
+        ((HttpServletResponse)response).sendRedirect("signin.jsp?=invalid");
 
     }
 

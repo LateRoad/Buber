@@ -4,6 +4,7 @@ import com.lateroad.buber.logic.database.CommonDAO;
 import com.lateroad.buber.logic.database.DBPool;
 import com.lateroad.buber.logic.entity.Location;
 import com.lateroad.buber.logic.entity.Order;
+import com.lateroad.buber.logic.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,6 +16,10 @@ public class OrderDAO implements CommonDAO<Order> {
     private static final String SQL_SELECT_ORDER_BY_DATE = "SELECT * FROM `buber`.`order` AS o WHERE o.`date` = ? ";
 
     private static final String SQL_SELECT_ALL_ORDERS = "SELECT * FROM `buber`.`order` ";
+
+    private static final String SQL_SELECT_ALL_ORDERS_BY_CLIENT_LOGIN = "SELECT * FROM `buber`.`order` AS o WHERE o.`client_login` = ? ";
+
+    private static final String SQL_SELECT_ALL_ORDERS_BY_DRIVER_LOGIN = "SELECT * FROM `buber`.`order` AS o WHERE o.`driver_login` = ? ";
 
     private static final String SQL_INSERT_ORDER =
             "INSERT INTO `buber`.`order` (`client_login`, `driver_login`, `money`, `date`) VALUES (?, ?, ?, ?); ";
@@ -68,6 +73,33 @@ public class OrderDAO implements CommonDAO<Order> {
             dbPool.putConnection(connection);
         }
         return newOrder;
+    }
+
+    public List<Order> find(User user) throws SQLException {
+        List<Order> orders = new ArrayList<>();
+        dbPool = DBPool.getInstance();
+        Connection connection = dbPool.getConnection();
+        if ("client".equals(user.getRole())) {
+            findByRole(user, orders, connection, SQL_SELECT_ALL_ORDERS_BY_CLIENT_LOGIN);
+        }
+        else if("driver".equals(user.getRole())){
+            findByRole(user, orders, connection, SQL_SELECT_ALL_ORDERS_BY_DRIVER_LOGIN);
+        }
+
+        return orders;
+    }
+
+    private void findByRole(User user, List<Order> orders, Connection connection, String sqlSelectAllOrdersByDriverLogin) throws SQLException {
+        try (PreparedStatement st = connection.prepareStatement(sqlSelectAllOrdersByDriverLogin)) {
+            st.setString(1, user.getLogin());
+            try (ResultSet resultSet = st.executeQuery()) {
+                while (resultSet.next()) {
+                    orders.add(createOrder(resultSet));
+                }
+            }
+        } finally {
+            dbPool.putConnection(connection);
+        }
     }
 
     @Override
@@ -174,7 +206,6 @@ public class OrderDAO implements CommonDAO<Order> {
             dbPool.putConnection(connection);
         }
     }
-
 
 
     private Order createOrder(ResultSet resultSet) throws SQLException {

@@ -1,5 +1,6 @@
 package com.lateroad.buber.logic.command;
 
+import com.lateroad.buber.logic.command.impl.GetTripsCommand;
 import com.lateroad.buber.logic.command.impl.SignInCommand;
 import com.lateroad.buber.logic.command.impl.SignOutCommand;
 
@@ -17,6 +18,7 @@ public class CommandMap {
         commandsMap = new HashMap<>();
         commandsMap.put("signin", new SignInCommand());
         commandsMap.put("signout", new SignOutCommand());
+        commandsMap.put("getTrips", new GetTripsCommand());
     }
 
     public ICommand getCommandsMap(String key) {

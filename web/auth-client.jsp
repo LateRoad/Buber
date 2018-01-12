@@ -42,7 +42,7 @@
                 </li>
                 <c:if test="${user != null }">
                     <li><a href="/home.jsp">${user.login}</a></li>
-                    <li><a href="/clientServlet?action=signout" name="action" value="signout"><span
+                    <li><a href="/userServlet?action=signout" name="action" value="signout"><span
                             class="glyphicon glyphicon-log-out"></span> Выход</a></li>
                 </c:if>
                 <c:if test="${user == null }">
@@ -55,10 +55,10 @@
 <div class="container">
     <div class="col-md-4 col-md-offset-4">
         <h2>Входите как клиент</h2>
-        <form method="POST" action="/clientServlet" style="width: 500px">
+        <form method="POST" action="/userServlet?role=client" style="width: 500px">
             <div class="form-group">
                 <label for="inputLogin">Логин</label>
-                <input type="text" class="form-control" id="InputLogin" aria-describedby="loginHelp"
+                <input type="text" class="form-control" id="inputLogin" aria-describedby="loginHelp"
                        placeholder="Введите логин" name="login">
                 <small id="loginHelp" class="form-text text-muted">Мы сохраним ваши данные в приватную базу данных.
                 </small>

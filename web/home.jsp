@@ -19,5 +19,9 @@
 </head>
 <body>
 <ctg:sideMenu user="${user}"/>
+
+<c:if test="${user.role == \"client\" }">
+
+</c:if>
 </body>
 </html>

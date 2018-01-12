@@ -1,14 +1,10 @@
 package com.lateroad.buber.logic.command.impl;
 
 import com.lateroad.buber.logic.command.ICommand;
-import com.lateroad.buber.logic.database.CommonDAO;
-import com.lateroad.buber.logic.database.dao.ClientDAO;
-import com.lateroad.buber.logic.database.dao.DriverDAO;
 import com.lateroad.buber.logic.entity.User;
-import com.lateroad.buber.logic.exception.UserNotFoundException;
 import com.lateroad.buber.logic.service.AdminService;
 import com.lateroad.buber.logic.service.ClientService;
-import com.lateroad.buber.logic.service.CommonService;
+import com.lateroad.buber.logic.service.UserService;
 import com.lateroad.buber.logic.service.DriverService;
 
 import javax.servlet.RequestDispatcher;
@@ -24,7 +20,7 @@ public class SignInCommand implements ICommand {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
-        switch ((String) req.getAttribute("role")) {
+        switch (req.getParameter("role")) {
             case "client":
                 auth(req, resp, servlet, new ClientService());
                 break;
@@ -40,7 +36,7 @@ public class SignInCommand implements ICommand {
         }
     }
 
-    private void auth(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet, CommonService service) {
+    private void auth(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet, UserService service) {
         HttpSession session = req.getSession();
         String login = req.getParameter("login");
         String password = req.getParameter("password");
@@ -54,7 +50,6 @@ public class SignInCommand implements ICommand {
                 e.printStackTrace();
             }
             if (user != null) {
-                System.out.println(user);
                 session.setAttribute("user", user);
 
                 if ("admin".equals(user.getRole())) {
@@ -72,7 +67,7 @@ public class SignInCommand implements ICommand {
             }
         }
         try {
-            resp.sendRedirect("/login.jsp?=invalid");
+            resp.sendRedirect("/signin.jsp?=invalid");
         } catch (IOException e) {
             e.printStackTrace();
         }

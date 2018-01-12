@@ -58,9 +58,9 @@ public class SideMenu extends TagSupport {
 
         out.write("           <li><a href=\"/home.jsp\"><i class=\"fa fa-bullhorn fa-lg\"></i> Поехать</a></li>");
         out.write("           <li><a href=\"/profile.jsp\"><i class=\"fa fa-user fa-lg\"></i> Профиль</a></li>");
-        out.write("           <li><a href=\"/payments.jsp\"><i class=\"fa fa-credit-card fa-lg\"></i> Платежи</a></li>");
-        out.write("           <li><a href=\"/trips.jsp\"><i class=\"fa fa-car fa-lg\"></i> Поездки</a></li>");
-        out.write("           <li onclick=\"/clientServlet?action=signout\"><a href=\"/clientServlet?action=signout\" name=\"action\" value=\"signout\"><i class=\"fa fa-sign-out fa-lg\"></i> Выход</a></li>");
+        out.write("           <li><a href=\"/payment.jsp\"><i class=\"fa fa-credit-card fa-lg\"></i> Платежи</a></li>");
+        out.write("           <li><a href=\"/userServlet?action=getTrips\"><i class=\"fa fa-car fa-lg\"></i> Поездки</a></li>");
+        out.write("           <li onclick=\"/clientServlet?action=signout\"><a href=\"/userServlet?action=signout\" name=\"action\" value=\"signout\"><i class=\"fa fa-sign-out fa-lg\"></i> Выход</a></li>");
         out.write("        </ul>");
         out.write("    </div>");
         out.write("</div>");
@@ -73,11 +73,12 @@ public class SideMenu extends TagSupport {
         out.write("    <i class=\"fa fa-bars fa-2x toggle-btn\" data-toggle=\"collapse\" data-target=\"#menu-content\"></i>");
         out.write("    <div class=\"menu-list\">");
         out.write("       <ul id=\"menu-content\" class=\"menu-content collapse out\">");
-        out.write("           <li><a href=\"/home.jsp\"><i class=\"fa fa-user fa-lg\"></i> Профиль</a></li>");
-        out.write("           <li><a href=\"/payments.jsp\"><i class=\"fa fa-credit-card fa-lg\"></i> Платежи</a></li>");
+        out.write("           <li><a href=\"/home.jsp\"><i class=\"fa fa-taxi fa-lg\"></i> Зарабатывать</a></li>");
+        out.write("           <li><a href=\"/profile.jsp\"><i class=\"fa fa-user fa-lg\"></i> Профиль</a></li>");
+        out.write("           <li><a href=\"/payment.jsp\"><i class=\"fa fa-credit-card fa-lg\"></i> Платежи</a></li>");
         out.write("           <li><a href=\"/car.jsp\"><i class=\"fa fa-car fa-lg\"></i> Моя машина</a></li>");
-        out.write("           <li><a href=\"/trips.jsp\"><i class=\"fa fa-money fa-lg\"></i> Поездки</a></li>");
-        out.write("           <li><a href=\"/clientServlet?action=signout\" name=\"action\" value=\"signout\"><i class=\"fa fa-sign-out fa-lg\"></i> Выход</a></li>");
+        out.write("           <li><a href=\"/userServlet?action=getTrips\"><i class=\"fa fa-money fa-lg\"></i> Поездки</a></li>");
+        out.write("           <li><a href=\"/userServlet?action=signout\" name=\"action\" value=\"signout\"><i class=\"fa fa-sign-out fa-lg\"></i> Выход</a></li>");
         out.write("        </ul>");
         out.write("    </div>");
         out.write("</div>");
@@ -91,7 +92,7 @@ public class SideMenu extends TagSupport {
         out.write("    <div class=\"menu-list\">");
         out.write("            <li><a href=\"/users.jsp\"><i class=\"fa fa-users fa-lg\"></i> Пользователи</a></li>");
         out.write("            <li><a href=\"/orders.jsp\"><i class=\"fa fa-users fa-lg\"></i> Заказы</a></li>");
-        out.write("           <li><a href=\"/clientServlet?action=signout\" name=\"action\" value=\"signout\"><i class=\"fa fa-sign-out fa-lg\"></i> Sign out</a></li>");
+        out.write("           <li><a href=\"/userServlet?action=signout\" name=\"action\" value=\"signout\"><i class=\"fa fa-sign-out fa-lg\"></i> Sign out</a></li>");
         out.write("        </ul>");
         out.write("    </div>");
         out.write("</div>");

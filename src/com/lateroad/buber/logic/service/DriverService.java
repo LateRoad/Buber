@@ -5,9 +5,11 @@ import com.lateroad.buber.logic.entity.User;
 
 import java.sql.SQLException;
 
-public class DriverService implements CommonService {
+public class DriverService extends UserService {
     DriverDAO driverDAO = DriverDAO.getInstance();
 
+
+    @Override
     public User userGetByEmailAndPassword(String login, String password) throws SQLException {
         return driverDAO.find(login, password);
     }
