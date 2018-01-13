@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <title>Title</title>
+    <title>Войти как клиент</title>
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -40,9 +40,10 @@
                         <li><a href="#">english</a></li>
                     </ul>
                 </li>
+                <%--админ может войти в home!--%>
                 <c:if test="${user != null }">
                     <li><a href="/home.jsp">${user.login}</a></li>
-                    <li><a href="/userServlet?action=signout" name="action" value="signout"><span
+                    <li><a href="/userServlet?action=signOut" name="action" value="signOut"><span
                             class="glyphicon glyphicon-log-out"></span> Выход</a></li>
                 </c:if>
                 <c:if test="${user == null }">
@@ -68,7 +69,7 @@
                 <input type="password" class="form-control" id="inputPassword" placeholder="Пароль"
                        name="password">
             </div>
-            <button type="submit" name="action" value="signin" class="btn btn-primary">Войти</button>
+            <button type="submit" name="action" value="signIn" class="btn btn-primary">Войти</button>
         </form>
     </div>
 </div>

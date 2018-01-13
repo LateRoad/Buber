@@ -1,7 +1,5 @@
 package com.lateroad.buber.logic.database;
 
-import com.lateroad.buber.logic.database.dao.ConnectorDB;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.concurrent.ArrayBlockingQueue;

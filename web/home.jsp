@@ -12,16 +12,38 @@
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/sidemenu.css">
+    <link rel="stylesheet" href="css/googlemap.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/googlemap.js"></script>
     <title>Home</title>
 </head>
 <body>
-<ctg:sideMenu user="${user}"/>
+<div id="left"><ctg:sideMenu user="${user}"/></div>
 
-<c:if test="${user.role == \"client\" }">
+<div id="right">
+    <div id="map"></div>
+    <form method="POST" action="/userServlet" style="width: 500px">
+        <div class="form-group">
+            <label for="pointFrom">Ваше местоположение</label>
+            <input type="text" class="form-control" id="pointFrom"
+                   placeholder="Беларусь, Минск, Сморговский проезд, 29" name="pointFrom">
+        </div>
+        <div class="form-group">
+            <label for="pointTo">Место назначения</label>
+            <input type="text" class="form-control" id="pointTo" placeholder="Беларусь, Минск, проспект Пушкинский, 19"
+                   name="pointTo">
+        </div>
+    </form>
+    <button type="button" id="getRouteInfoBtn"  class="btn btn-primary" disabled onclick="calcRoute()">Рассчитать стоимость поездки</button>
 
-</c:if>
+    <c:if test="${user.role == \"client\" }">
+    </c:if>
+</div>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYpnDCcwayuy4jZ-1IzCUpg3AHFVO80Is&callback=initMap&language=ru">
+</script>
 </body>
 </html>

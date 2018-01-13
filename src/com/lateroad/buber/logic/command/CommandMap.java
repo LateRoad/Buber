@@ -16,9 +16,10 @@ public class CommandMap {
 
     private CommandMap() {
         commandsMap = new HashMap<>();
-        commandsMap.put("signin", new SignInCommand());
-        commandsMap.put("signout", new SignOutCommand());
+        commandsMap.put("signIn", new SignInCommand());
+        commandsMap.put("signOut", new SignOutCommand());
         commandsMap.put("getTrips", new GetTripsCommand());
+        commandsMap.put("getRouteInfo", new GetTripsCommand());
     }
 
     public ICommand getCommandsMap(String key) {
