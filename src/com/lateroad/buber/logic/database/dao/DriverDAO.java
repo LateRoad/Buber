@@ -11,6 +11,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class DriverDAO implements CommonDAO<User> {
+    private static final String SQL_SELECT_NEAREST_DRIVERS =
+            "SELECT * FROM `buber`.`user` AS u " +
+                    "JOIN `buber`.`user_info` AS ui ON (u.`login` = ui.`login`) " +
+                    "JOIN `buber`.`driver_info` AS di ON (u.`login` = di.`login`) " +
+                    "JOIN `buber`.`location` AS l ON (u.`login` = l.`login`) " +
+                    "WHERE u.`is_online` = 1 AND u.`role` = 'driver' AND l.`city` = ?";
+
     private static final String SQL_SELECT_DRIVER =
             "SELECT * FROM `buber`.`user` AS u " +
                     "JOIN `buber`.`user_info` AS ui ON (u.`login` = ui.`login`) " +
@@ -204,5 +211,23 @@ public class DriverDAO implements CommonDAO<User> {
         user.getUserInfo().getDriverInfo().setTripsNumber(resultSet.getInt("trips_number"));
         user.getUserInfo().getDriverInfo().setDriverLicense(resultSet.getString("driver_license"));
         return user;
+    }
+
+    public List<User> find(String from) throws SQLException {
+        List<User> users = new ArrayList<>();
+        dbPool = DBPool.getInstance();
+        Connection connection = dbPool.getConnection();
+
+        try (PreparedStatement st = connection.prepareStatement(SQL_SELECT_NEAREST_DRIVERS)) {
+            st.setString(1, from);
+            try (ResultSet resultSet = st.executeQuery()) {
+                while (resultSet.next()) {
+                    users.add(createDriver(resultSet));
+                }
+            }
+        } finally {
+            dbPool.putConnection(connection);
+        }
+        return users;
     }
 }

@@ -5,7 +5,7 @@ function change(item, button) {
         var textEdited = document.getElementById(item + "Edited").value;
         input.innerText = textEdited;
         var xhttp = new XMLHttpRequest();
-        xhttp.open("POST", "/clientServlet?action=updateInfo&edited=" + item + "&value=" + textEdited, true);
+        xhttp.open("POST", "/userServlet?action=updateInfo&edited=" + item + "&value=" + textEdited, true);
         xhttp.send();
 
     }

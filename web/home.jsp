@@ -37,10 +37,18 @@
                    name="pointTo">
         </div>
     </form>
-    <button type="button" id="getRouteInfoBtn"  class="btn btn-primary" disabled onclick="calculateAndDisplayRoute()">Рассчитать стоимость поездки</button>
+    <button type="button" id="getRouteInfoBtn" class="btn btn-primary" disabled onclick="calculateAndDisplayRoute()">
+        Рассчитать стоимость поездки
+    </button>
 
-    <c:if test="${user.role == \"client\" }">
-    </c:if>
+    <div id="routeClientInfo">
+        <c:if test="${user.role == \"client\" }">
+            !!!!
+            ${distance}
+            ${price}
+            !!!!
+        </c:if>
+    </div>
 </div>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYpnDCcwayuy4jZ-1IzCUpg3AHFVO80Is&callback=initMap&language=ru">
