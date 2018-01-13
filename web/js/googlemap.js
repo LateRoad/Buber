@@ -3,10 +3,13 @@
 // The user can then click an option to hide, show or delete the markers.
 var labels = 'AB';
 var labelIndex = 0;
-var directionsService = new google.maps.DirectionsService;
-var directionsDisplay = new google.maps.DirectionsRenderer;
+var directionsService;
+var directionsDisplay;
+var markers = new Array();
 
 function initMap() {
+    directionsService = new google.maps.DirectionsService();
+    directionsDisplay = new google.maps.DirectionsRenderer();
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (p) {
             var latLng = new google.maps.LatLng(p.coords.latitude, p.coords.longitude);
@@ -16,6 +19,7 @@ function initMap() {
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+            directionsDisplay.setMap(map);
 
             var marker = new google.maps.Marker({
                 position: latLng,
@@ -43,6 +47,7 @@ function addMarker(location, map) {
             draggable: true,
             map: map
         });
+        markers.push(location);
         geocodeLatLng("pointTo", location);
         document.getElementById("getRouteInfoBtn").disabled = false;
     }
@@ -52,6 +57,7 @@ function addMarker(location, map) {
             label: labels[labelIndex++],
             map: map
         });
+        markers.push(location);
         geocodeLatLng("pointFrom", location);
     }
     marker.addListener('dragend', handleEvent);
@@ -64,7 +70,7 @@ function geocodeLatLng(inputId, coords) {
     geocoder.geocode({'location': latlng}, function (results, status) {
         if (status === 'OK') {
             if (results[1]) {
-                input.value = results[0].formatted_address;
+                input.value = results[0].address_components[4].long_name + ", " + results[0].address_components[3].long_name + ", " + results[0].address_components[1].long_name + ", " + results[0].address_components[0].long_name;
             } else {
                 window.alert('No results found');
             }
@@ -75,17 +81,17 @@ function geocodeLatLng(inputId, coords) {
 }
 
 function handleEvent(event) {
+    markers[1] = event.latLng;
     geocodeLatLng("pointTo", event.latLng);
 }
 
 function calculateAndDisplayRoute() {
     directionsService.route({
-        origin: document.getElementById('pointFrom').value,
-        destination: document.getElementById('pointTo').value,
+        origin: markers[0],
+        destination: markers[1],
         travelMode: 'DRIVING'
     }, function (response, status) {
         if (status === 'OK') {
-            alert("!");
             directionsDisplay.setDirections(response);
         } else {
             window.alert('Directions request failed due to ' + status);

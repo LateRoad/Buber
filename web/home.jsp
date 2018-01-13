@@ -37,7 +37,7 @@
                    name="pointTo">
         </div>
     </form>
-    <button type="button" id="getRouteInfoBtn"  class="btn btn-primary" disabled onclick="calcRoute()">Рассчитать стоимость поездки</button>
+    <button type="button" id="getRouteInfoBtn"  class="btn btn-primary" disabled onclick="calculateAndDisplayRoute()">Рассчитать стоимость поездки</button>
 
     <c:if test="${user.role == \"client\" }">
     </c:if>
