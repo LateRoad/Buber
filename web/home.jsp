@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  com.lateroad.buber.logic.entity.User: Roula
+  com.lateroad.buber.entity.User: Roula
   Date: 24.12.2017
   Time: 20:09
   To change this template use File | Settings | File Templates.
@@ -14,10 +14,6 @@
     <link rel="stylesheet" href="css/sidemenu.css">
     <link rel="stylesheet" href="css/googlemap.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="js/googlemap.js"></script>
     <title>Home</title>
 </head>
 <body>
@@ -50,6 +46,10 @@
         </c:if>
     </div>
 </div>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="js/googlemap.js"></script>
+<script src="js/routeInfo.js"></script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYpnDCcwayuy4jZ-1IzCUpg3AHFVO80Is&callback=initMap&language=ru">
 </script>

@@ -1,6 +1,6 @@
 package com.lateroad.buber.servlet;
 
-import com.lateroad.buber.logic.command.CommandManager;
+import com.lateroad.buber.command.CommandManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

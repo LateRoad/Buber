@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  com.lateroad.buber.logic.entity.User: Roula
+  com.lateroad.buber.entity.User: Roula
   Date: 25.12.2017
   Time: 2:25
   To change this template use File | Settings | File Templates.

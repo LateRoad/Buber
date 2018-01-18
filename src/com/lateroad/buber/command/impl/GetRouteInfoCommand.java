@@ -1,0 +1,52 @@
+package com.lateroad.buber.command.impl;
+
+
+import com.lateroad.buber.command.ICommand;
+import com.lateroad.buber.entity.User;
+import com.lateroad.buber.service.DriverService;
+import com.lateroad.buber.service.MapService;
+import org.json.JSONException;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+public class GetRouteInfoCommand implements ICommand {
+
+    @Override
+    public void execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
+        MapService mapService = new MapService();
+        DriverService driverService = new DriverService();
+        String from = req.getParameter("fromLat") + ", " + req.getParameter("fromLng");
+        String to = req.getParameter("toLat") + ", " + req.getParameter("toLng");
+        String price = null;
+        String distance = null;
+        try {
+//            price = mapService.calculatePrice(req.getParameter("from"), req.getParameter("to"));
+//            distance = mapService.calculateDistance(req.getParameter("from"), req.getParameter("to"));
+            price = mapService.calculatePrice(from, to);
+            distance = mapService.calculateDistance(from, to);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        List<User> drivers = null;
+        try {
+            drivers = driverService.getNearestDrivers(req.getParameter("from"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        req.getSession().setAttribute("nearestDrivers", drivers);
+        req.getSession().setAttribute("price", price);
+        req.getSession().setAttribute("distance", distance);
+        try {
+            resp.getWriter().write("{value : success}");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

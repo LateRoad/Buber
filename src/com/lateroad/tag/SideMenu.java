@@ -1,6 +1,6 @@
 package com.lateroad.tag;
 
-import com.lateroad.buber.logic.entity.User;
+import com.lateroad.buber.entity.User;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;

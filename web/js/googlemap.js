@@ -50,8 +50,7 @@ function addMarker(location, map) {
             map: map
         });
         markers.push(location);
-        geocodeLatLng("pointTo", location);
-        document.getElementById("getRouteInfoBtn").disabled = false;
+        geocodeLatLng("#pointTo", location);
     }
     if (labelIndex === 0) {
         var marker = new google.maps.Marker({
@@ -60,19 +59,20 @@ function addMarker(location, map) {
             map: map
         });
         markers.push(location);
-        geocodeLatLng("pointFrom", location);
+        geocodeLatLng("#pointFrom", location);
     }
     marker.addListener('dragend', handleEvent);
 }
 
 function geocodeLatLng(inputId, coords) {
     var geocoder = new google.maps.Geocoder;
-    var input = document.getElementById(inputId);
+    var $input = $(inputId);
     var latlng = {lat: coords.lat(), lng: coords.lng()};
     geocoder.geocode({'location': latlng}, function (results, status) {
         if (status === 'OK') {
             if (results[1]) {
-                input.value = results[0].address_components[4].long_name + ", " + results[0].address_components[3].long_name + ", " + results[0].address_components[1].long_name + ", " + results[0].address_components[0].long_name;
+                $input.val(results[0].address_components[4].long_name + ", " + results[0].address_components[3].long_name + ", " + results[0].address_components[1].long_name + ", " + results[0].address_components[0].long_name);
+                $input.trigger('change');
             } else {
                 window.alert('No results found');
             }
@@ -84,7 +84,7 @@ function geocodeLatLng(inputId, coords) {
 
 function handleEvent(event) {
     markers[1] = event.latLng;
-    geocodeLatLng("pointTo", event.latLng);
+    geocodeLatLng("#pointTo", event.latLng);
 }
 
 function calculateAndDisplayRoute() {
@@ -99,21 +99,25 @@ function calculateAndDisplayRoute() {
             window.alert('Directions request failed due to ' + status);
         }
     });
-
-    $.get('/userServlet', function(responseText) {
-        alert("URA");
-    });
     $.ajax({
-        url: "/userServlet?action=getRouteInfo&from=" + document.getElementById("pointFrom").value + "&to=" + document.getElementById("pointTo").value,
-        data:{name:'abc'},
-        type:'get',
-        cache:false,
-        success:function(data){
-            $('#routeClientInfo').load("/home.jsp" +  ' #routeClientInfo');
-            // $('#routeClientInfo').text(data);
+        url: "/userServlet?action=getRouteInfo&from=" + $("#pointFrom").val() + "&to=" + $("#pointTo").val() + "&fromLat=" + markers[0].lat() + "&fromLng=" + markers[0].lng() + "&toLat=" + markers[1].lat() + "&toLng=" + markers[1].lng(),
+        data: {name: 'abc'},
+        type: 'get',
+        cache: false,
+        success: function () {
+            $('#routeClientInfo').load("/home.jsp" + ' #routeClientInfo');
         },
-        error:function(){
+        error: function () {
             alert('error');
         }
     });
 }
+
+// (function ($) {
+//     $.fn.changeVal = function (value) {
+//         return this.each(function () {
+//             $(this).val(value);
+//             $(this).trigger('change');
+//         });
+//     }
+// })(jQuery);

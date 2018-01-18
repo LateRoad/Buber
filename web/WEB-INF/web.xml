@@ -27,7 +27,7 @@
 
     <filter>
         <filter-name>authFilter</filter-name>
-        <filter-class>com.lateroad.buber.logic.filter.AuthFilter</filter-class>
+        <filter-class>com.lateroad.buber.filter.AuthFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>authFilter</filter-name>
