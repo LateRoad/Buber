@@ -5,10 +5,10 @@ var labels = 'AB';
 var labelIndex;
 var directionsService;
 var directionsDisplay;
-var markers = new Array();
+var markers;
 
 function initMap() {
-    // markers.clear();
+    markers = [];
     labelIndex = 0;
     directionsService = new google.maps.DirectionsService();
     directionsDisplay = new google.maps.DirectionsRenderer();
@@ -23,17 +23,23 @@ function initMap() {
             var map = new google.maps.Map(document.getElementById("map"), mapOptions);
             directionsDisplay.setMap(map);
             directionsDisplay.setOptions({suppressMarkers: true});
-            // var marker = new google.maps.Marker({
-            //     position: latLng,
-            //     map: map,
-            //     title: "<div style = 'height:60px;width:200px'><b>Your location:</b><br />Latitude: " + p.coords.latitude + "<br />Longitude: " + p.coords.longitude
-            // });
-
 
             google.maps.event.addListener(map, 'click', function (event) {
                 addMarker(event.latLng, map);
             });
             addMarker(latLng, map);
+            $.ajax({
+                url: "/userServlet?action=setCurrentLocation&lat=" + latLng.lat() + "&lng=" + latLng.lng(),
+                data: {name: 'abc'},
+                type: 'get',
+                cache: false,
+                success: function () {
+                    alert("success");
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
         });
     } else {
         alert('Geo Location feature is not supported in this browser.');
@@ -102,7 +108,7 @@ function calculateAndDisplayRoute() {
     $.ajax({
         url: "/userServlet?action=getRouteInfo&from=" + $("#pointFrom").val() + "&to=" + $("#pointTo").val() + "&fromLat=" + markers[0].lat() + "&fromLng=" + markers[0].lng() + "&toLat=" + markers[1].lat() + "&toLng=" + markers[1].lng(),
         data: {name: 'abc'},
-        type: 'get',
+        type: 'post',
         cache: false,
         success: function () {
             $('#routeClientInfo').load("/home.jsp" + ' #routeClientInfo');

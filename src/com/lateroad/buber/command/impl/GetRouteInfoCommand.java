@@ -22,31 +22,28 @@ public class GetRouteInfoCommand implements ICommand {
         DriverService driverService = new DriverService();
         String from = req.getParameter("fromLat") + ", " + req.getParameter("fromLng");
         String to = req.getParameter("toLat") + ", " + req.getParameter("toLng");
-        String price = null;
+        String time = null;
         String distance = null;
         try {
-//            price = mapService.calculatePrice(req.getParameter("from"), req.getParameter("to"));
-//            distance = mapService.calculateDistance(req.getParameter("from"), req.getParameter("to"));
-            price = mapService.calculatePrice(from, to);
+            time = mapService.calculatePrice(from, to);
             distance = mapService.calculateDistance(from, to);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        List<User> drivers = null;
-        try {
-            drivers = driverService.getNearestDrivers(req.getParameter("from"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        req.getSession().setAttribute("nearestDrivers", drivers);
-        req.getSession().setAttribute("price", price);
-        req.getSession().setAttribute("distance", distance);
-        try {
+            List<User> drivers = null;
+            drivers = driverService.getNearestDrivers(((User) req.getSession().getAttribute("user")).getLogin());
+
+            req.getSession().setAttribute("nearestDrivers", drivers);
+            req.getSession().setAttribute("time", time);
+            req.getSession().setAttribute("distance", distance);
+            req.getSession().setAttribute("price", calculatePrice(time, distance) +"р.");
             resp.getWriter().write("{value : success}");
-        } catch (IOException e) {
+        } catch (IOException | SQLException | JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private String calculatePrice(String time, String distance) {
+        double iTime = Double.parseDouble(time.replaceAll("[\\p{L}\\s]+", ""));
+        double iDistance = Double.parseDouble(distance.replaceAll("[\\p{L}\\s]+", "").replace(",","."));
+        Double price =  iTime * iDistance;
+        return price.toString();
     }
 }

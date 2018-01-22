@@ -6,6 +6,7 @@ import com.lateroad.buber.service.AdminService;
 import com.lateroad.buber.service.ClientService;
 import com.lateroad.buber.service.UserService;
 import com.lateroad.buber.service.DriverService;
+import org.json.JSONException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -47,6 +48,10 @@ public class SignInCommand implements ICommand {
             try {
                 user = service.userGetByEmailAndPassword(login, password);
             } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             if (user != null) {

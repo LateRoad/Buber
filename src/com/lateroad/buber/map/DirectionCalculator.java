@@ -20,12 +20,12 @@ public class DirectionCalculator {
 
         final String baseUrl = "http://maps.googleapis.com/maps/api/directions/json";
 
-        final Map<String, String> params = new HashMap<>();
-        params.put("sensor", "false");
-        params.put("language", "ru");
-        params.put("mode", "driving");
-        params.put("origin", "Беларусь, Минск, проезд Сморговский, 29");
-        params.put("destination", "Беларусь, Минск, проспект Пушкина, 81");
+//        final Map<String, String> params = new HashMap<>();
+//        params.put("sensor", "false");
+//        params.put("language", "ru");
+//        params.put("mode", "driving");
+//        params.put("origin", "Беларусь, Минск, проезд Сморговский, 29");
+//        params.put("destination", "Беларусь, Минск, проспект Пушкина, 81");
 
         final StringBuilder builder = new StringBuilder(baseUrl);
         builder.append("?sensor");

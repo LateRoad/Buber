@@ -16,9 +16,7 @@ public class SignOutCommand implements ICommand {
         RequestDispatcher requestDispatcher = servlet.getServletContext().getRequestDispatcher("/index.jsp");
         try {
             requestDispatcher.forward(req, resp);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ServletException | IOException e) {
             e.printStackTrace();
         }
     }

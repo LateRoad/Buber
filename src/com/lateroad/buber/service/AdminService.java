@@ -6,7 +6,7 @@ import com.lateroad.buber.entity.User;
 import java.sql.SQLException;
 
 public class AdminService extends UserService {
-    UserDAO userDAO = UserDAO.getInstance();
+    private UserDAO userDAO = UserDAO.getInstance();
 
     @Override
     public User userGetByEmailAndPassword(String login, String password) throws SQLException {

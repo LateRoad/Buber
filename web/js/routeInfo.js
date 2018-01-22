@@ -1,6 +1,7 @@
 var $inputFrom = $('#pointFrom');
 var $inputTo = $('#pointTo');
 var $button = $('#getRouteInfoBtn');
+var $routeClientInfo = $('#routeClientInfo');
 $button.attr("disabled", true);
 
 
@@ -13,6 +14,5 @@ $($inputFrom).add($inputTo).on("change keyup", function () {
         $button.attr("disabled", true);
         return;
     }
-
     $button.attr("disabled", false);
 });

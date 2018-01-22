@@ -39,10 +39,27 @@
 
     <div id="routeClientInfo">
         <c:if test="${user.role == \"client\" }">
-            !!!!
-            ${distance}
-            ${price}
-            !!!!
+            Расстояние: ${distance}
+            <br>
+            Время: ${time}
+            <br>
+            Цена: ${price}
+            <br>
+            <table>
+                <c:forEach var="driver" items="${nearestDrivers}">
+                    <tr>
+                        <td><c:out value="${driver.login}"/></td>
+                        <td><c:out value="${driver.userInfo.name}"/></td>
+                        <td><c:out value="${driver.userInfo.surname}"/></td>
+                        <td><c:out value="${driver.userInfo.lastname}"/></td>
+                        <td><c:out value="${driver.userInfo.driverInfo.reputation}"/></td>
+                        <td><c:out value="${driver.userInfo.driverInfo.tripsNumber}"/></td>
+                        <td>
+                            <button onclick="${driver.login}" class="btn btn-primary">Заказать поездку</button>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
         </c:if>
     </div>
 </div>

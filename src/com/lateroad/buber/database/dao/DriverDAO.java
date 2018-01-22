@@ -3,7 +3,10 @@ package com.lateroad.buber.database.dao;
 import com.lateroad.buber.database.CommonDAO;
 import com.lateroad.buber.database.DBPool;
 import com.lateroad.buber.entity.User;
+import com.lateroad.buber.map.Geodecoder;
+import org.json.JSONException;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class DriverDAO implements CommonDAO<User> {
-    private static final String SQL_SELECT_NEAREST_DRIVERS =
-            "SELECT * FROM `buber`.`user` AS u " +
-                    "JOIN `buber`.`user_info` AS ui ON (u.`login` = ui.`login`) " +
-                    "JOIN `buber`.`driver_info` AS di ON (u.`login` = di.`login`) " +
-                    "JOIN `buber`.`location` AS l ON (u.`login` = l.`login`) " +
-                    "WHERE u.`is_online` = 1 AND u.`role` = 'driver' AND l.`city` = ?";
+    private static final String SQL_SELECT_NEAREST_DRIVERS = "{CALL `buber`.findDriversInRadius(?, ?)}";
 
     private static final String SQL_SELECT_DRIVER =
             "SELECT * FROM `buber`.`user` AS u " +
@@ -72,7 +70,7 @@ public class DriverDAO implements CommonDAO<User> {
     }
 
     @Override
-    public User find(User user) throws SQLException {
+    public User find(User user) throws SQLException, IOException, JSONException {
         dbPool = DBPool.getInstance();
         User newUser = null;
         Connection connection = dbPool.getConnection();
@@ -90,7 +88,7 @@ public class DriverDAO implements CommonDAO<User> {
         return newUser;
     }
 
-    public User find(String login, String password) throws SQLException {
+    public User find(String login, String password) throws SQLException, IOException, JSONException {
         dbPool = DBPool.getInstance();
         User newUser = null;
         Connection connection = dbPool.getConnection();
@@ -110,8 +108,27 @@ public class DriverDAO implements CommonDAO<User> {
         return newUser;
     }
 
+    public List<User> find(String login, int radius) throws SQLException {
+        List<User> users = new ArrayList<>();
+        dbPool = DBPool.getInstance();
+        Connection connection = dbPool.getConnection();
+
+        try (CallableStatement st = connection.prepareCall(SQL_SELECT_NEAREST_DRIVERS)) {
+            st.setString(1, login);
+            st.setInt(2, radius);
+            try (ResultSet resultSet = st.executeQuery()) {
+                while (resultSet.next()) {
+                    users.add(createDriver(resultSet));
+                }
+            }
+        } finally {
+            dbPool.putConnection(connection);
+        }
+        return users;
+    }
+
     @Override
-    public List<User> findAll() throws SQLException {
+    public List<User> findAll() throws SQLException, IOException, JSONException {
         List<User> users = new ArrayList<>();
         dbPool = DBPool.getInstance();
         Connection cn = dbPool.getConnection();
@@ -211,23 +228,5 @@ public class DriverDAO implements CommonDAO<User> {
         user.getUserInfo().getDriverInfo().setTripsNumber(resultSet.getInt("trips_number"));
         user.getUserInfo().getDriverInfo().setDriverLicense(resultSet.getString("driver_license"));
         return user;
-    }
-
-    public List<User> find(String from) throws SQLException {
-        List<User> users = new ArrayList<>();
-        dbPool = DBPool.getInstance();
-        Connection connection = dbPool.getConnection();
-
-        try (PreparedStatement st = connection.prepareStatement(SQL_SELECT_NEAREST_DRIVERS)) {
-            st.setString(1, from);
-            try (ResultSet resultSet = st.executeQuery()) {
-                while (resultSet.next()) {
-                    users.add(createDriver(resultSet));
-                }
-            }
-        } finally {
-            dbPool.putConnection(connection);
-        }
-        return users;
     }
 }

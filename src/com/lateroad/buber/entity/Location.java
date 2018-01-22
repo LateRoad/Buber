@@ -2,15 +2,22 @@ package com.lateroad.buber.entity;
 
 import java.util.Objects;
 
-public class Location extends Entity{
+public class Location extends Entity {
     private String login;
     private String country;
     private String city;
     private String street;
     private String houseNumber;
+    private String lat;
+    private String lng;
 
     public Location() {
 
+    }
+
+    public Location(String lat, String lng) {
+        this.lat = lat;
+        this.lng = lng;
     }
 
     public Location(String login, String country, String city, String street, String houseNumber) {
@@ -61,6 +68,22 @@ public class Location extends Entity{
         this.houseNumber = houseNumber;
     }
 
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -70,13 +93,14 @@ public class Location extends Entity{
                 Objects.equals(country, location.country) &&
                 Objects.equals(city, location.city) &&
                 Objects.equals(street, location.street) &&
-                Objects.equals(houseNumber, location.houseNumber);
+                Objects.equals(houseNumber, location.houseNumber) &&
+                Objects.equals(lat, location.lat) &&
+                Objects.equals(lng, location.lng);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(login, country, city, street, houseNumber);
+        return Objects.hash(login, country, city, street, houseNumber, lat, lng);
     }
 
     @Override
@@ -87,6 +111,8 @@ public class Location extends Entity{
                 ", city='" + city + '\'' +
                 ", street='" + street + '\'' +
                 ", houseNumber='" + houseNumber + '\'' +
+                ", lat='" + lat + '\'' +
+                ", lng='" + lng + '\'' +
                 '}';
     }
 }

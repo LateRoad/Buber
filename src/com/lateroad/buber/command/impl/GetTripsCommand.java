@@ -22,16 +22,10 @@ public class GetTripsCommand implements ICommand {
         try {
             List<Order> trips = userService.findTrips((User) req.getSession().getAttribute("user"));
             req.setAttribute("trips", trips);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        try {
             RequestDispatcher requestDispatcher = servlet.getServletContext().getRequestDispatcher("/trips.jsp");
             requestDispatcher.forward(req, resp);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ServletException | SQLException | IOException e) {
             e.printStackTrace();
         }
     }

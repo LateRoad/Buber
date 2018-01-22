@@ -3,7 +3,10 @@ package com.lateroad.buber.database.dao;
 import com.lateroad.buber.database.CommonDAO;
 import com.lateroad.buber.database.DBPool;
 import com.lateroad.buber.entity.User;
+import com.lateroad.buber.map.Geodecoder;
+import org.json.JSONException;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +17,13 @@ public class ClientDAO implements CommonDAO<User> {
     private static final String SQL_SELECT_CLIENT = "  SELECT * FROM `buber`.`user` AS u " +
             "  JOIN `buber`.`user_info` AS ui ON (u.`login` = ui.`login`)" +
             "  JOIN `buber`.`client_info` AS ci ON (u.`login` = ci.`login`)" +
+            "  JOIN `buber`.`location` AS loc ON (u.`login` = loc.`login`)" +
             "  WHERE u.`login` = ?";
 
     private static final String SQL_SELECT_ALL_CLIENTS =
             "SELECT * FROM `buber`.`user` AS u " +
                     "JOIN `buber`.`user_info` AS ui ON (u.`login` = ui.`login`) " +
+                    "  JOIN `buber`.`location` AS loc ON (u.`login` = loc.`login`)" +
                     "JOIN `buber`.`client_info` AS ci ON (u.`login` = ci.`login`) ";
 
     private static final String SQL_INSERT_CLIENT_INFO =
@@ -64,8 +69,7 @@ public class ClientDAO implements CommonDAO<User> {
     }
 
     @Override
-    public User find(User user) throws SQLException {
-        DBPool dbPool = DBPool.getInstance();
+    public User find(User user) throws SQLException, IOException, JSONException {
         User newUser = null;
         Connection connection = dbPool.getConnection();
 
@@ -82,8 +86,7 @@ public class ClientDAO implements CommonDAO<User> {
         return newUser;
     }
 
-    public User find(String login, String password) throws SQLException {
-        dbPool = DBPool.getInstance();
+    public User find(String login, String password) throws SQLException, IOException, JSONException {
         User newUser = null;
         Connection connection = dbPool.getConnection();
 
@@ -103,9 +106,8 @@ public class ClientDAO implements CommonDAO<User> {
     }
 
     @Override
-    public List<User> findAll() throws SQLException {
+    public List<User> findAll() throws SQLException, IOException, JSONException {
         List<User> users = new ArrayList<>();
-        DBPool dbPool = DBPool.getInstance();
         Connection cn = dbPool.getConnection();
         try (Statement st = cn.createStatement();
              ResultSet resultSet = st.executeQuery(SQL_SELECT_ALL_CLIENTS)) {
@@ -120,7 +122,6 @@ public class ClientDAO implements CommonDAO<User> {
 
     @Override
     public void insert(User entity) throws SQLException {
-        DBPool dbPool = DBPool.getInstance();
         Connection connection = dbPool.getConnection();
 
         try (PreparedStatement st = connection.prepareStatement(SQL_INSERT_CLIENT_INFO)) {
@@ -134,7 +135,6 @@ public class ClientDAO implements CommonDAO<User> {
 
     @Override
     public void delete(User entity) throws SQLException {
-        DBPool dbPool = DBPool.getInstance();
         Connection connection = dbPool.getConnection();
 
         try (PreparedStatement st = connection.prepareStatement(SQL_DELETE_CLIENT)) {
@@ -152,7 +152,6 @@ public class ClientDAO implements CommonDAO<User> {
 
     @Override
     public void update(User entity) throws SQLException {
-        DBPool dbPool = DBPool.getInstance();
         Connection connection = dbPool.getConnection();
 
         try (PreparedStatement st = connection.prepareStatement(SQL_UPDATE_CLIENT_INFO)) {
@@ -168,7 +167,6 @@ public class ClientDAO implements CommonDAO<User> {
 
 
     public void update(User entity, boolean isWait) throws SQLException {
-        DBPool dbPool = DBPool.getInstance();
         Connection connection = dbPool.getConnection();
 
         try (PreparedStatement st = connection.prepareStatement(SQL_UPDATE_CLIENT_INFO_AND_STATUS)) {
