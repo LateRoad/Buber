@@ -16,7 +16,7 @@ public class DriverService extends UserService {
     private DriverDAO driverDAO = DriverDAO.getInstance();
 
     @Override
-    public User userGetByEmailAndPassword(String login, String password) throws SQLException, IOException, JSONException {
+    public User userGetByEmailAndPassword(String login, String password) throws SQLException {
         return driverDAO.find(login, password);
     }
 

@@ -32,17 +32,17 @@ public class DriverDAO implements CommonDAO<User> {
                     "VALUES (?, ?, ?, ?); ";
 
     private static final String SQL_DELETE_DRIVER =
-            "DELETE FROM `buber`.`user` WHERE `user`.`login` = ?; ";
+            "DELETE FROM `buber`.`user` WHERE `driver_info`.`login` = ?; ";
 
     private static final String SQL_UPDATE_DRIVER_INFO_AND_STATUS =
             "UPDATE `buber`.`driver_info` " +
                     "SET `car_number` = ?, `reputation` = ?, `phone_number` = ?, `trips_number` = ?, `driver_license` = ?, `is_busy` = ? " +
-                    "WHERE `user`.`login` = ?;";
+                    "WHERE `driver_info`.`login` = ?;";
 
     private static final String SQL_UPDATE_DRIVER_INFO =
             "UPDATE `buber`.`driver_info` " +
                     "SET `car_number` = ?, `reputation` = ?, `phone_number` = ?, `trips_number` = ?, `driver_license` = ? " +
-                    "WHERE `user`.`login` = ?;";
+                    "WHERE `driver_info`.`login` = ?;";
 
     private DBPool dbPool = DBPool.getInstance();
 
@@ -70,7 +70,7 @@ public class DriverDAO implements CommonDAO<User> {
     }
 
     @Override
-    public User find(User user) throws SQLException, IOException, JSONException {
+    public User find(User user) throws SQLException {
         dbPool = DBPool.getInstance();
         User newUser = null;
         Connection connection = dbPool.getConnection();
@@ -88,7 +88,7 @@ public class DriverDAO implements CommonDAO<User> {
         return newUser;
     }
 
-    public User find(String login, String password) throws SQLException, IOException, JSONException {
+    public User find(String login, String password) throws SQLException {
         dbPool = DBPool.getInstance();
         User newUser = null;
         Connection connection = dbPool.getConnection();
@@ -100,6 +100,24 @@ public class DriverDAO implements CommonDAO<User> {
                     if (resultSet.getString("password").equals(password)) {
                         newUser = createDriver(resultSet);
                     }
+                }
+            }
+        } finally {
+            dbPool.putConnection(connection);
+        }
+        return newUser;
+    }
+
+    public User find(String login) throws SQLException {
+        dbPool = DBPool.getInstance();
+        User newUser = null;
+        Connection connection = dbPool.getConnection();
+
+        try (PreparedStatement st = connection.prepareStatement(SQL_SELECT_DRIVER)) {
+            st.setString(1, login);
+            try (ResultSet resultSet = st.executeQuery()) {
+                while (resultSet.next()) {
+                    newUser = createDriver(resultSet);
                 }
             }
         } finally {
@@ -128,7 +146,7 @@ public class DriverDAO implements CommonDAO<User> {
     }
 
     @Override
-    public List<User> findAll() throws SQLException, IOException, JSONException {
+    public List<User> findAll() throws SQLException {
         List<User> users = new ArrayList<>();
         dbPool = DBPool.getInstance();
         Connection cn = dbPool.getConnection();
@@ -227,6 +245,7 @@ public class DriverDAO implements CommonDAO<User> {
         user.getUserInfo().getDriverInfo().setPhoneNumber(resultSet.getString("phone_number"));
         user.getUserInfo().getDriverInfo().setTripsNumber(resultSet.getInt("trips_number"));
         user.getUserInfo().getDriverInfo().setDriverLicense(resultSet.getString("driver_license"));
+        user.getUserInfo().getDriverInfo().setBusy(resultSet.getBoolean("is_busy"));
         return user;
     }
 }

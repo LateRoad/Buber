@@ -33,17 +33,16 @@ public class GetRouteInfoCommand implements ICommand {
             req.getSession().setAttribute("nearestDrivers", drivers);
             req.getSession().setAttribute("time", time);
             req.getSession().setAttribute("distance", distance);
-            req.getSession().setAttribute("price", calculatePrice(time, distance) +"р.");
+            req.getSession().setAttribute("price", calculatePrice(time, distance));
             resp.getWriter().write("{value : success}");
         } catch (IOException | SQLException | JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private String calculatePrice(String time, String distance) {
+    private int calculatePrice(String time, String distance) {
         double iTime = Double.parseDouble(time.replaceAll("[\\p{L}\\s]+", ""));
-        double iDistance = Double.parseDouble(distance.replaceAll("[\\p{L}\\s]+", "").replace(",","."));
-        Double price =  iTime * iDistance;
-        return price.toString();
+        double iDistance = Double.parseDouble(distance.replaceAll("[\\p{L}\\s]+", "").replace(",", "."));
+        return (int) (iTime * iDistance);
     }
 }

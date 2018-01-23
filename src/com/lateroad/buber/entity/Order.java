@@ -3,24 +3,46 @@ package com.lateroad.buber.entity;
 import java.sql.Date;
 import java.util.Objects;
 
-public class Order extends Entity{
- private int id;
- private String clientLogin;
- private String driverLogin;
- private String money;
- private boolean isDone;
- private Date date;
+public class Order extends Entity {
+    private int id;
+    private String clientLogin;
+    private String driverLogin;
+    private String money;
+    private OrderType orderType;
+    private Date date;
+    private Location origin;
+    private Location destination;
 
     public Order() {
     }
 
-    public Order(int id, String clientLogin, String driverLogin, String money, boolean isDone, Date date) {
+    public Order(int id, String clientLogin, String driverLogin, String money, OrderType orderType, Date date) {
         this.id = id;
         this.clientLogin = clientLogin;
         this.driverLogin = driverLogin;
         this.money = money;
-        this.isDone = isDone;
+        this.orderType = orderType;
         this.date = date;
+    }
+
+    public Order(String clientLogin, String driverLogin, String money) {
+        long time = System.currentTimeMillis();
+
+        this.clientLogin = clientLogin;
+        this.driverLogin = driverLogin;
+        this.money = money;
+        this.date = new Date(time);
+        this.orderType = OrderType.UNDONE;
+    }
+
+    public Order(String clientLogin, String driverLogin, String money, OrderType orderType) {
+        long time = System.currentTimeMillis();
+
+        this.clientLogin = clientLogin;
+        this.driverLogin = driverLogin;
+        this.money = money;
+        this.date = new Date(time);
+        this.orderType = orderType;
     }
 
     public int getId() {
@@ -55,12 +77,12 @@ public class Order extends Entity{
         this.money = money;
     }
 
-    public boolean isDone() {
-        return isDone;
+    public OrderType getOrderType() {
+        return orderType;
     }
 
-    public void setDone(boolean done) {
-        isDone = done;
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
     }
 
     public Date getDate() {
@@ -71,22 +93,41 @@ public class Order extends Entity{
         this.date = date;
     }
 
+    public Location getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(Location origin) {
+        this.origin = origin;
+    }
+
+    public Location getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Location destination) {
+        this.destination = destination;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
         return id == order.id &&
-                isDone == order.isDone &&
                 Objects.equals(clientLogin, order.clientLogin) &&
                 Objects.equals(driverLogin, order.driverLogin) &&
                 Objects.equals(money, order.money) &&
-                Objects.equals(date, order.date);
+                orderType == order.orderType &&
+                Objects.equals(date, order.date) &&
+                Objects.equals(origin, order.origin) &&
+                Objects.equals(destination, order.destination);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, clientLogin, driverLogin, money, isDone, date);
+
+        return Objects.hash(id, clientLogin, driverLogin, money, orderType, date, origin, destination);
     }
 
     @Override
@@ -96,8 +137,10 @@ public class Order extends Entity{
                 ", clientLogin='" + clientLogin + '\'' +
                 ", driverLogin='" + driverLogin + '\'' +
                 ", money='" + money + '\'' +
-                ", isDone=" + isDone +
+                ", orderType=" + orderType +
                 ", date=" + date +
+                ", origin=" + origin +
+                ", destination=" + destination +
                 '}';
     }
 }

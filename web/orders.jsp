@@ -18,6 +18,6 @@
     <title>Заказы</title>
 </head>
 <body>
-<ctg:sideMenu user="${user}"/>
+<ctg:side-menu user="${user}"/>
 </body>
 </html>

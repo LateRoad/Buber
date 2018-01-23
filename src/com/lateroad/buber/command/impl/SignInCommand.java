@@ -49,10 +49,6 @@ public class SignInCommand implements ICommand {
                 user = service.userGetByEmailAndPassword(login, password);
             } catch (SQLException e) {
                 e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
             if (user != null) {
                 session.setAttribute("user", user);

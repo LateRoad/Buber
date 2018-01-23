@@ -69,7 +69,7 @@ public class ClientDAO implements CommonDAO<User> {
     }
 
     @Override
-    public User find(User user) throws SQLException, IOException, JSONException {
+    public User find(User user) throws SQLException {
         User newUser = null;
         Connection connection = dbPool.getConnection();
 
@@ -86,7 +86,7 @@ public class ClientDAO implements CommonDAO<User> {
         return newUser;
     }
 
-    public User find(String login, String password) throws SQLException, IOException, JSONException {
+    public User find(String login, String password) throws SQLException {
         User newUser = null;
         Connection connection = dbPool.getConnection();
 
@@ -106,7 +106,7 @@ public class ClientDAO implements CommonDAO<User> {
     }
 
     @Override
-    public List<User> findAll() throws SQLException, IOException, JSONException {
+    public List<User> findAll() throws SQLException {
         List<User> users = new ArrayList<>();
         Connection cn = dbPool.getConnection();
         try (Statement st = cn.createStatement();

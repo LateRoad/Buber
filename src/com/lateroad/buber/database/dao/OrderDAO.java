@@ -2,13 +2,14 @@ package com.lateroad.buber.database.dao;
 
 import com.lateroad.buber.database.CommonDAO;
 import com.lateroad.buber.database.DBPool;
-import com.lateroad.buber.entity.Location;
 import com.lateroad.buber.entity.Order;
+import com.lateroad.buber.entity.OrderType;
 import com.lateroad.buber.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -21,6 +22,10 @@ public class OrderDAO implements CommonDAO<Order> {
 
     private static final String SQL_SELECT_ALL_ORDERS_BY_DRIVER_LOGIN = "SELECT * FROM `buber`.`order` AS o WHERE o.`driver_login` = ? ";
 
+    private static final String SQL_SELECT_ALL_ORDERS_BY_CLIENT_LOGIN_AND_TYPE = "SELECT * FROM `buber`.`order` AS o WHERE o.`client_login` = ? AND o.`status` = ?";
+
+    private static final String SQL_SELECT_ALL_ORDERS_BY_DRIVER_LOGIN_AND_TYPE = "SELECT * FROM `buber`.`order` AS o WHERE o.`driver_login` = ? AND o.`status` = ?";
+
     private static final String SQL_INSERT_ORDER =
             "INSERT INTO `buber`.`order` (`client_login`, `driver_login`, `money`, `date`) VALUES (?, ?, ?, ?); ";
 
@@ -28,8 +33,8 @@ public class OrderDAO implements CommonDAO<Order> {
 
     private static final String SQL_UPDATE_ORDER_STATUS =
             "UPDATE `buber`.`order` " +
-                    "SET `client_login` = ?, `city` = ?, `street` = ?, `house_number` = ? " +
-                    "WHERE `location`.`login` = ?;";
+                    "SET `client_login` = ?, `driver_login` = ?, `money` = ?, `date` = ? " +
+                    "WHERE `order`.`login` = ?;";
 
     private DBPool dbPool = DBPool.getInstance();
 
@@ -54,6 +59,32 @@ public class OrderDAO implements CommonDAO<Order> {
     }
 
     private OrderDAO() {
+    }
+
+    public List<Order> find(User user, OrderType status) throws SQLException {
+        List<Order> orders = new ArrayList<>();
+        dbPool = DBPool.getInstance();
+        Connection connection = dbPool.getConnection();
+        if ("client".equals(user.getRole())) {
+            findByRoleAndType(user, orders, connection, SQL_SELECT_ALL_ORDERS_BY_CLIENT_LOGIN_AND_TYPE, status);
+        } else if ("driver".equals(user.getRole())) {
+            findByRoleAndType(user, orders, connection, SQL_SELECT_ALL_ORDERS_BY_DRIVER_LOGIN_AND_TYPE, status);
+        }
+        return orders;
+    }
+
+    private void findByRoleAndType(User user, List<Order> orders, Connection connection, String sqlSelectAllOrdersByDriverLogin, OrderType status) throws SQLException {
+        try (PreparedStatement st = connection.prepareStatement(sqlSelectAllOrdersByDriverLogin)) {
+            st.setString(1, user.getLogin());
+            st.setString(2, status.name());
+            try (ResultSet resultSet = st.executeQuery()) {
+                while (resultSet.next()) {
+                    orders.add(createOrder(resultSet));
+                }
+            }
+        } finally {
+            dbPool.putConnection(connection);
+        }
     }
 
     @Override
@@ -81,8 +112,7 @@ public class OrderDAO implements CommonDAO<Order> {
         Connection connection = dbPool.getConnection();
         if ("client".equals(user.getRole())) {
             findByRole(user, orders, connection, SQL_SELECT_ALL_ORDERS_BY_CLIENT_LOGIN);
-        }
-        else if("driver".equals(user.getRole())){
+        } else if ("driver".equals(user.getRole())) {
             findByRole(user, orders, connection, SQL_SELECT_ALL_ORDERS_BY_DRIVER_LOGIN);
         }
 
@@ -125,6 +155,7 @@ public class OrderDAO implements CommonDAO<Order> {
 
     @Override
     public void insert(Order order) throws SQLException {
+        System.out.println(order.getOrderType().name());
         dbPool = DBPool.getInstance();
         Connection connection = dbPool.getConnection();
 
@@ -199,7 +230,7 @@ public class OrderDAO implements CommonDAO<Order> {
         Connection connection = dbPool.getConnection();
 
         try (PreparedStatement st = connection.prepareStatement(SQL_UPDATE_ORDER_STATUS)) {
-            st.setBoolean(1, order.isDone());
+            st.setString(1, order.getOrderType().name());
             st.setInt(2, order.getId());
             st.executeUpdate();
         } finally {
@@ -214,7 +245,7 @@ public class OrderDAO implements CommonDAO<Order> {
         order.setClientLogin(resultSet.getString("client_login"));
         order.setDriverLogin(resultSet.getString("driver_login"));
         order.setMoney(resultSet.getString("money"));
-        order.setDone(resultSet.getBoolean("is_done"));
+        order.setOrderType(OrderType.valueOf(resultSet.getString("status").toUpperCase(Locale.ENGLISH)));
         order.setDate(resultSet.getDate("date"));
         return order;
     }

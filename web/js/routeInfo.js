@@ -16,3 +16,19 @@ $($inputFrom).add($inputTo).on("change keyup", function () {
     }
     $button.attr("disabled", false);
 });
+
+
+function updateActiveOrders() {
+    $.ajax({
+        url: "/userServlet?action=updateActiveOrders",
+        data: {name: 'abc'},
+        type: 'post',
+        cache: false,
+        success: function () {
+            $('#activeOrders').load("/home.jsp" + ' #activeOrders');
+        },
+        error: function () {
+            alert('error');
+        }
+    });
+}

@@ -8,17 +8,19 @@ public class DriverInfo extends Entity {
     private String phoneNumber;
     private int tripsNumber;
     private String driverLicense;
+    private boolean isBusy;
 
 
     public DriverInfo() {
     }
 
-    public DriverInfo(String carNumber, int reputation, String phoneNumber, int tripsNumber, String driverLicense) {
+    public DriverInfo(String carNumber, int reputation, String phoneNumber, int tripsNumber, String driverLicense, boolean isBusy) {
         this.carNumber = carNumber;
         this.reputation = reputation;
         this.phoneNumber = phoneNumber;
         this.tripsNumber = tripsNumber;
         this.driverLicense = driverLicense;
+        this.isBusy = isBusy;
     }
 
     public String getCarNumber() {
@@ -61,6 +63,13 @@ public class DriverInfo extends Entity {
         this.driverLicense = driverLicense;
     }
 
+    public boolean isBusy() {
+        return isBusy;
+    }
+
+    public void setBusy(boolean busy) {
+        isBusy = busy;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -69,6 +78,7 @@ public class DriverInfo extends Entity {
         DriverInfo that = (DriverInfo) o;
         return reputation == that.reputation &&
                 tripsNumber == that.tripsNumber &&
+                isBusy == that.isBusy &&
                 Objects.equals(carNumber, that.carNumber) &&
                 Objects.equals(phoneNumber, that.phoneNumber) &&
                 Objects.equals(driverLicense, that.driverLicense);
@@ -77,17 +87,18 @@ public class DriverInfo extends Entity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(carNumber, reputation, phoneNumber, tripsNumber, driverLicense);
+        return Objects.hash(carNumber, reputation, phoneNumber, tripsNumber, driverLicense, isBusy);
     }
 
     @Override
     public String toString() {
         return "DriverInfo{" +
                 "carNumber='" + carNumber + '\'' +
-                ", reputation='" + reputation + '\'' +
+                ", reputation=" + reputation +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", tripsNumber='" + tripsNumber + '\'' +
+                ", tripsNumber=" + tripsNumber +
                 ", driverLicense='" + driverLicense + '\'' +
+                ", isBusy=" + isBusy +
                 '}';
     }
 }

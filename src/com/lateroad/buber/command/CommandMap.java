@@ -1,9 +1,6 @@
 package com.lateroad.buber.command;
 
-import com.lateroad.buber.command.impl.GetRouteInfoCommand;
-import com.lateroad.buber.command.impl.GetTripsCommand;
-import com.lateroad.buber.command.impl.SignInCommand;
-import com.lateroad.buber.command.impl.SignOutCommand;
+import com.lateroad.buber.command.impl.*;
 
 import java.util.HashMap;
 
@@ -21,6 +18,8 @@ public class CommandMap {
         commandsMap.put("signOut", new SignOutCommand());
         commandsMap.put("getTrips", new GetTripsCommand());
         commandsMap.put("getRouteInfo", new GetRouteInfoCommand());
+        commandsMap.put("takeTaxi", new TakeTaxiCommand());
+        commandsMap.put("updateActiveOrders", new UpdateActiveOrdersCommand());
     }
 
     public ICommand getCommandsMap(String key) {

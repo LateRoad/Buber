@@ -209,9 +209,9 @@ SELECT CONCAT_WS(' ', `name`, `surname`, `lastname`) FROM `buber`.`user_info`;
 
 
 /*Поиск водителя с наибольшим кол-вом выполненных заказов*/
-SELECT `login` FROM `buber`.`driver_info` WHERE `reputation`> 60 AND`trips_number` = (SELECT  MAX(`trips_number`) from `driver_info`);
+SELECT `login` FROM `buber`.`driver_info` WHERE `reputation`> 60 AND`trips_number` = (SELECT  MAX(`trips_number`) origin `driver_info`);
 /*Поиск пассажира с наибольшим кол-вом поездок*/
-SELECT `login` FROM `buber`.`client_info` WHERE `reputation` > 80 AND `trips_number` = (SELECT  MAX(`trips_number`) from `client_info`);
+SELECT `login` FROM `buber`.`client_info` WHERE `reputation` > 80 AND `trips_number` = (SELECT  MAX(`trips_number`) origin `client_info`);
 /*Поиск незанятых адресов (адресов свободных клиентов)*/
 SELECT * FROM `buber`.`location` WHERE `login`= (SELECT `client_login` FROM `buber`.`order` WHERE `driver_login` is NULL);
 

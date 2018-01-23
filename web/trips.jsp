@@ -18,7 +18,8 @@
     <title>Поездки</title>
 </head>
 <body>
-<ctg:sideMenu user="${user}"/>
+
+<ctg:side-menu user="${user}"/>
 
 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
     <h2>Ваши поездки</h2>
@@ -39,15 +40,20 @@
                                 <td><c:out value="${trip.driverLogin}"/></td>
                                 <td><c:out value="${trip.money}"/></td>
                                 <td><c:out value="${trip.date}"/></td>
-                                <c:if test="${trip.done == false }">
+                                    ${trip.orderType}
+                                <c:if test="${trip.orderType eq 'UNDONE' }">
                                     <td>Активно</td>
                                 </c:if>
-                                <c:if test="${trip.done == true }">
+                                <c:if test="${trip.orderType eq 'DONE' }">
                                     <td>Выполнено</td>
+                                </c:if>
+                                <c:if test="${trip.orderType eq 'CANCELLED' }">
+                                    <td>Отменено</td>
                                 </c:if>
                             </tr>
                         </c:forEach>
                     </c:if>
+
                     <c:if test="${user.role == \"driver\" }">
                         <tr>
                             <td>Ваш пассажир</td>
@@ -60,11 +66,14 @@
                                 <td><c:out value="${trip.clientLogin}"/></td>
                                 <td><c:out value="${trip.money}"/></td>
                                 <td><c:out value="${trip.date}"/></td>
-                                <c:if test="${trip.done == false }">
+                                <c:if test="${trip.orderType eq 'UNDONE' }">
                                     <td>Активно</td>
                                 </c:if>
-                                <c:if test="${trip.done == true }">
+                                <c:if test="${trip.orderType eq 'DONE' }">
                                     <td>Выполнено</td>
+                                </c:if>
+                                <c:if test="${trip.orderType eq 'CANCELLED' }">
+                                    <td>Отменено</td>
                                 </c:if>
                             </tr>
                         </c:forEach>

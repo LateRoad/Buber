@@ -28,18 +28,18 @@ function initMap() {
                 addMarker(event.latLng, map);
             });
             addMarker(latLng, map);
-            $.ajax({
-                url: "/userServlet?action=setCurrentLocation&lat=" + latLng.lat() + "&lng=" + latLng.lng(),
-                data: {name: 'abc'},
-                type: 'get',
-                cache: false,
-                success: function () {
-                    alert("success");
-                },
-                error: function () {
-                    alert('error');
-                }
-            });
+            // $.ajax({
+            //     url: "/userServlet?action=setCurrentLocation&lat=" + latLng.lat() + "&lng=" + latLng.lng(),
+            //     data: {name: 'abc'},
+            //     type: 'get',
+            //     cache: false,
+            //     success: function () {
+            //         alert("success");
+            //     },
+            //     error: function () {
+            //         alert('error');
+            //     }
+            // });
         });
     } else {
         alert('Geo Location feature is not supported in this browser.');

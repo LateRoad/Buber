@@ -10,8 +10,19 @@
     <uri>customtags</uri>
 
     <tag>
-        <name>sideMenu</name>
+        <name>side-menu</name>
         <tag-class>com.lateroad.tag.SideMenu</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>user</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>client-action</name>
+        <tag-class>com.lateroad.tag.ClientAction</tag-class>
         <body-content>scriptless</body-content>
         <attribute>
             <name>user</name>

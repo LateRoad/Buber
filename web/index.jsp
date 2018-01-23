@@ -7,68 +7,66 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="ctg" uri="customtags" %>
 <html>
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,700">
+    <link rel="stylesheet" href="css/vendor.min.css">
+    <link rel="stylesheet" href="css/elephant.min.css">
+    <link rel="stylesheet" href="css/docs.css">
     <title>Buber</title>
 </head>
 <body>
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/index.jsp">Buber</a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
-                <li><a href="#">Ехать</a></li>
-                <li><a href="#">Идти</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">русский
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">русский</a></li>
-                        <li><a href="#">беларускі</a></li>
-                        <li><a href="#">english</a></li>
-                    </ul>
-                </li>
-                <c:if test="${user != null }">
-                    <li><a href="/home.jsp">${user.login}</a></li>
-                    <li><a href="/userServlet?action=signOut" name="action" value="signOut"><span class="glyphicon glyphicon-log-out"></span> Выход</a></li>
-                </c:if>
-                <c:if test="${user == null }">
-                    <li><a href="/signin.jsp"><span class="glyphicon glyphicon-log-in"></span> Вход</a></li>
-                </c:if>
-            </ul>
-        </div>
-    </div>
-</nav>
-<div class="container">
-    <div class="pull-right">
-        <h2>Регистрация</h2>
-        <form method="post" class="" style="width: 500px">
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <input type="text" class="form-control" placeholder="Имя" name="name">
+
+<ctg:side-menu user="${user}"/>
+
+
+<div class="layout-content">
+    <div class="layout-content-body">
+        <div class="doc">
+            <div class="col-sm-7 equal-height p-a-lg" style="height: 320px;">
+                <h4>Sign up</h4>
+                <form action="/">
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="First Name">
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <input type="text" class="form-control" placeholder="Фамилия" name="surname">
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="Last Name">
                     </div>
-                </div>
+                    <div class="form-group">
+                        <input class="form-control" type="email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="password" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Sign up</button>
+                </form>
             </div>
-            <button type="submit" class="btn btn-default">Регистрация</button>
-        </form>
+        </div>
     </div>
 </div>
+<div class="progress progress-xs">
+    <div class="progress-bar progress-bar-indicating active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+        <span class="sr-only">60% Complete (success)</span>
+    </div>
+</div>
+<div class="progress">
+    <div class="progress-bar progress-bar-indicating active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+        <span class="sr-only">60% Complete (success)</span>
+        <span class="progress-value">60%</span>
+    </div>
+</div>
+<div class="slider" data-slider="default" data-start="80"></div>
 
+
+<script src="js/docs.js"></script>
+<script src="js/demo.js"></script>
+<script data-main="js/main" src="js/require.js"></script>
 </body>
 </html>
