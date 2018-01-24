@@ -8,7 +8,6 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 
-@SuppressWarnings("serial")
 public class SideMenu extends TagSupport {
 
     private User user;
@@ -26,71 +25,102 @@ public class SideMenu extends TagSupport {
     public int doStartTag() throws JspException {
         JspWriter out = pageContext.getOut();
         try {
-            out.write("<div class=\"layout-sidebar\">");
-            out.write("    <div class=\"custom-scrollbar\">");
-            out.write("        <div class=\"layout-sidebar-header\">");
-            out.write("            <button class=\"doc-toggler collapsed\" type=\"button\" data-toggle=\"collapse\" data-target=\"#sidenav\">");
-            out.write("            <span class=\"sr-only\">Toggle navigation</span>");
-            out.write("            <span class=\"bars\">");
-            out.write("                <span class=\"bar-line bar-line-1out\"></span>");
-            out.write("                <span class=\"bar-line bar-line-2out\"></span>");
-            out.write("                <span class=\"bar-line bar-line-3out\"></span>");
-            out.write("            </span>");
-            out.write("            <span class=\"bars bars-x\">");
-            out.write("                <span class=\"bar-line bar-line-4\"></span>");
-            out.write("                <span class=\"bar-line bar-line-5\"></span>");
-            out.write("            </span>");
-            out.write("            </button>");
-            out.write("                <a class=\"doc-version\" href=\"#\">v1.0.0</a>");
-            out.write("                <a class=\"doc-brand\" href=\"\">Buber</a>");
-            out.write("        </div>");
-            out.write("        <div class=\"layout-sidebar-body\">");
-            out.write("            <nav id=\"sidenav\" class=\"sidenav-collapse collapse\">");
-            out.write("                <ul class=\"sidenav\">");
+            out.write("<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark fixed-top\" id=\"mainNav\">");
+            out.write("    <a class=\"navbar-brand\" href=\"index.jsp\"><small>b</small>Uber <small> 1.0.0</small></a>");
+            out.write("        <button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" data-toggle=\"collapse\"");
+            out.write("            data-target=\"#navbarResponsive\" aria-controls=\"navbarResponsive\" aria-expanded=\"false\"");
+            out.write("            aria-label=\"Toggle navigation\">");
+            out.write("            <span class=\"navbar-toggler-icon\"></span>");
+            out.write("        </button>");
 
-            if (user != null) {
-                out.write("                <li class=\"sidenav-item\"><a href=\"/home.jsp\">" + user.getLogin() + " - " + user.getRole() + "</a></li>");
-            }
-            if (user == null) {
-                out.write("                <li class=\"sidenav-item\">");
-                out.write("                    <a href=\"/signin.jsp\"><span class=\"glyphicon glyphicon-log-in\"></span> Вход</a>");
-                out.write("                </li>");
-            }
+            out.write("        <div class=\"collapse navbar-collapse\" id=\"navbarResponsive\">");
+            out.write("            <ul class=\"navbar-nav navbar-sidenav\" id=\"exampleAccordion\">");
 
             if (user != null) {
                 switch (user.getRole()) {
                     case "client":
-                        viewClientMenu();
-                        break;
-                    case "admin":
-                        viewAdminMenu();
+                        clientMenu(out);
                         break;
                     case "driver":
-                        viewDriverMenu();
+                        driverMenu(out);
+                        break;
+                    case "admin":
+                        adminMenu(out);
+                        break;
+                    default:
+                        //smth went wrong
+                        //log menu is broken by undefined role
                         break;
                 }
             }
-            out.write("                    <li class=\"sidenav-divider\"></li>");
-            out.write("                    <li class=\"sidenav-item\"><a href=\"#\">Language</a></li>");
-            out.write("                    <li class=\"sidenav-item\"><a href=\"#\">- русский</a></li>");
-            out.write("                    <li class=\"sidenav-item\"><a href=\"#\">- беларускі</a></li>");
-            out.write("                    <li class=\"sidenav-item\"><a href=\"#\">- english</a></li>");
 
+            out.write("                <li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Language\">");
+            out.write("                    <a class=\"nav-link nav-link-collapse collapsed\" data-toggle=\"collapse\" href=\"#language\" data-parent=\"#language\">");
+            out.write("                        <i class=\"fa fa-fw fa-language\"></i>");
+            out.write("                        <span class=\"nav-link-text\">Language</span>");
+            out.write("                    </a>");
+
+            out.write("                    <ul class=\"sidenav-second-level collapse\" id=\"language\">");
+            out.write("                        <li><a href=\"#\">русский</a></li>");
+            out.write("                        <li><a href=\"#\">беларускi</a></li>");
+            out.write("                        <li><a href=\"#\">english</a></li>");
+            out.write("                    </ul>");
+            out.write("                </li>");
+            out.write("            </ul>");
+
+            out.write("            <ul class=\"navbar-nav sidenav-toggler\">");
+            out.write("                <li class=\"nav-item\">");
+            out.write("                    <a class=\"nav-link text-center\" id=\"sidenavToggler\">");
+            out.write("                        <i class=\"fa fa-fw fa-angle-left\"></i>");
+            out.write("                    </a>");
+            out.write("                </li>");
+            out.write("            </ul>");
+
+            out.write("            <ul class=\"navbar-nav ml-auto\">");
             if (user != null) {
-                out.write("                <li class=\"sidenav-divider\"></li>");
-                out.write("                <li class=\"sidenav-item\">");
-                out.write("                    <a href=\"/userServlet?action=signOut\" name=\"action\"value=\"signOut\"><span class=\"glyphicon glyphicon-log-out\"></span> Выйти</a>");
+                out.write("                <li class=\"nav-item\"><a href=\"/home.jsp\"  class=\"nav-link\" style=\"color: white;\">" + user.getLogin() + " - " + user.getRole() + "</a></li>");
+                out.write("                <li class=\"nav-item\"></li>");
+                out.write("                <li class=\"nav-item\">");
+                out.write("                    <a class=\"nav-link\" data-toggle=\"modal\" data-target=\"#modal-sign-out\">");
+                out.write("                        <i class=\"fa fa-fw fa-sign-out\"></i>Sign out</a>");
+                out.write("                    </a>");
                 out.write("                </li>");
             }
-            out.write("                </ul>");
-            out.write("            </nav>");
+            if (user == null) {
+                out.write("                <li class=\"nav-item\">");
+                out.write("                    <a href=\"/signin.jsp\" class=\"nav-link\"><i class=\"fa fa-fw fa-sign-in\"></i>Sign in</a>");
+                out.write("                </li>");
+            }
+            out.write("            </ul>");
             out.write("        </div>");
-            out.write("    </div>");
-            out.write("</div><!-- /.layout-sidebar -->");
+            out.write("    </nav>");
+
+            logOutModal(out);
         } catch (IOException e) {
             throw new JspTagException(e.getMessage());
         }
         return EVAL_BODY_INCLUDE;
+    }
+
+    private void logOutModal(JspWriter out) throws IOException {
+        out.write("<div class=\"modal fade\" id=\"modal-sign-out\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\"");
+        out.write("    aria-hidden=\"true\">");
+        out.write("    <div class=\"modal-dialog\" role=\"document\">");
+        out.write("        <div class=\"modal-content\">");
+        out.write("            <div class=\"modal-header\">");
+        out.write("                <h5 class=\"modal-title\" id=\"exampleModalLabel\">Ready to Leave?</h5>");
+        out.write("                <button class=\"close\" type=\"button\" data-dismiss=\"modal\" aria-label=\"Close\">");
+        out.write("                    <span aria-hidden=\"true\">×</span>");
+        out.write("                </button>");
+        out.write("            </div>");
+        out.write("            <div class=\"modal-body\">Select \"Logout\" below if you are ready to end your current session.</div>");
+        out.write("            <div class=\"modal-footer\">");
+        out.write("                <button class=\"btn btn-secondary\" type=\"button\" data-dismiss=\"modal\">Cancel</button>");
+        out.write("                <a class=\"btn btn-primary\" href=\"/userServlet?action=signOut\" name=\"action\"value=\"signOut\">Sign out</a>");
+        out.write("            </div>");
+        out.write("        </div>");
+        out.write("    </div>");
+        out.write("</div>");
     }
 
     @Override
@@ -98,29 +128,26 @@ public class SideMenu extends TagSupport {
         return EVAL_PAGE;
     }
 
-    private void viewClientMenu() throws IOException {
-        JspWriter out = pageContext.getOut();
-        out.write("                        <li class=\"sidenav-item\"><a href=\"/home.jsp\"><i class=\"fa fa-bullhorn fa-fw\"></i> Поехать</a></li>");
-        out.write("                        <li class=\"sidenav-item\"><a href=\"/profile.jsp\"><i class=\"fa fa-user fa-fw\"></i> Профиль</a></li>");
-        out.write("                        <li class=\"sidenav-item\"><a href=\"/payment.jsp\"><i class=\"fa fa-credit-card fa-fw\"></i> Платежи</a></li>");
-        out.write("                        <li class=\"sidenav-item\">");
-        out.write("                            <a href=\"/userServlet?action=getTrips\"><i class=\"fa fa-car fa-fw\"></i> Поездки</a>");
-        out.write("                        </li>");
-
+    private void userMenu(JspWriter out) throws IOException {
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Profile\"><a class=\"nav-link\" href=\"/profile.jsp\"><i class=\"fa fa-user fa-fw\"></i><span class=\"nav-link-text\"> Profile</span></a></li>");
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Payments\"><a class=\"nav-link\" href=\"/payment.jsp\"><i class=\"fa fa-credit-card fa-fw\"></i><span class=\"nav-link-text\"> Payments</span></a></li>");
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Orders\">");
+        out.write("    <a class=\"nav-link\" href=\"/userServlet?action=getTrips\"><i class=\"fa fa-car fa-fw\"></i><span class=\"nav-link-text\"> Orders</span></a>");
+        out.write("</li>");
     }
 
-    private void viewDriverMenu() throws IOException {
-        JspWriter out = pageContext.getOut();
-        out.write("                        <li class=\"sidenav-item\"><a href=\"/home.jsp\">Зарабатывать</a></li>");
-        out.write("                        <li class=\"sidenav-item\"><a href=\"/profile.jsp\">Профиль</a></li>");
-        out.write("                        <li class=\"sidenav-item\"><a href=\"/payment.jsp\">Платежи</a></li>");
-        out.write("                        <li class=\"sidenav-item\"><a href=\"/car.jsp\">Моя машина</a></li>");
-        out.write("                        <li class=\"sidenav-item\"><a href=\"/userServlet?action=getTrips\">Поездки</a></li>");
+    private void clientMenu(JspWriter out) throws IOException {
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Go\"><a class=\"nav-link\" href=\"/home.jsp\"><i class=\"fa fa-bullhorn fa-fw\"></i><span class=\"nav-link-text\"> Go!</span></a></li>");
+        userMenu(out);
     }
 
-    private void viewAdminMenu() throws IOException {
-        JspWriter out = pageContext.getOut();
-        out.write("                        <li><a href=\"/users.jsp\">Пользователи</a></li>");
-        out.write("                        <li><a href=\"/orders.jsp\">Заказы</a></li>");
+    private void driverMenu(JspWriter out) throws IOException {
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Work\"><a class=\"nav-link\" href=\"/home.jsp\"><span class=\"nav-link-text\"> Work!</span></a></li>");
+        userMenu(out);
+    }
+
+    private void adminMenu(JspWriter out) throws IOException {
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Users\"><a class=\"nav-link\" href=\"/users.jsp\"><span class=\"nav-link-text\"> Users</span></a></li>");
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Orders\"><a class=\"nav-link\" href=\"/orders.jsp\"><span class=\"nav-link-text\"> Orders</span></a></li>");
     }
 }

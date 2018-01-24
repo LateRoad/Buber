@@ -10,16 +10,29 @@
 <%@ taglib prefix="ctg" uri="customtags" %>
 <html>
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/sidemenu.css">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <title>Пользователи</title>
+    <!-- Bootstrap core CSS-->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Page level plugin CSS-->
+    <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin.css" rel="stylesheet">
+    <title>Users</title>
 </head>
-<body>
-
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
 <ctg:side-menu user="${user}"/>
 
+<div class="content-wrapper">
+    <div class="container-fluid">
+    </div>
+</div>
+<ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>
+
+<script data-main="js/config" src="js/require.js"></script>
+<script>
+    require(['config']), function () {
+
+    }</script>
 </body>
 </html>

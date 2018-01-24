@@ -10,43 +10,45 @@
 <%@ taglib prefix="ctg" uri="customtags" %>
 <html>
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/sidemenu.css">
-    <link rel="stylesheet" href="css/googlemap.css">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,700">
-    <link rel="stylesheet" href="css/vendor.min.css">
-    <link rel="stylesheet" href="css/elephant.min.css">
-    <link rel="stylesheet" href="css/docs.css">
+    <!-- Bootstrap core CSS-->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Page level plugin CSS-->
+    <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin.css" rel="stylesheet">
     <title>Home</title>
 </head>
-<body>
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
 
 <ctg:side-menu user="${user}"/>
 
-<div class="layout-content">
-    <div class="layout-content-body">
-        <div id="map"></div>
+<div class="content-wrapper">
+    <div class="container-fluid">
+
+        <%--<div class="layout-content">--%>
+        <%--<div class="layout-content-body">--%>
+        <%--<div id="map"></div>--%>
+        <%--</div>--%>
+        <%--</div>--%>
+
+
+        <%--<div id="routeClientInfo">--%>
+        <%--<c:if test="${user.role == \"client\" }">--%>
+        <%--<div class="form-group">--%>
+        <%--<label for="pointFrom">Ваше местоположение</label>--%>
+        <%--<input type="text" class="form-control" id="pointFrom"--%>
+        <%--placeholder="Беларусь, Минск, Сморговский проезд, 29" name="pointFrom">--%>
+        <%--</div>--%>
+        <%--<div class="form-group">--%>
+        <%--<label for="pointTo">Место назначения</label>--%>
+        <%--<input type="text" class="form-control" id="pointTo"--%>
+        <%--placeholder="Беларусь, Минск, проспект Пушкинский, 19"--%>
+        <%--name="pointTo">--%>
+        <%--</div>--%>
     </div>
 </div>
-
-
-<div id="routeClientInfo">
-<c:if test="${user.role == \"client\" }">
-<div class="form-group">
-<label for="pointFrom">Ваше местоположение</label>
-<input type="text" class="form-control" id="pointFrom"
-placeholder="Беларусь, Минск, Сморговский проезд, 29" name="pointFrom">
-</div>
-<div class="form-group">
-<label for="pointTo">Место назначения</label>
-<input type="text" class="form-control" id="pointTo"
-placeholder="Беларусь, Минск, проспект Пушкинский, 19"
-name="pointTo">
-</div>
-
 <%--<button type="button" id="getRouteInfoBtn" class="btn btn-primary" disabled--%>
 <%--onclick="calculateAndDisplayRoute()">--%>
 <%--Рассчитать стоимость поездки--%>
@@ -99,12 +101,14 @@ name="pointTo">
 <%--</c:if>--%>
 <%--</div>--%>
 <%--</div>--%>
-<script src="js/vendor.min.js"></script>
-<script src="js/elephant.min.js"></script>
-<script src="js/docs.js"></script>
-<script src="js/demo.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>
+
+<script data-main="js/config" src="js/require.js"></script>
+<script>
+    require(['config']), function () {
+
+    }
+</script>
 <script src="js/googlemap.js"></script>
 <script src="js/routeInfo.js"></script>
 <script async defer

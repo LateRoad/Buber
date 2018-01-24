@@ -6,7 +6,6 @@ var labelIndex;
 var directionsService;
 var directionsDisplay;
 var markers;
-
 function initMap() {
     markers = [];
     labelIndex = 0;

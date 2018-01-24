@@ -21,6 +21,27 @@
     </tag>
 
     <tag>
+        <name>footer</name>
+        <tag-class>com.lateroad.tag.Footer</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>year</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>developer</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>project</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
         <name>client-action</name>
         <tag-class>com.lateroad.tag.ClientAction</tag-class>
         <body-content>scriptless</body-content>
