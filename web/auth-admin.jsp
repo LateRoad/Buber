@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
-  com.lateroad.buber.entity.User: Roula
-  Date: 24.12.2017
-  Time: 19:42
+  User: Roula
+  Date: 25.01.2018
+  Time: 19:28
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -18,7 +18,7 @@
     <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="css/sb-admin.css" rel="stylesheet">
-    <title>Client Entrance</title>
+    <title>Admin Entrance</title>
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 
@@ -28,8 +28,8 @@
     <div class="container-fluid">
 
         <div class="mx-auto mt-5">
-            <h2>Входите как клиент</h2>
-            <form method="POST" action="/userServlet?role=client"
+            <h2>Входите как админ</h2>
+            <form method="POST" action="/userServlet?role=admin"
                   style="width: 500px">
                 <div class="form-group">
                     <label for="inputLogin">Логин</label>

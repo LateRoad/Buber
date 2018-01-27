@@ -18,7 +18,7 @@
     <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="css/sb-admin.css" rel="stylesheet">
-    <title>Войти как клиент</title>
+    <title>Driver Entrance</title>
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 
@@ -27,7 +27,7 @@
 <div class="content-wrapper">
     <div class="container-fluid">
 
-        <div class="col-md-4 col-md-offset-4">
+        <div class="col-12">
             <h2>Входите как водитель</h2>
             <form method="POST" action="/userServlet?role=driver" style="width: 500px">
                 <div class="form-group">
@@ -49,12 +49,13 @@
     </div>
     <ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>
 
-    <script data-main="js/config" src="js/require.js"></script>
-    <script>
-        require(['config']), function () {
-
-        }
-    </script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin.js"></script>
 </div>
 </body>
 </html>

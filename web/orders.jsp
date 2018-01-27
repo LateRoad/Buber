@@ -25,14 +25,67 @@
 
 <div class="content-wrapper">
     <div class="container-fluid">
+        <!-- Example DataTables Card-->
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fa fa-table"></i> Data Table Example
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Client</th>
+                            <th>Driver</th>
+                            <%--<th>Origin</th>--%>
+                            <%--<th>Destination</th>--%>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Money</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>Client</th>
+                            <th>Driver</th>
+                            <%--<th>Origin</th>--%>
+                            <%--<th>Destination</th>--%>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Money</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        <c:forEach var="order" items="${orders}">
+                            <tr>
+                                <td><c:out value="${order.clientLogin}"/></td>
+                                <td><c:out value="${order.driverLogin}"/></td>
+                                    <%--<td><c:out value="${order.origin}"/></td>--%>
+                                    <%--<td><c:out value="${order.destination}"/></td>--%>
+                                <td><c:out value="${order.status}"/></td>
+                                <td><c:out value="${order.date}"/></td>
+                                <td>$<c:out value="${order.money}"/></td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        </div>
     </div>
 </div>
 <ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>
 
-<script data-main="js/config" src="js/require.js"></script>
-<script>
-    require(['config']), function () {
-
-    }</script>
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="vendor/datatables/jquery.dataTables.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin.js"></script>
+<script src="js/sb-admin-datatables.min.js"></script>
 </body>
 </html>

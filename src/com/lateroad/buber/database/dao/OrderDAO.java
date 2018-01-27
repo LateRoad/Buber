@@ -155,7 +155,7 @@ public class OrderDAO implements CommonDAO<Order> {
 
     @Override
     public void insert(Order order) throws SQLException {
-        System.out.println(order.getOrderType().name());
+        System.out.println(order.getStatus().name());
         dbPool = DBPool.getInstance();
         Connection connection = dbPool.getConnection();
 
@@ -230,7 +230,7 @@ public class OrderDAO implements CommonDAO<Order> {
         Connection connection = dbPool.getConnection();
 
         try (PreparedStatement st = connection.prepareStatement(SQL_UPDATE_ORDER_STATUS)) {
-            st.setString(1, order.getOrderType().name());
+            st.setString(1, order.getStatus().name());
             st.setInt(2, order.getId());
             st.executeUpdate();
         } finally {
@@ -245,7 +245,7 @@ public class OrderDAO implements CommonDAO<Order> {
         order.setClientLogin(resultSet.getString("client_login"));
         order.setDriverLogin(resultSet.getString("driver_login"));
         order.setMoney(resultSet.getString("money"));
-        order.setOrderType(OrderType.valueOf(resultSet.getString("status").toUpperCase(Locale.ENGLISH)));
+        order.setStatus(OrderType.valueOf(resultSet.getString("status").toUpperCase(Locale.ENGLISH)));
         order.setDate(resultSet.getDate("date"));
         return order;
     }

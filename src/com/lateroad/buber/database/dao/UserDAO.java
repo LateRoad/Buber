@@ -46,7 +46,7 @@ public class UserDAO {
     private UserDAO() {
     }
 
-    public User find(String login, String password) throws SQLException {
+    public User find(String login, String password, String role) throws SQLException {
         dbPool = DBPool.getInstance();
         User newUser = null;
         Connection connection = dbPool.getConnection();
@@ -55,8 +55,10 @@ public class UserDAO {
             st.setString(1, login);
             try (ResultSet resultSet = st.executeQuery()) {
                 while (resultSet.next()) {
-                    if (resultSet.getString("password").equals(password)) {
-                        newUser = createUser(resultSet);
+                    if (role.equals(resultSet.getString("role"))) {
+                        if (resultSet.getString("password").equals(password)) {
+                            newUser = createUser(resultSet);
+                        }
                     }
                 }
             }
@@ -98,7 +100,6 @@ public class UserDAO {
             dbPool.putConnection(connection);
         }
     }
-
 
 
     private boolean isConsist(String login, Connection connection, String sqlSelectUser) throws SQLException {

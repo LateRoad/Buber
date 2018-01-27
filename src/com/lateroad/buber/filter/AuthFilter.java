@@ -25,6 +25,13 @@ public class AuthFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String uri = ((HttpServletRequest) request).getRequestURI();
         HttpSession session = ((HttpServletRequest) request).getSession();
+//        if("/index.jsp".equals(uri) || "/".equals(uri)) {
+//            System.out.println(getClientIp((HttpServletRequest)request));
+//            if("0:0:0:0:0:0:0:1".equals(getClientIp((HttpServletRequest)request))){
+//                ((HttpServletResponse)response).sendRedirect("/auth-admin.jsp");
+//                return;
+//            }
+//        }
 
         User user = (User)session.getAttribute("user");
         if(user != null){
@@ -49,5 +56,19 @@ public class AuthFilter implements Filter {
 
     public void destroy() {
 
+    }
+
+    private static String getClientIp(HttpServletRequest request) {
+
+        String remoteAddr = "";
+
+        if (request != null) {
+            remoteAddr = request.getHeader("X-FORWARDED-FOR");
+            if (remoteAddr == null || "".equals(remoteAddr)) {
+                remoteAddr = request.getRemoteAddr();
+            }
+        }
+
+        return remoteAddr;
     }
 }

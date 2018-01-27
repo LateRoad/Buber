@@ -4,9 +4,8 @@ import com.lateroad.buber.command.ICommand;
 import com.lateroad.buber.entity.User;
 import com.lateroad.buber.service.AdminService;
 import com.lateroad.buber.service.ClientService;
-import com.lateroad.buber.service.UserService;
 import com.lateroad.buber.service.DriverService;
-import org.json.JSONException;
+import com.lateroad.buber.service.UserService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -43,33 +42,29 @@ public class SignInCommand implements ICommand {
         String password = req.getParameter("password");
         RequestDispatcher requestDispatcher;
 
-        if (login != null && password != null) {
-            User user = null;
-            try {
-                user = service.userGetByEmailAndPassword(login, password);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            if (user != null) {
-                session.setAttribute("user", user);
-
-                if ("admin".equals(user.getRole())) {
-                    requestDispatcher = servlet.getServletContext().getRequestDispatcher("/users.jsp");
-                } else {
-                    requestDispatcher = servlet.getServletContext().getRequestDispatcher("/home.jsp");
-                }
-                try {
-                    requestDispatcher.forward(req, resp);
-                } catch (ServletException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
         try {
+            if (login != null && password != null) {
+                User user;
+                user = service.userGetByEmailAndPassword(login, password);
+
+                if (user != null) {
+                    session.setAttribute("user", user);
+
+                    if ("admin".equals(user.getRole())) {
+                        requestDispatcher = servlet.getServletContext().getRequestDispatcher("/clients.jsp");
+                    } else {
+                        requestDispatcher = servlet.getServletContext().getRequestDispatcher("/home.jsp");
+                    }
+                    requestDispatcher.forward(req, resp);
+
+                }
+            }
             resp.sendRedirect("/signin.jsp?=invalid");
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

@@ -2,7 +2,7 @@
   Created by IntelliJ IDEA.
   User: Roula
   Date: 11.01.2018
-  Time: 16:46
+  Time: 16:45
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -18,13 +18,18 @@
     <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="css/sb-admin.css" rel="stylesheet">
-    <title>Car</title>
+    <title>Clients</title>
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 <ctg:side-menu user="${user}"/>
 
 <div class="content-wrapper">
     <div class="container-fluid">
+        <c:forEach var="client" items="${clients}">
+            <tr>
+                <td><c:out value="${client.login}"/></td>
+            </tr>
+        </c:forEach>
     </div>
 </div>
 <ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>

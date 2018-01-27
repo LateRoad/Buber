@@ -27,61 +27,92 @@
 <div class="content-wrapper">
     <div class="container-fluid">
 
-        <%--<div class="layout-content">--%>
-        <%--<div class="layout-content-body">--%>
-        <%--<div id="map"></div>--%>
-        <%--</div>--%>
-        <%--</div>--%>
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fa fa-map-marker"></i> Location settings
+            </div>
+            <div class="card-body">
+                <div id="map"></div>
+                <c:if test="${user.role == \"client\" }">
+                    <div class="form-group">
+                        <label for="pointFrom">Origin</label>
+                        <input type="text" class="form-control" id="pointFrom"
+                               placeholder="Беларусь, Минск, Сморговский проезд, 29" name="pointFrom">
+                    </div>
+                    <div class="form-group">
+                        <label for="pointTo">Destination</label>
+                        <input type="text" class="form-control" id="pointTo"
+                               placeholder="Беларусь, Минск, проспект Пушкинский, 19"
+                               name="pointTo">
+                    </div>
+                    <button type="button" id="getRouteInfoBtn" class="btn btn-primary" disabled
+                            onclick="calculateAndDisplayRoute()">
+                        Рассчитать стоимость поездки
+                    </button>
+                </c:if>
+            </div>
+        </div>
+        <c:if test="${user.role == \"client\" }">
+        <div id="routeClientInfo">
+            <div class="row">
 
+                <div class="col-lg-8">
+                    <!-- Drivers info Card-->
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-car"></i> Drivers nearby
+                        </div>
+                        <div class="card-body">
+                            <!-- Example Social Card-->
+                            <c:forEach var="driver" items="${nearestDrivers}">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title mb-0"><a
+                                                href="#">${driver.userInfo.name} ${driver.userInfo.surname}</a></h6>
+                                    </div>
+                                    <hr class="my-0">
+                                    <div class="card-body py-2 small">
+                                        <i class="fa fa-fw fa-thumbs-o-up"></i> Reputation: ${driver.userInfo.driverInfo.reputation}
+                                        <br>
+                                        <i class="fa fa-fw fa-handshake-o"></i> Trips
+                                        count: ${driver.userInfo.driverInfo.tripsNumber}
+                                    </div>
+                                    <hr class="my-0">
+                                    <div class="card-footer small text-muted">
+                                        <form method="POST"
+                                              action="/userServlet?driver=${driver.login}&money=${price}">
+                                            <button name="action" value="takeTaxi" type="submit"
+                                                    class="btn btn-primary">Заказать такси
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </div>
 
-        <%--<div id="routeClientInfo">--%>
-        <%--<c:if test="${user.role == \"client\" }">--%>
-        <%--<div class="form-group">--%>
-        <%--<label for="pointFrom">Ваше местоположение</label>--%>
-        <%--<input type="text" class="form-control" id="pointFrom"--%>
-        <%--placeholder="Беларусь, Минск, Сморговский проезд, 29" name="pointFrom">--%>
-        <%--</div>--%>
-        <%--<div class="form-group">--%>
-        <%--<label for="pointTo">Место назначения</label>--%>
-        <%--<input type="text" class="form-control" id="pointTo"--%>
-        <%--placeholder="Беларусь, Минск, проспект Пушкинский, 19"--%>
-        <%--name="pointTo">--%>
-        <%--</div>--%>
+                <div class="col-lg-4">
+                    <!-- Example Pie Chart Card-->
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-location-arrow"></i> Route info
+                        </div>
+                        <div class="card-body">
+                            Distance: ${distance}
+                            <br>
+                            Travel time: ${time}
+                            <br>
+                            Price: ${price}$
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </c:if>
+        </div>
     </div>
 </div>
-<%--<button type="button" id="getRouteInfoBtn" class="btn btn-primary" disabled--%>
-<%--onclick="calculateAndDisplayRoute()">--%>
-<%--Рассчитать стоимость поездки--%>
-<%--</button>--%>
-<%--Расстояние: ${distance}--%>
-<%--<br>--%>
-<%--Время: ${time}--%>
-<%--<br>--%>
-<%--Цена: ${price}.р--%>
-<%--<br>--%>
-
-<%--<tr>--%>
-<%--<td>Водитель</td>--%>
-<%--<td>Имя</td>--%>
-<%--<td>Фамилия</td>--%>
-<%--<td>Отчество</td>--%>
-<%--<td>Репутация</td>--%>
-<%--<td>Кол-во поездок</td>--%>
-<%--</tr>--%>
-<%--<c:forEach var="driver" items="${nearestDrivers}">--%>
-<%--<form method="POST" action="/userServlet?driver=${driver.login}&money=${price}" style="width: 500px">--%>
-<%--<c:out value="${driver.login}"/>--%>
-<%--<c:out value="${driver.userInfo.name}"/>--%>
-<%--<c:out value="${driver.userInfo.surname}"/>--%>
-<%--<c:out value="${driver.userInfo.lastname}"/>--%>
-<%--<c:out value="${driver.userInfo.driverInfo.reputation}"/>--%>
-<%--<c:out value="${driver.userInfo.driverInfo.tripsNumber}"/>--%>
-
-<%--<button name="action" value="takeTaxi" type="submit" class="btn btn-primary">Заказать такси--%>
-<%--</button>--%>
-<%--</form>--%>
-<%--</c:forEach>--%>
-<%--</c:if>--%>
 
 
 <%--<c:if test="${user.role == \"driver\" }">--%>
@@ -103,12 +134,13 @@
 <%--</div>--%>
 <ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>
 
-<script data-main="js/config" src="js/require.js"></script>
-<script>
-    require(['config']), function () {
-
-    }
-</script>
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin.js"></script>
 <script src="js/googlemap.js"></script>
 <script src="js/routeInfo.js"></script>
 <script async defer

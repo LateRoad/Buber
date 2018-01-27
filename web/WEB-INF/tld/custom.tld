@@ -52,4 +52,37 @@
         </attribute>
     </tag>
 
+    <tag>
+        <name>client-info-card</name>
+        <tag-class>com.lateroad.tag.ClientInfoCard</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>client</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>user-info-card</name>
+        <tag-class>com.lateroad.tag.UserInfoCard</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>user</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>driver-info-card</name>
+        <tag-class>com.lateroad.tag.DriverInfoCard</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>driver</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
 </taglib>

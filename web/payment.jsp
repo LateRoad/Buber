@@ -29,10 +29,12 @@
 </div>
 <ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>
 
-<script data-main="js/config" src="js/require.js"></script>
-<script>
-    require(['config']), function () {
-
-    }</script>
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin.js"></script>
 </body>
 </html>

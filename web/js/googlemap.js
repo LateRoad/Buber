@@ -56,6 +56,7 @@ function addMarker(location, map) {
         });
         markers.push(location);
         geocodeLatLng("#pointTo", location);
+        marker.addListener('dragend', handleEvent);
     }
     if (labelIndex === 0) {
         var marker = new google.maps.Marker({
@@ -66,7 +67,6 @@ function addMarker(location, map) {
         markers.push(location);
         geocodeLatLng("#pointFrom", location);
     }
-    marker.addListener('dragend', handleEvent);
 }
 
 function geocodeLatLng(inputId, coords) {

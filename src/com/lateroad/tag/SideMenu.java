@@ -88,7 +88,7 @@ public class SideMenu extends TagSupport {
             }
             if (user == null) {
                 out.write("                <li class=\"nav-item\">");
-                out.write("                    <a href=\"/signin.jsp\" class=\"nav-link\"><i class=\"fa fa-fw fa-sign-in\"></i>Sign in</a>");
+                out.write("                    <a href=\"/signin.jsp\" class=\"nav-link\"><i class=\"fa fa-fw fa-sign-in\"></i> Sign in</a>");
                 out.write("                </li>");
             }
             out.write("            </ul>");
@@ -142,12 +142,13 @@ public class SideMenu extends TagSupport {
     }
 
     private void driverMenu(JspWriter out) throws IOException {
-        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Work\"><a class=\"nav-link\" href=\"/home.jsp\"><span class=\"nav-link-text\"> Work!</span></a></li>");
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Work\"><a class=\"nav-link\" href=\"/home.jsp\"><i class=\"fa fa-bullhorn fa-fw\"></i><span class=\"nav-link-text\"> Work!</span></a></li>");
         userMenu(out);
     }
 
     private void adminMenu(JspWriter out) throws IOException {
-        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Users\"><a class=\"nav-link\" href=\"/users.jsp\"><span class=\"nav-link-text\"> Users</span></a></li>");
-        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Orders\"><a class=\"nav-link\" href=\"/orders.jsp\"><span class=\"nav-link-text\"> Orders</span></a></li>");
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Orders\"><a class=\"nav-link\" href=\"/userServlet?action=getDrivers\"><i class=\"fa fa-taxi fa-fw\"></i><span class=\"nav-link-text\"> Drivers</span></a></li>");
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Users\"><a class=\"nav-link\" href=\"/userServlet?action=getClients\"><i class=\"fa fa-group fa-fw\"></i><span class=\"nav-link-text\"> Clients</span></a></li>");
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Orders\"><a class=\"nav-link\" href=\"/userServlet?action=getOrders\"><i class=\"fa fa-list-alt fa-fw\"></i><span class=\"nav-link-text\"> Orders</span></a></li>");
     }
 }

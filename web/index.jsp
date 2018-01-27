@@ -12,6 +12,7 @@
 <html lang="en">
 
 <head>
+    <link rel="shortcut icon" href="favicon.ico"/>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -83,20 +84,13 @@
 
     <ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>
 </div>
-<script data-main="js/config" src="js/require.js"></script>
-<script>
-    require(['config']), function () {
-
-    }
-</script>
-<%--<!-- Bootstrap core JavaScript-->--%>
-<%--<script src="vendor/jquery/jquery.min.js"></script>--%>
-<%--<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>--%>
-<%--<!-- Core plugin JavaScript-->--%>
-<%--<script src="vendor/jquery-easing/jquery.easing.min.js"></script>--%>
-<%--<!-- Custom scripts for all pages-->--%>
-<%--<script src="js/sb-admin.js"></script>--%>
-
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin.js"></script>
 </body>
 
 </html>

@@ -8,7 +8,7 @@ public class Order extends Entity {
     private String clientLogin;
     private String driverLogin;
     private String money;
-    private OrderType orderType;
+    private OrderType status;
     private Date date;
     private Location origin;
     private Location destination;
@@ -16,12 +16,12 @@ public class Order extends Entity {
     public Order() {
     }
 
-    public Order(int id, String clientLogin, String driverLogin, String money, OrderType orderType, Date date) {
+    public Order(int id, String clientLogin, String driverLogin, String money, OrderType status, Date date) {
         this.id = id;
         this.clientLogin = clientLogin;
         this.driverLogin = driverLogin;
         this.money = money;
-        this.orderType = orderType;
+        this.status = status;
         this.date = date;
     }
 
@@ -32,7 +32,7 @@ public class Order extends Entity {
         this.driverLogin = driverLogin;
         this.money = money;
         this.date = new Date(time);
-        this.orderType = OrderType.UNDONE;
+        this.status = OrderType.UNDONE;
     }
 
     public Order(String clientLogin, String driverLogin, String money, OrderType orderType) {
@@ -42,7 +42,7 @@ public class Order extends Entity {
         this.driverLogin = driverLogin;
         this.money = money;
         this.date = new Date(time);
-        this.orderType = orderType;
+        this.status = orderType;
     }
 
     public int getId() {
@@ -77,12 +77,12 @@ public class Order extends Entity {
         this.money = money;
     }
 
-    public OrderType getOrderType() {
-        return orderType;
+    public OrderType getStatus() {
+        return status;
     }
 
-    public void setOrderType(OrderType orderType) {
-        this.orderType = orderType;
+    public void setStatus(OrderType status) {
+        this.status = status;
     }
 
     public Date getDate() {
@@ -118,7 +118,7 @@ public class Order extends Entity {
                 Objects.equals(clientLogin, order.clientLogin) &&
                 Objects.equals(driverLogin, order.driverLogin) &&
                 Objects.equals(money, order.money) &&
-                orderType == order.orderType &&
+                status == order.status &&
                 Objects.equals(date, order.date) &&
                 Objects.equals(origin, order.origin) &&
                 Objects.equals(destination, order.destination);
@@ -127,7 +127,7 @@ public class Order extends Entity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, clientLogin, driverLogin, money, orderType, date, origin, destination);
+        return Objects.hash(id, clientLogin, driverLogin, money, status, date, origin, destination);
     }
 
     @Override
@@ -137,7 +137,7 @@ public class Order extends Entity {
                 ", clientLogin='" + clientLogin + '\'' +
                 ", driverLogin='" + driverLogin + '\'' +
                 ", money='" + money + '\'' +
-                ", orderType=" + orderType +
+                ", orderType=" + status +
                 ", date=" + date +
                 ", origin=" + origin +
                 ", destination=" + destination +

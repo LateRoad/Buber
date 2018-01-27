@@ -50,17 +50,28 @@
                     <button type="submit" class="btn btn-primary">Войти как клиент</button>
                 </form>
             </div>
+
+            <div class="col-md-4">
+                <form action="/auth-admin.jsp">
+                    <h4>Администратор</h4>
+                    <br>
+                    <p>Следите за заказами, выставляйте бонусы клиентам и контролируйте процессы.</p>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Войти как администратор</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
 <ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>
 
-<script data-main="js/config" src="js/require.js"></script>
-<script>
-    require(['config']), function () {
-
-    }
-</script>
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin.js"></script>
 </body>
 </html>

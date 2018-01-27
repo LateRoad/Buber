@@ -26,78 +26,117 @@
 <div class="content-wrapper">
     <div class="container-fluid">
 
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
-            <h2>Ваши поездки</h2>
-            <div class="panel-body">
-                <div class="row">
-                    <div class=" col-md-9 col-lg-9 ">
-                        <table class="table table-trip-information">
+        <c:if test="${user.role == \"client\" }">
+            <!-- Example DataTables Card-->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-table"></i> Data Table Example
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Your driver</th>
+                                <th>Price</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Your driver</th>
+                                <th>Price</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                            </tfoot>
                             <tbody>
-                            <c:if test="${user.role == \"client\" }">
+                            <c:forEach var="trip" items="${trips}">
                                 <tr>
-                                    <td>Ваш водитель</td>
-                                    <td>Денег затрачено</td>
-                                    <td>Дата</td>
-                                    <td>Статус выполнения</td>
+                                    <td><c:out value="${trip.driverLogin}"/></td>
+                                    <td><c:out value="${trip.money}"/></td>
+                                    <td><c:out value="${trip.date}"/></td>
+                                    <c:if test="${trip.status eq 'UNDONE' }">
+                                        <td>Активно</td>
+                                    </c:if>
+                                    <c:if test="${trip.status eq 'DONE' }">
+                                        <td>Выполнено</td>
+                                    </c:if>
+                                    <c:if test="${trip.status eq 'CANCELLED' }">
+                                        <td>Отменено</td>
+                                    </c:if>
                                 </tr>
-                                <c:forEach var="trip" items="${trips}">
-                                    <tr>
-                                        <td><c:out value="${trip.driverLogin}"/></td>
-                                        <td><c:out value="${trip.money}"/></td>
-                                        <td><c:out value="${trip.date}"/></td>
-                                            ${trip.orderType}
-                                        <c:if test="${trip.orderType eq 'UNDONE' }">
-                                            <td>Активно</td>
-                                        </c:if>
-                                        <c:if test="${trip.orderType eq 'DONE' }">
-                                            <td>Выполнено</td>
-                                        </c:if>
-                                        <c:if test="${trip.orderType eq 'CANCELLED' }">
-                                            <td>Отменено</td>
-                                        </c:if>
-                                    </tr>
-                                </c:forEach>
-                            </c:if>
-
-                            <c:if test="${user.role == \"driver\" }">
-                                <tr>
-                                    <td>Ваш пассажир</td>
-                                    <td>Денег получено</td>
-                                    <td>Дата</td>
-                                    <td>Статус выполнения</td>
-                                </tr>
-                                <c:forEach var="trip" items="${trips}">
-                                    <tr>
-                                        <td><c:out value="${trip.clientLogin}"/></td>
-                                        <td><c:out value="${trip.money}"/></td>
-                                        <td><c:out value="${trip.date}"/></td>
-                                        <c:if test="${trip.orderType eq 'UNDONE' }">
-                                            <td>Активно</td>
-                                        </c:if>
-                                        <c:if test="${trip.orderType eq 'DONE' }">
-                                            <td>Выполнено</td>
-                                        </c:if>
-                                        <c:if test="${trip.orderType eq 'CANCELLED' }">
-                                            <td>Отменено</td>
-                                        </c:if>
-                                    </tr>
-                                </c:forEach>
-                            </c:if>
-
+                            </c:forEach>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-        </div>
+        </c:if>
+
+        <c:if test="${user.role == \"driver\" }">
+            <!-- Example DataTables Card-->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-table"></i> Data Table Example
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Your passenger</th>
+                                <th>Money</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Your passenger</th>
+                                <th>Money</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            <c:forEach var="trip" items="${trips}">
+                                <tr>
+                                    <td><c:out value="${trip.clientLogin}"/></td>
+                                    <td><c:out value="${trip.money}"/></td>
+                                    <td><c:out value="${trip.date}"/></td>
+                                    <c:if test="${trip.status eq 'UNDONE' }">
+                                        <td>Активно</td>
+                                    </c:if>
+                                    <c:if test="${trip.status eq 'DONE' }">
+                                        <td>Выполнено</td>
+                                    </c:if>
+                                    <c:if test="${trip.status eq 'CANCELLED' }">
+                                        <td>Отменено</td>
+                                    </c:if>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </c:if>
     </div>
 </div>
+
 <ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>
 
-<script data-main="js/config" src="js/require.js"></script>
-<script>
-    require(['config']), function () {
-
-    }</script>
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="vendor/datatables/jquery.dataTables.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin.js"></script>
+<script src="js/sb-admin-datatables.min.js"></script>
 </body>
 </html>

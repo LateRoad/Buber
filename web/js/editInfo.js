@@ -1,6 +1,6 @@
 function change(item, button) {
-    if (document.getElementById(button).firstChild.data === "Сохранить") {
-        document.getElementById(button).firstChild.data = "Редактировать";
+    if (document.getElementById(button).firstChild.data === "Save") {
+        document.getElementById(button).firstChild.data = "Edit";
         var input = document.getElementById(item);
         var textEdited = document.getElementById(item + "Edited").value;
         input.innerText = textEdited;
@@ -10,7 +10,7 @@ function change(item, button) {
 
     }
     else {
-        document.getElementById(button).firstChild.data = "Сохранить";
+        document.getElementById(button).firstChild.data = "Save";
         var td = document.getElementById(item);
         var text = td.innerHTML;
         var input = document.createElement("input");

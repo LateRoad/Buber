@@ -20,6 +20,10 @@ public class CommandMap {
         commandsMap.put("getRouteInfo", new GetRouteInfoCommand());
         commandsMap.put("takeTaxi", new TakeTaxiCommand());
         commandsMap.put("updateActiveOrders", new UpdateActiveOrdersCommand());
+        commandsMap.put("getDrivers", new GetDriversCommand());
+        commandsMap.put("getClients", new GetClientsCommand());
+        commandsMap.put("getOrders", new GetOrdersCommand());
+        commandsMap.put("updateInfo", new UpdateInfoCommand());
     }
 
     public ICommand getCommandsMap(String key) {
