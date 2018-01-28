@@ -3,7 +3,6 @@ package com.lateroad.buber.command.impl;
 import com.lateroad.buber.command.ICommand;
 import com.lateroad.buber.entity.User;
 import com.lateroad.buber.service.ClientService;
-import com.lateroad.buber.service.UserService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,6 +18,8 @@ public class TakeTaxiCommand implements ICommand {
 
         String driver = req.getParameter("driver");
         String money = req.getParameter("money");
+        System.out.println(money);
+        System.out.println(driver);
         User currentUser = (User) req.getSession().getAttribute("user");
 
         try {

@@ -6,9 +6,7 @@ import com.lateroad.buber.database.dao.OrderDAO;
 import com.lateroad.buber.entity.Order;
 import com.lateroad.buber.entity.OrderType;
 import com.lateroad.buber.entity.User;
-import org.json.JSONException;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 public class ClientService extends UserService {
@@ -20,6 +18,7 @@ public class ClientService extends UserService {
     }
 
     public boolean takeTaxi(String login, String driverLogin, String money) {
+        System.out.println("here");
         boolean success = false;
         try {
             User driver = DriverDAO.getInstance().find(driverLogin);

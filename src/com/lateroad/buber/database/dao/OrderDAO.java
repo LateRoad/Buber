@@ -6,6 +6,7 @@ import com.lateroad.buber.entity.Order;
 import com.lateroad.buber.entity.OrderType;
 import com.lateroad.buber.entity.User;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -162,7 +163,7 @@ public class OrderDAO implements CommonDAO<Order> {
         try (PreparedStatement st = connection.prepareStatement(SQL_INSERT_ORDER)) {
             st.setString(1, order.getClientLogin());
             st.setString(2, order.getDriverLogin());
-            st.setString(3, order.getMoney());
+            st.setBigDecimal(3, new BigDecimal(order.getMoney()));
             st.setDate(4, order.getDate());
             st.executeUpdate();
         } finally {

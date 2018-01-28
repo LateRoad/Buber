@@ -5,7 +5,6 @@ import com.lateroad.buber.command.CommandManager;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public class UserServlet extends HttpServlet {
     @Override
@@ -15,7 +14,6 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        System.out.println(req.getParameter("action"));
         CommandManager.execute(req.getParameter("action"), req, resp, this);
     }
 }

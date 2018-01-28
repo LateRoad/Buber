@@ -85,4 +85,20 @@
         </attribute>
     </tag>
 
+    <tag>
+        <name>trips-table</name>
+        <tag-class>com.lateroad.tag.TripsTable</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>role</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>trips</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
 </taglib>

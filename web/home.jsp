@@ -11,13 +11,13 @@
 <html>
 <head>
     <!-- Bootstrap core CSS-->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="src/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom fonts for this template-->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="src/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <!-- Page level plugin CSS-->
-    <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <link href="src/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin.css" rel="stylesheet">
+    <link href="src/css/sb-admin.css" rel="stylesheet">
     <title>Home</title>
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
@@ -35,17 +35,17 @@
                 <div id="map"></div>
                 <c:if test="${user.role == \"client\" }">
                     <div class="form-group">
-                        <label for="pointFrom">Origin</label>
-                        <input type="text" class="form-control" id="pointFrom"
-                               placeholder="Беларусь, Минск, Сморговский проезд, 29" name="pointFrom">
+                        <label for="origin">Origin</label>
+                        <input type="text" class="form-control" id="origin"
+                               placeholder="Беларусь, Минск, Сморговский проезд, 29" name="origin">
                     </div>
                     <div class="form-group">
-                        <label for="pointTo">Destination</label>
-                        <input type="text" class="form-control" id="pointTo"
+                        <label for="destination">Destination</label>
+                        <input type="text" class="form-control" id="destination"
                                placeholder="Беларусь, Минск, проспект Пушкинский, 19"
-                               name="pointTo">
+                               name="destination">
                     </div>
-                    <button type="button" id="getRouteInfoBtn" class="btn btn-primary" disabled
+                    <button type="button" id="getRouteInfoBtn" class="btn btn-primary"
                             onclick="calculateAndDisplayRoute()">
                         Рассчитать стоимость поездки
                     </button>
@@ -72,19 +72,17 @@
                                     </div>
                                     <hr class="my-0">
                                     <div class="card-body py-2 small">
-                                        <i class="fa fa-fw fa-thumbs-o-up"></i> Reputation: ${driver.userInfo.driverInfo.reputation}
+                                        <i class="fa fa-fw fa-thumbs-o-up"></i>
+                                        Reputation: ${driver.userInfo.driverInfo.reputation}
                                         <br>
                                         <i class="fa fa-fw fa-handshake-o"></i> Trips
                                         count: ${driver.userInfo.driverInfo.tripsNumber}
                                     </div>
                                     <hr class="my-0">
                                     <div class="card-footer small text-muted">
-                                        <form method="POST"
-                                              action="/userServlet?driver=${driver.login}&money=${price}">
-                                            <button name="action" value="takeTaxi" type="submit"
-                                                    class="btn btn-primary">Заказать такси
-                                            </button>
-                                        </form>
+                                        <button onclick="takeTaxi('${driver.login}', '${price}')" type="button"
+                                                class="btn btn-primary">Take taxi
+                                        </button>
                                     </div>
                                 </div>
                             </c:forEach>
@@ -135,16 +133,17 @@
 <ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>
 
 <!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="src/vendor/jquery/jquery.min.js"></script>
+<script src="src/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="src/vendor/jquery-easing/jquery.easing.min.js"></script>
 <!-- Custom scripts for all pages-->
-<script src="js/sb-admin.js"></script>
-<script src="js/googlemap.js"></script>
-<script src="js/routeInfo.js"></script>
+<script src="src/js/sb-admin.js"></script>
+<script src="src/js/googlemap.js"></script>
+<script src="src/js/routeInfo.js"></script>
+<script src="src/js/home.js"></script>
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYpnDCcwayuy4jZ-1IzCUpg3AHFVO80Is&callback=initMap&language=ru">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYpnDCcwayuy4jZ-1IzCUpg3AHFVO80Is&libraries=places&callback=initMap&language=ru">
 </script>
 </body>
 </html>
