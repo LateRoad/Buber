@@ -35,20 +35,16 @@
                 <div id="map"></div>
                 <c:if test="${user.role == \"client\" }">
                     <div class="form-group">
-                        <label for="origin">Origin</label>
-                        <input type="text" class="form-control" id="origin"
-                               placeholder="Беларусь, Минск, Сморговский проезд, 29" name="origin">
+                        <label for="originInput">Origin</label>
+                        <input type="text" class="form-control" id="originInput"
+                               placeholder="Беларусь, Минск, Сморговский проезд, 29" name="originInput">
                     </div>
                     <div class="form-group">
-                        <label for="destination">Destination</label>
-                        <input type="text" class="form-control" id="destination"
+                        <label for="destinationInput">Destination</label>
+                        <input type="text" class="form-control" id="destinationInput"
                                placeholder="Беларусь, Минск, проспект Пушкинский, 19"
-                               name="destination">
+                               name="destinationInput">
                     </div>
-                    <button type="button" id="getRouteInfoBtn" class="btn btn-primary"
-                            onclick="calculateAndDisplayRoute()">
-                        Рассчитать стоимость поездки
-                    </button>
                 </c:if>
             </div>
         </div>
@@ -131,19 +127,18 @@
 <%--</div>--%>
 <%--</div>--%>
 <ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>
-
 <!-- Bootstrap core JavaScript-->
 <script src="src/vendor/jquery/jquery.min.js"></script>
 <script src="src/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- Core plugin JavaScript-->
 <script src="src/vendor/jquery-easing/jquery.easing.min.js"></script>
 <!-- Custom scripts for all pages-->
-<script src="src/js/sb-admin.js"></script>
-<script src="src/js/googlemap.js"></script>
-<script src="src/js/routeInfo.js"></script>
-<script src="src/js/home.js"></script>
+<script async src="src/js/sb-admin.js"></script>
+<script async src="src/js/googlemap.js"></script>
+<script async src="src/js/routeInfo.js"></script>
+
+<script async src="src/js/home.js"></script>
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYpnDCcwayuy4jZ-1IzCUpg3AHFVO80Is&libraries=places&callback=initMap&language=ru">
-</script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYpnDCcwayuy4jZ-1IzCUpg3AHFVO80Is&libraries=places&callback=initMap&language=ru"></script>
 </body>
 </html>

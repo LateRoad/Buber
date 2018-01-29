@@ -1,14 +1,29 @@
 //
+//    Services
+//
+var directionsService;
+var directionsDisplay;
+//
 //    General variables
 //
-let map;
-let currentLocation;
-let origin;
-let destination;
-let originInput = document.getElementById('origin');
-let destinationInput = document.getElementById('destination');
+var map;
+//
+//    Input fields
+//
 
-let image = {
+var originInput = document.getElementById('originInput');
+var destinationInput = document.getElementById('destinationInput');
+//
+//    Markers
+//
+var origin;
+var destination;
+
+var $routeClientInfo = $('#routeClientInfo');
+
+$routeClientInfo.hide();
+
+var image = {
     icon: '/src/image/map/marker.svg',
     // This marker is 20 pixels wide by 32 pixels high.
     size: new google.maps.Size(20, 32),
@@ -19,9 +34,50 @@ let image = {
 };
 
 
-let directionsService;
-let directionsDisplay;
-let markers;
+function updateActiveOrders() {
+    $.ajax({
+        url: "/userServlet?action=updateActiveOrders",
+        data: {name: 'abc'},
+        type: 'post',
+        cache: false,
+        success: function () {
+            $('#activeOrders').load("/home.jsp" + ' #activeOrders');
+        },
+        error: function () {
+            alert('error');
+        }
+    });
+}
+
+function calculateRouteInfo() {
+    $.ajax({
+        url: "/userServlet?action=getRouteInfo&from=" + $originInput.val() + "&to=" + $destinationInput.val() + "&fromLat=" + origin.lat + "&fromLng=" + origin.lng + "&toLat=" + destination.lat + "&toLng=" + destination.lng,
+        data: {name: 'abc'},
+        type: 'post',
+        cache: false,
+        success: function () {
+            $('#routeClientInfo').load("/home.jsp" + ' #routeClientInfo');
+        },
+        error: function () {
+            alert('error');
+        }
+    });
+}
+
+function showDirection() {
+    directionsService.route({
+        origin: origin.position,
+        destination: destination.position,
+        travelMode: 'DRIVING'
+    }, function (response, status) {
+        if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+        } else {
+            window.alert('Directions request failed due to ' + status);
+        }
+    });
+}
+
 
 //
 //    Map handler
@@ -31,15 +87,15 @@ function initMap() {
         center: {lat: 54, lng: 28},
         zoom: 6
     });
-    // // directionsService = new google.maps.DirectionsService();
-    // let searchBoxOrigin = new google.maps.places.SearchBox(originInput);
-    // let searchBoxDestination = new google.maps.places.SearchBox(destinationInput);
-    // // directionsDisplay = new google.maps.DirectionsRenderer();
-    // markers = [];
-    // alert("3");
-    // addInputToMarkerListener(searchBoxDestination);
+    directionsService = new google.maps.DirectionsService();
+    directionsDisplay = new google.maps.DirectionsRenderer();
+    var searchBoxOrigin = new google.maps.places.SearchBox(originInput);
+    var searchBoxDestination = new google.maps.places.SearchBox(destinationInput);
 
-    showCurrentLocation();
+    addInputToMarkerListenerOrigin(searchBoxOrigin);
+    addInputToMarkerListenerDestination(searchBoxDestination);
+
+    getCurrentLocation();
 
     directionsDisplay.setMap(map);
     directionsDisplay.setOptions({suppressMarkers: true});
@@ -62,10 +118,8 @@ function initMap() {
     // });
 }
 
-function addInputToMarkerListener(searchBox) {
-    alert("1");
-    searchBox.addListener('places_changed', function() {
-        alert("2");
+function addInputToMarkerListenerDestination(searchBox) {
+    searchBox.addListener('places_changed', function () {
         let places = searchBox.getPlaces();
 
         if (places.length === 0) {
@@ -73,51 +127,77 @@ function addInputToMarkerListener(searchBox) {
         }
 
         // Clear out the old markers.
-        markers.forEach(function (marker) {
-            marker.setMap(null);
-        });
+        if (destination != null) {
+            destination.setMap(null);
+        }
 
         // For each place, get the icon, name and location.
         let bounds = new google.maps.LatLngBounds();
-        places.forEach(function (place) {
-            if (!place.geometry) {
-                console.log("Returned place contains no geometry");
-                return;
-            }
+        // places.forEach(function (place) {
+        if (!places[0].geometry) {
+            console.log("Returned place contains no geometry");
+            return;
+        }
 
-            // Create a marker for each place.
-            markers.push(new google.maps.Marker({
-                map: map,
-                icon: {
-                    url: '/src/image/map/marker.svg',
-                    scaledSize: new google.maps.Size(32, 32)
-                },
-                title: place.name,
-                position: place.geometry.location
-            }));
-
-            if (place.geometry.viewport) {
-                // Only geocodes have viewport.
-                bounds.union(place.geometry.viewport);
-            } else {
-                bounds.extend(place.geometry.location);
-            }
+        // Create a marker for each place.
+        setDestination({
+            lat: places[0].geometry.location.lat(),
+            lng: places[0].geometry.location.lng()
         });
+        $destinationInput.keyup();
+
+
+        if (places[0].geometry.viewport) {
+            // Only geocodes have viewport.
+            bounds.union(places[0].geometry.viewport);
+        } else {
+            bounds.extend(places[0].geometry.location);
+        }
         map.fitBounds(bounds);
     });
 }
 
-function setOriginInput(event) {
-    origin = {
-        lat: event.latLng.lat(),
-        lng: event.latLng.lng()
-    };
-    fillInput(origin, "#origin");
+function addInputToMarkerListenerOrigin(searchBox) {
+    searchBox.addListener('places_changed', function () {
+        let places = searchBox.getPlaces();
+
+        if (places.length === 0) {
+            return;
+        }
+
+        // Clear out the old markers.
+        if (origin != null) {
+            origin.setMap(null);
+        }
+
+        // For each place, get the icon, name and location.
+        let bounds = new google.maps.LatLngBounds();
+        if (!places[0].geometry) {
+            console.log("Returned place contains no geometry");
+            return;
+        }
+
+        // Create a marker for each place.
+        setOrigin({
+            lat: places[0].geometry.location.lat(),
+            lng: places[0].geometry.location.lng()
+        });
+        $originInput.keyup();
+
+
+        if (places[0].geometry.viewport) {
+            // Only geocodes have viewport.
+            bounds.union(places[0].geometry.viewport);
+        } else {
+            bounds.extend(places[0].geometry.location);
+        }
+        map.fitBounds(bounds);
+    });
 }
 
-function showOrigin() {
+function setOrigin(location) {
     origin = new google.maps.Marker({
-        position: currentLocation,
+        position: location,
         icon: {
             url: '/src/image/map/marker.svg',
             scaledSize: new google.maps.Size(32, 32)
@@ -125,26 +205,63 @@ function showOrigin() {
         draggable: true,
         map: map
     });
+    map.setCenter(origin.position);
+    map.setZoom(14);
     origin.addListener('dragend', setOriginInput);
 }
 
+function setDestination(location) {
+    destination = new google.maps.Marker({
+        position: location,
+        icon: {
+            url: '/src/image/map/marker.svg',
+            scaledSize: new google.maps.Size(32, 32)
+        },
+        draggable: true,
+        map: map
+    });
+    map.setCenter(destination.position);
+    map.setZoom(14);
+    destination.addListener('dragend', setDestinationInput);
+}
+
+function setOriginInput(event) {
+    origin.setPosition({
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng()
+    });
+    fillInput(origin.position, $originInput);
+}
+
+function setDestinationInput(event) {
+    destination.setPosition({
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng()
+    });
+    fillInput(destination.position, $destinationInput);
+}
 
 
 function fillInput(coordinates, input) {
     let geocoder = new google.maps.Geocoder;
-    let latlng = {lat: coordinates.lat, lng: coordinates.lng};
-    let result;
+    // alert(coordinates.lat);
+    // alert(coordinates.lat());
+    let latlng = {lat: coordinates.lat(), lng: coordinates.lng()};
     geocoder.geocode({'location': latlng}, function (results, status) {
         if (status === 'OK') {
             if (results[0]) {
-                result = results[0].address_components[4].long_name + ", " + results[0].address_components[3].long_name + ", " + results[0].address_components[1].long_name + ", " + results[0].address_components[0].long_name;
-                $(input).val(result);
-                $(input).change();
+                let result =
+                    results[0].address_components[4].long_name + ", " +
+                    results[0].address_components[3].long_name + ", " +
+                    results[0].address_components[1].long_name + ", " +
+                    results[0].address_components[0].long_name;
+                input.val(result);
+                input.focusout();
             } else {
-                window.alert('No results found');
+                alert('No results found');
             }
         } else {
-            window.alert('Geocoder failed due to: ' + status);
+            alert('Geocoder failed due to: ' + status);
         }
     });
 }
@@ -153,21 +270,16 @@ function fillInput(coordinates, input) {
 //
 //    Handle current location
 //
-function setCurrentLocation(location) {
-    currentLocation = location;
-}
-
-function showCurrentLocation() {
+function getCurrentLocation() {
+    let currentLocation;
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
-            setCurrentLocation({
+            currentLocation = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
-            });
-            map.setCenter(currentLocation);
-            map.setZoom(13);
-            showOrigin();
-            fillInput(currentLocation, "#origin");
+            };
+            setOrigin(currentLocation);
+            fillInput(origin.position, $originInput);
         }, function () {
             handleLocationError(true, map.getCenter());
         });
@@ -190,5 +302,3 @@ function handleLocationError(browserHasGeolocation, pos) {
         'Error: The Geolocation service failed.' :
         'Error: Your browser doesn\'t support geolocation.');
 }
-
-
