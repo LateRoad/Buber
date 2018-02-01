@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1">
+
+    <tlib-version>1.0</tlib-version>
+    <short-name>ctg</short-name>
+    <uri>customtags</uri>
+
+    <tag>
+        <name>side-menu</name>
+        <tag-class>com.lateroad.tag.SideMenu</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>user</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>footer</name>
+        <tag-class>com.lateroad.tag.Footer</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>year</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>developer</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>project</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>client-info-card</name>
+        <tag-class>com.lateroad.tag.ClientInfoCard</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>client</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>route-info-card</name>
+        <tag-class>com.lateroad.tag.RouteInfoCard</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>distance</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>price</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>time</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>user-info-card</name>
+        <tag-class>com.lateroad.tag.UserInfoCard</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>user</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>driver-info-card</name>
+        <tag-class>com.lateroad.tag.DriverInfoCard</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>driver</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>driver-nearby-card</name>
+        <tag-class>com.lateroad.tag.DriverNearbyCard</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>driver</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>priceForOrder</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>trips-table</name>
+        <tag-class>com.lateroad.tag.TripsTable</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>role</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>trips</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+</taglib>
