@@ -4,25 +4,25 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-    <servlet>
-        <servlet-name>UserServlet</servlet-name>
-        <servlet-class>com.lateroad.buber.servlet.UserServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/userServlet</url-pattern>
-        <url-pattern>/commonOperation</url-pattern>
-    </servlet-mapping>
+    <!--<servlet>-->
+        <!--<servlet-name>UserServlet</servlet-name>-->
+        <!--<servlet-class>com.lateroad.buber.servlet.UserServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>UserServlet</servlet-name>-->
+        <!--<url-pattern>/userServlet</url-pattern>-->
+        <!--<url-pattern>/commonOperation</url-pattern>-->
+    <!--</servlet-mapping>-->
 
 
-    <servlet>
-        <servlet-name>AdminServlet</servlet-name>
-        <servlet-class>com.lateroad.buber.servlet.AdminServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AdminServlet</servlet-name>
-        <url-pattern>/adminServlet</url-pattern>
-    </servlet-mapping>
+    <!--<servlet>-->
+        <!--<servlet-name>AdminServlet</servlet-name>-->
+        <!--<servlet-class>com.lateroad.buber.servlet.AdminServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>AdminServlet</servlet-name>-->
+        <!--<url-pattern>/adminServlet</url-pattern>-->
+    <!--</servlet-mapping>-->
 
 
     <filter>

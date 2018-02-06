@@ -12,5 +12,5 @@ $($originInput).add($destinationInput).on("focusout", function () {
     }
     calculateRouteInfo();
     $routeClientInfo.show();
-    showDirection();
+    showDirection(origin, destination);
 });

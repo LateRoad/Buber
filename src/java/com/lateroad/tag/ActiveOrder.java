@@ -1,6 +1,6 @@
 package com.lateroad.tag;
 
-import com.lateroad.buber.entity.User;
+import com.lateroad.buber.entity.role.User;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
 
 import javax.servlet.jsp.JspTagException;
@@ -8,9 +8,9 @@ import javax.servlet.jsp.JspWriter;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
-public class DriverNearbyCard extends RequestContextAwareTag {
-    private User driver;
-    private String priceForOrder;
+public class ActiveOrder extends RequestContextAwareTag {
+    private User client;
+    private int orderID;
 
     @Override
     protected int doStartTagInternal() throws Exception {
@@ -19,17 +19,19 @@ public class DriverNearbyCard extends RequestContextAwareTag {
         try {
             out.write("<div class=\"card mb-3\">");
             out.write("    <div class=\"card-body\">");
-            out.write("        <h6 class=\"card-title mb-0\"><a href=\"#\">" + driver.getUserInfo().getName() + " " + driver.getUserInfo().getSurname() + "</a></h6>");
+            out.write("        <h6 class=\"card-title mb-0\"><a href=\"#\">" + client.getName() + " " + client.getSurname() + "</a></h6>");
             out.write("    </div>");
             out.write("    <hr class=\"my-0\">");
             out.write("    <div class=\"card-body py-2 small\">");
-            out.write("        <i class=\"fa fa-fw fa-thumbs-o-up\"></i> " + bundle.getString("string-reputation") + ": " + driver.getUserInfo().getDriverInfo().getReputation());
+            out.write("        <i class=\"fa fa-fw fa-thumbs-o-up\"></i> " + bundle.getString("string-reputation") + ": " + client.getReputation());
             out.write("        <br>");
-            out.write("        <i class=\"fa fa-fw fa-handshake-o\"></i> " + bundle.getString("string-trips-count") + ": " + driver.getUserInfo().getDriverInfo().getTripsNumber());
+            out.write("        <i class=\"fa fa-fw fa-handshake-o\"></i> " + bundle.getString("string-trips-count") + ": " + client.getTripsNumber());
             out.write("    </div>");
             out.write("    <hr class=\"my-0\">");
             out.write("    <div class=\"card-footer small text-muted\">");
-            out.write("        <button onclick=\"takeTaxi('" + driver.getLogin() + "', '" + priceForOrder + "')\" type=\"button\"class=\"btn btn-primary\">" + bundle.getString("button-take-taxi") + "</button>");
+            out.write("        <button onclick=\"acceptOrder(" + orderID + ")\" type=\"submit\" class=\"btn btn-primary\">");
+            out.write("            " + bundle.getString("accept-order"));
+            out.write("        </button>");
             out.write("    </div>");
             out.write("</div>");
         } catch (IOException e) {
@@ -43,19 +45,19 @@ public class DriverNearbyCard extends RequestContextAwareTag {
         return EVAL_PAGE;
     }
 
-    public User getDriver() {
-        return driver;
+    public User getClient() {
+        return client;
     }
 
-    public void setDriver(User driver) {
-        this.driver = driver;
+    public void setClient(User client) {
+        this.client = client;
     }
 
-    public String getPriceForOrder() {
-        return priceForOrder;
+    public int getOrderID() {
+        return orderID;
     }
 
-    public void setPriceForOrder(String priceForOrder) {
-        this.priceForOrder = priceForOrder;
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
     }
 }

@@ -1702,7 +1702,7 @@ function isObject(input) {
 function isObjectEmpty(obj) {
     var k;
     for (k in obj) {
-        // even if its not own property I'd still call it non-empty
+        // even if its not own property I'type still call it non-empty
         return false;
     }
     return true;
@@ -2123,28 +2123,28 @@ function invalidDate () {
     return this._invalidDate;
 }
 
-var defaultOrdinal = '%d';
+var defaultOrdinal = '%type';
 var defaultDayOfMonthOrdinalParse = /\d{1,2}/;
 
 function ordinal (number) {
-    return this._ordinal.replace('%d', number);
+    return this._ordinal.replace('%type', number);
 }
 
 var defaultRelativeTime = {
     future : 'in %s',
     past   : '%s ago',
     s  : 'a few seconds',
-    ss : '%d seconds',
+    ss : '%type seconds',
     m  : 'a minute',
-    mm : '%d minutes',
+    mm : '%type minutes',
     h  : 'an hour',
-    hh : '%d hours',
+    hh : '%type hours',
     d  : 'a day',
-    dd : '%d days',
+    dd : '%type days',
     M  : 'a month',
-    MM : '%d months',
+    MM : '%type months',
     y  : 'a year',
-    yy : '%d years'
+    yy : '%type years'
 };
 
 function relativeTime (number, withoutSuffix, string, isFuture) {
@@ -4692,7 +4692,7 @@ createDuration.fn = Duration.prototype;
 createDuration.invalid = createInvalid$1;
 
 function parseIso (inp, sign) {
-    // We'd normally use ~~inp for this, but unfortunately it also
+    // We'type normally use ~~inp for this, but unfortunately it also
     // converts floats to ints.
     // inp may be undefined, so careful calling replace on it.
     var res = inp && parseFloat(inp.replace(',', '.'));

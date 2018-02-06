@@ -219,7 +219,7 @@ SELECT * FROM `buber`.`location` WHERE `login`= (SELECT `client_login` FROM `bub
 /*Поиск незанятых водителей в онлайне на одной улице*/
 SELECT ui.`login` FROM `buber`.`user_info` AS ui
 	INNER JOIN `driver_info` AS di ON di.`is_online` = 1 AND di.`is_busy` = 0 AND ui.`login` = di.`login`
-    INNER JOIN `location` AS loc ON loc.`country` = "Belarus" AND loc.`city` = "Minsk"; 
+    INNER JOIN `location` AS loc ON loc.`country` = "Belarus" AND loc.`city` = "Minsk";
     
 -- SELECT u.`login`, u.`password`, u.`role`, u.`is_muted`, ui.`name`, ui.`surname`, ui.`lastname`, ui.`email`, ci.`trips_number`, ci.`reputation`, ci.`phone_number`, ci.`is_online`, ci.`is_wait`, di.`car_number`, di.`reputation`, di.`phone_number`, di.`trips_number`, di.`driver_license`, di.`is_online`, di.`is_busy`
 --   FROM `buber`.`user` AS u
@@ -247,7 +247,7 @@ SELECT * FROM `buber`.`user` AS u
  
 
 SELECT DISTINCT di.`login` FROM `buber`.`driver_info` AS di
-	LEFT JOIN `buber`.`location` AS loc ON loc.`country` = "Belarus" AND loc.`city` = "Minsk"; 
+	LEFT JOIN `buber`.`location` AS loc ON loc.`country` = "Belarus" AND loc.`city` = "Minsk";
     
 /*Вывести всех водителей и клиентов, которые онлайн*/
 SELECT `login` FROM  `buber`.`client_info` WHERE `is_online` = 1

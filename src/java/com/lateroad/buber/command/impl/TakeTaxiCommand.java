@@ -1,8 +1,9 @@
 package com.lateroad.buber.command.impl;
 
 import com.lateroad.buber.command.ICommand;
-import com.lateroad.buber.entity.User;
-import com.lateroad.buber.service.ClientService;
+import com.lateroad.buber.entity.role.User;
+import com.lateroad.buber.exception.BuberSQLException;
+import com.lateroad.buber.service.role.ClientService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,6 +29,8 @@ public class TakeTaxiCommand implements ICommand {
         } catch (ServletException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (BuberSQLException e) {
             e.printStackTrace();
         }
     }

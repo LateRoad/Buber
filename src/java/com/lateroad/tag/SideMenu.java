@@ -1,6 +1,6 @@
 package com.lateroad.tag;
 
-import com.lateroad.buber.entity.User;
+import com.lateroad.buber.model.CurrentModel;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
 
 import javax.servlet.jsp.JspTagException;
@@ -10,13 +10,13 @@ import java.util.ResourceBundle;
 
 public class SideMenu extends RequestContextAwareTag {
 
-    private User user;
+    private CurrentModel user;
 
-    public User getUser() {
+    public CurrentModel getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(CurrentModel user) {
         this.user = user;
     }
 
@@ -38,14 +38,14 @@ public class SideMenu extends RequestContextAwareTag {
             out.write("            <ul class=\"navbar-nav navbar-sidenav\" id=\"exampleAccordion\">");
 
             if (user != null) {
-                switch (user.getRole()) {
-                    case "client":
+                switch (user.getCurrentUser().getRole()) {
+                    case CLIENT:
                         clientMenu(out, bundle);
                         break;
-                    case "driver":
+                    case DRIVER:
                         driverMenu(out, bundle);
                         break;
-                    case "admin":
+                    case ADMIN:
                         adminMenu(out, bundle);
                         break;
                     default:
@@ -79,7 +79,7 @@ public class SideMenu extends RequestContextAwareTag {
 
             out.write("            <ul class=\"navbar-nav ml-auto\">");
             if (user != null) {
-                out.write("                <li class=\"nav-item\"><a href=\"/home.jsp\"  class=\"nav-link\" style=\"color: white;\">" + user.getLogin() + " - " + user.getRole() + "</a></li>");
+                out.write("                <li class=\"nav-item\"><a href=\"/home.jsp\"  class=\"nav-link\" style=\"color: white;\">" + user.getCurrentUser().getLogin() + " - " + user.getCurrentUser().getRole() + "</a></li>");
                 out.write("                <li class=\"nav-item\"></li>");
                 out.write("                <li class=\"nav-item\">");
                 out.write("                    <a class=\"nav-link\" data-toggle=\"modal\" data-target=\"#modal-sign-out\">");
@@ -117,7 +117,7 @@ public class SideMenu extends RequestContextAwareTag {
         out.write("            <div class=\"modal-body\">" + bundle.getString("modal-sign-out-body") + "</div>");
         out.write("            <div class=\"modal-footer\">");
         out.write("                <button class=\"btn btn-secondary\" type=\"button\" data-dismiss=\"modal\">" + bundle.getString("button-cancel") + "</button>");
-        out.write("                <a class=\"btn btn-primary\" href=\"/userServlet?action=signOut\" name=\"action\"value=\"signOut\">" + bundle.getString("button-sign-out") + "</a>");
+        out.write("                <a class=\"btn btn-primary\" href=\"/commonOperation?action=signOut\" name=\"action\"value=\"signOut\">" + bundle.getString("button-sign-out") + "</a>");
         out.write("            </div>");
         out.write("        </div>");
         out.write("    </div>");

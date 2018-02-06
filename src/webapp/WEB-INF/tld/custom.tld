@@ -96,8 +96,8 @@
     </tag>
 
     <tag>
-        <name>driver-nearby-card</name>
-        <tag-class>com.lateroad.tag.DriverNearbyCard</tag-class>
+        <name>driver-card</name>
+        <tag-class>com.lateroad.tag.DriverCard</tag-class>
         <body-content>scriptless</body-content>
         <attribute>
             <name>driver</name>
@@ -122,6 +122,28 @@
         </attribute>
         <attribute>
             <name>trips</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>success-modal</name>
+        <tag-class>com.lateroad.tag.SuccessOrderModal</tag-class>
+        <body-content>scriptless</body-content>
+    </tag>
+
+    <tag>
+        <name>active-order</name>
+        <tag-class>com.lateroad.tag.ActiveOrder</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>orderID</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>client</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

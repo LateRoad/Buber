@@ -33,14 +33,14 @@
 
 <div class="content-wrapper">
     <div class="container-fluid">
-        <ctg:user-info-card user="${user}"/>
+        <ctg:user-info-card user="${user.currentUser}"/>
 
-        <c:if test="${user.role == \"client\"}">
-            <ctg:client-info-card client="${user}"/>
+        <c:if test="${user.currentUser.role == \"CLIENT\"}">
+            <ctg:client-info-card client="${user.currentUser}"/>
         </c:if>
 
-        <c:if test="${user.role == \"driver\"}">
-            <ctg:driver-info-card driver="${user}"/>
+        <c:if test="${user.currentUser.role == \"DRIVER\"}">
+            <ctg:driver-info-card driver="${user.currentUser}"/>
         </c:if>
     </div>
 </div>

@@ -41,7 +41,7 @@
             </div>
             <div class="card-body">
                 <div id="map"></div>
-                <c:if test="${user.role == \"client\" }">
+                <c:if test="${user.currentUser.role == \"CLIENT\" }">
                     <div id="location-settings">
                         <div class="form-group">
                             <label for="originInput"><fmt:message key="origin"/></label>
@@ -58,7 +58,7 @@
                 </c:if>
             </div>
         </div>
-        <c:if test="${user.role == \"client\" }">
+        <c:if test="${user.currentUser.role == \"CLIENT\" }">
             <div id="routeClientInfo">
                 <div class="row">
 
@@ -70,7 +70,7 @@
                             </div>
                             <div class="card-body">
                                 <c:forEach var="driver" items="${nearestDrivers}">
-                                    <ctg:driver-nearby-card driver="${driver}" priceForOrder="${price}"/>
+                                    <ctg:driver-card driver="${driver}" priceForOrder="${price}"/>
                                 </c:forEach>
                             </div>
                         </div>
@@ -81,50 +81,29 @@
                     </div>
                 </div>
             </div>
-            <div id="client-action">
-                <div class="row">
-                    <div class="col-lg-8">
-                        <!-- Example Bar Chart Card-->
-                        <div class="card mb-3">
-                            <div class="card-header">
-                                <i class="fa fa-bar-chart"></i> Bar Chart Example
-                            </div>
-                            <div class="card-body">
-                                <canvas id="myBarChart" width="100" height="50"></canvas>
-                            </div>
-                            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <!-- Example Pie Chart Card-->
-                        <div class="card mb-3">
-                            <div class="card-header">
-                                <i class="fa fa-pie-chart"></i> Pie Chart Example
-                            </div>
-                            <div class="card-body">
-                                <canvas id="myPieChart" width="100%" height="100"></canvas>
-                            </div>
-                            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </c:if>
 
 
-        <c:if test="${user.role == \"driver\" }">
-            <button type="button" id="updateOrders" class="btn btn-primary" onclick="updateActiveOrders()">
-                <fmt:message key="update-available-orders"/>
-            </button>
+        <c:if test="${user.currentUser.role == \"DRIVER\" }">
             <div id="activeOrders">
-                <c:forEach var="order" items="${activeOrders}">
-                    <c:out value="${order.clientLogin}"/>
-                    <button onclick="acceptOrder(${order.id})" type="submit" class="btn btn-primary"><fmt:message key="accept-order"/></button>
-                </c:forEach>
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fa fa-group"></i><fmt:message key="active-orders"/>
+                    </div>
+                    <div class="card-body">
+                        <c:forEach var="order" items="${activeOrders}">
+                            <ctg:active-order orderID="${order.key}" client="${order.value}"/>
+                        </c:forEach>
+                    </div>
+                    <button type="button" id="updateOrders" class="btn btn-primary" onclick="updateActiveOrders()">
+                        <fmt:message key="update-available-orders"/>
+                    </button>
+                </div>
             </div>
         </c:if>
     </div>
 </div>
+<ctg:success-modal/>
 
 <ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>
 <!-- Bootstrap core JavaScript-->
@@ -140,6 +119,6 @@
 <script src="src/js/commonOperations.js"></script>
 
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYpnDCcwayuy4jZ-1IzCUpg3AHFVO80Is&libraries=places&callback=initMap&language=ru"></script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYpnDCcwayuy4jZ-1IzCUpg3AHFVO80Is&libraries=places&callback=initMap&language=${language}"></script>
 </body>
 </html>

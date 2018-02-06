@@ -6,7 +6,7 @@ function takeTaxi(driver, money) {
         cache: false,
         success: function () {
             $('#routeClientInfo').hide();
-            $('#map').hide();
+            $('#successOrder').modal('show');
         },
         error: function () {
             alert('error');
@@ -20,7 +20,8 @@ function acceptOrder(orderId) {
         data: {name: 'abc'},
         type: 'POST',
         cache: false,
-        success: function () {
+        success: function (data) {
+            alert(data)
             $('#activeOrders').load("/home.jsp" + ' #activeOrders');
         },
         error: function () {

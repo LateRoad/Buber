@@ -1,9 +1,11 @@
 package com.lateroad.buber.entity;
 
+import com.lateroad.buber.entity.type.OrderType;
+
 import java.sql.Date;
 import java.util.Objects;
 
-public class Order extends Entity {
+public class Order implements Entity {
     private int id;
     private String clientLogin;
     private String driverLogin;

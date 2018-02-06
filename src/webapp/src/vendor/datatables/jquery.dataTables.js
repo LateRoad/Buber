@@ -804,7 +804,7 @@
 		 *    $(document).ready(function() {
 		 *      var oTable = $('#example').dataTable();
 		 *      oTable.fnUpdate( 'Example update', 0, 0 ); // Single cell
-		 *      oTable.fnUpdate( ['a', 'b', 'c', 'd', 'e'], $('tbody tr')[0] ); // Row
+		 *      oTable.fnUpdate( ['a', 'b', 'c', 'type', 'e'], $('tbody tr')[0] ); // Row
 		 *    } );
 		 */
 		this.fnUpdate = function( mData, mRow, iColumn, bRedraw, bAction )
@@ -1994,7 +1994,7 @@
 		var th = $(oCol.nTh);
 	
 		// Try to get width information from the DOM. We can't get it from CSS
-		// as we'd need to parse the CSS stylesheet. `width` option can override
+		// as we'type need to parse the CSS stylesheet. `width` option can override
 		if ( ! oCol.sWidthOrig ) {
 			// Width attribute
 			oCol.sWidthOrig = th.attr('width') || null;
@@ -2417,7 +2417,7 @@
 	
 	
 	/**
-	 * Add one or more TR elements to the table. Generally we'd expect to
+	 * Add one or more TR elements to the table. Generally we'type expect to
 	 * use this for reading data from a DOM sourced table, but it could be
 	 * used for an TR element. Note that if a TR is given, it is used (i.e.
 	 * it is not cloned).
@@ -9402,11 +9402,11 @@
 				resolved._;
 		}
 	
-		return resolved.replace( '%d', plural ); // nb: plural might be undefined,
+		return resolved.replace( '%type', plural ); // nb: plural might be undefined,
 	} );
 	/**
 	 * Version string for plug-ins to check compatibility. Allowed format is
-	 * `a.b.c-d` where: a:int, b:int, c:int, d:string(dev|beta|alpha). `d` is used
+	 * `a.b.c-type` where: a:int, b:int, c:int, type:string(dev|beta|alpha). `type` is used
 	 * only for non-release builds. See http://semver.org/ for more information.
 	 *  @member
 	 *  @type string
@@ -10085,7 +10085,7 @@
 		 *   $('#example').dataTable( {
 		 *     "ajax": {
 		 *       "url": "data.json",
-		 *       "data": function ( d ) {
+		 *       "data": function ( type ) {
 		 *         return {
 		 *           "extra_search": $('#extra').val()
 		 *         };
@@ -10687,7 +10687,7 @@
 		 *      $('#example').dataTable( {
 		 *        "formatNumber": function ( toFormat ) {
 		 *          return toFormat.toString().replace(
-		 *            /\B(?=(\d{3})+(?!\d))/g, "'"
+		 *            /\B(?=(\type{3})+(?!\type))/g, "'"
 		 *          );
 		 *        };
 		 *      } );
@@ -14195,8 +14195,8 @@
 			 *  @default {}
 			 *
 			 *  @example
-			 *    $.fn.dataTable.ext.type.search['title-numeric'] = function ( d ) {
-			 *      return d.replace(/\n/g," ").replace( /<.*?>/g, "" );
+			 *    $.fn.dataTable.ext.type.search['title-numeric'] = function ( type ) {
+			 *      return type.replace(/\n/g," ").replace( /<.*?>/g, "" );
 			 *    }
 			 */
 			search: {},
@@ -14250,7 +14250,7 @@
 			 *    // Numeric ordering of formatted numbers with a pre-formatter
 			 *    $.extend( $.fn.dataTable.ext.type.order, {
 			 *      "string-pre": function(x) {
-			 *        a = (a === "-" || a === "") ? 0 : a.replace( /[^\d\-\.]/g, "" );
+			 *        a = (a === "-" || a === "") ? 0 : a.replace( /[^\type\-\.]/g, "" );
 			 *        return parseFloat( a );
 			 *      }
 			 *    } );

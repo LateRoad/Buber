@@ -26,6 +26,7 @@ public class CommandMap {
         commandsMap.put("getOrders", new GetOrdersCommand());
         commandsMap.put("updateInfo", new UpdateInfoCommand());
         commandsMap.put("changeLanguage", new ChangeLanguage());
+        commandsMap.put("setCurrentLocation", new SetCurrentLocation());
 //        commandsMap.put("deleteUser", new DeleteUserCommand());
 //        commandsMap.put("setDiscount", new SetDiscount());
     }

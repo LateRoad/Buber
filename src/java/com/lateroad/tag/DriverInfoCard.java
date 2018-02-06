@@ -1,6 +1,6 @@
 package com.lateroad.tag;
 
-import com.lateroad.buber.entity.User;
+import com.lateroad.buber.entity.role.Driver;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
 
 import javax.servlet.jsp.JspTagException;
@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 public class DriverInfoCard extends RequestContextAwareTag {
-    private User driver;
+    private Driver driver;
 
     @Override
     protected int doStartTagInternal() throws Exception {
@@ -22,8 +22,8 @@ public class DriverInfoCard extends RequestContextAwareTag {
             out.write("    </div>");
             out.write("    <hr class=\"my-0\">");
             out.write("    <div class=\"card-body py-2 small\">");
-            out.write("        <i class=\"fa fa-fw fa-thumbs-o-up\"></i> " + bundle.getString("string-reputation") + ": " + driver.getUserInfo().getDriverInfo().getReputation() + "<br>");
-            out.write("        <i class=\"fa fa-fw fa-handshake-o\"></i> " + bundle.getString("string-trips-count") + ": " + driver.getUserInfo().getDriverInfo().getTripsNumber());
+            out.write("        <i class=\"fa fa-fw fa-thumbs-o-up\"></i> " + bundle.getString("string-reputation") + ": " + driver.getReputation() + "<br>");
+            out.write("        <i class=\"fa fa-fw fa-handshake-o\"></i> " + bundle.getString("string-trips-count") + ": " + driver.getTripsNumber());
             out.write("    </div>");
             out.write("    <div class=\"card-body small bg-faded\">");
             out.write("        <div class=\"table-responsive\">");
@@ -31,14 +31,14 @@ public class DriverInfoCard extends RequestContextAwareTag {
             out.write("            <tbody>");
             out.write("                <tr>");
             out.write("                    <td>" + bundle.getString("string-phone-number") + ":</td>");
-            out.write("                    <td align=\"center\" id=\"driverInfo.phoneNumber\">" + driver.getUserInfo().getDriverInfo().getPhoneNumber());
+            out.write("                    <td align=\"center\" id=\"driverInfo.phoneNumber\">" + driver.getPhoneNumber());
             out.write("                    <td align=\"center\">");
             out.write("                        <button onclick=\"change('driverInfo.phoneNumber', 'editDriverPhoneBtn')\" id=\"editDriverPhoneBtn\" class=\"btn btn-primary\">" + bundle.getString("button-edit") + "</button>");
             out.write("                    </td>");
             out.write("                </tr>");
             out.write("                <tr>");
             out.write("                    <td>" + bundle.getString("string-car-number") + ":</td>");
-            out.write("                    <td align=\"center\" id=\"driverInfo.phoneNumber\">" + driver.getUserInfo().getDriverInfo().getCarNumber());
+            out.write("                    <td align=\"center\" id=\"driverInfo.phoneNumber\">" + driver.getCarNumber());
             out.write("                    <td align=\"center\">");
             out.write("                        <button onclick=\"change('carNumber', 'editCarNumberBtn')\" id=\"editCardNumberBtn\" class=\"btn btn-primary\">" + bundle.getString("button-edit") + "</button>");
             out.write("                    </td>");
@@ -60,11 +60,11 @@ public class DriverInfoCard extends RequestContextAwareTag {
         return EVAL_PAGE;
     }
 
-    public User getDriver() {
+    public Driver getDriver() {
         return driver;
     }
 
-    public void setDriver(User driver) {
+    public void setDriver(Driver driver) {
         this.driver = driver;
     }
 }

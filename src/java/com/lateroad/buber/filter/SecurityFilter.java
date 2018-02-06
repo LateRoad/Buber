@@ -1,6 +1,6 @@
 package com.lateroad.buber.filter;
 
-import com.lateroad.buber.entity.User;
+import com.lateroad.buber.model.CurrentModel;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -67,7 +67,7 @@ public class SecurityFilter implements Filter {
         HttpSession session = ((HttpServletRequest) request).getSession();
 
         logger.info("URI: " + uri + ((HttpServletRequest) request).getMethod());
-        User user = (User) session.getAttribute("user");
+        CurrentModel user = (CurrentModel) session.getAttribute("user");
 
         if ("/".equals(uri)) {
 //            RequestDispatcher dispatcher = request.getRequestDispatcher(indexJSP);
@@ -92,22 +92,22 @@ public class SecurityFilter implements Filter {
         }
 
         if (user != null) {
-            switch (user.getRole()) {
-                case "client":
+            switch (user.getCurrentUser().getRole()) {
+                case CLIENT:
                     if (!clientFilterPaths.contains(uri)) {
                         RequestDispatcher dispatcher = request.getRequestDispatcher(errorJSP);
                         dispatcher.forward(request, response);
                         return;
                     }
                     break;
-                case "driver":
+                case DRIVER:
                     if (!driverFilterPaths.contains(uri)) {
                         RequestDispatcher dispatcher = request.getRequestDispatcher(errorJSP);
                         dispatcher.forward(request, response);
                         return;
                     }
                     break;
-                case "admin":
+                case ADMIN:
                     if (!adminFilterPaths.contains(uri)) {
                         RequestDispatcher dispatcher = request.getRequestDispatcher(errorJSP);
                         dispatcher.forward(request, response);

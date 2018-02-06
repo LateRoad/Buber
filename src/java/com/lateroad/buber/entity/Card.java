@@ -2,23 +2,15 @@ package com.lateroad.buber.entity;
 
 import java.util.Objects;
 
-public class Card extends Entity{
+public class Card implements Entity{
     private int id;
     private String hashNumber;
     private String login;
-
-    public Card(String hashNumber, String login) {
-        this.hashNumber = hashNumber;
-        this.login = login;
-    }
 
     public Card(int id, String hashNumber, String login) {
         this.id = id;
         this.hashNumber = hashNumber;
         this.login = login;
-    }
-
-    public Card() {
     }
 
     public int getId() {

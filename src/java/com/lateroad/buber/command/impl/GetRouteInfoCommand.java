@@ -2,16 +2,16 @@ package com.lateroad.buber.command.impl;
 
 
 import com.lateroad.buber.command.ICommand;
-import com.lateroad.buber.entity.User;
-import com.lateroad.buber.service.DriverService;
+import com.lateroad.buber.entity.role.Driver;
+import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.service.MapService;
+import com.lateroad.buber.service.role.DriverService;
 import org.json.JSONException;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 public class GetRouteInfoCommand implements ICommand {
@@ -27,15 +27,17 @@ public class GetRouteInfoCommand implements ICommand {
         try {
             time = mapService.calculatePrice(from, to);
             distance = mapService.calculateDistance(from, to);
-            List<User> drivers = null;
-            drivers = driverService.getNearestDrivers(((User) req.getSession().getAttribute("user")).getLogin());
+            List<Driver> drivers = null;
+            drivers = driverService.getNearestDrivers(((Driver) req.getSession().getAttribute("user")).getLogin());
 
             req.getSession().setAttribute("nearestDrivers", drivers);
             req.getSession().setAttribute("time", time);
             req.getSession().setAttribute("distance", distance);
             req.getSession().setAttribute("price", calculatePrice(time, distance));
             resp.getWriter().write("{value : success}");
-        } catch (IOException | SQLException | JSONException e) {
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } catch (BuberSQLException e) {
             e.printStackTrace();
         }
     }

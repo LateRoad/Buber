@@ -1,32 +1,39 @@
 package com.lateroad.buber.database.dao;
 
-import com.lateroad.buber.database.DBPool;
-import com.lateroad.buber.entity.User;
+import com.lateroad.buber.builder.CommonUserBuilder;
+import com.lateroad.buber.database.DAO;
+import com.lateroad.buber.entity.role.CommonUser;
+import com.lateroad.buber.entity.type.UserType;
+import com.lateroad.buber.exception.BuberSQLException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class UserDAO {
-    private static final String SQL_SELECT_USER = "SELECT * FROM `buber`.`user` AS u WHERE u.`login` = ?";
+public class UserDAO extends CommonDAO<CommonUser> implements DAO {
 
-    private static final String SQL_SELECT_USER_IF_ONLINE = "  SELECT * FROM `buber`.`user` AS u WHERE u.`login` = ? AND `is_online = 1`";
-
-    private static final String SQL_UPDATE_USER_ONLINE_AND_MUTED =
+    private static final String SQL_UPDATE_MUTED =
             "UPDATE `buber`.`user` " +
-                    "SET user.is_online = ?, user.is_muted = ?" +
+                    "SET user.is_muted = ?" +
                     "WHERE user.login = ?";
 
-    private static final String SQL_UPDATE_USER_ONLINE =
+    private static final String SQL_UPDATE_ONLINE =
             "UPDATE user " +
                     "SET user.is_online = ? " +
                     "WHERE user.login = ? ";
 
+    private static final String SQL_UPDATE_ROLE =
+            "UPDATE user " +
+                    "SET user.role = ? " +
+                    "WHERE user.login = ? ";
 
-    private DBPool dbPool = DBPool.getInstance();
+    private static final String SQL_SELECT_USER_IF_ONLINE =
+            "SELECT * FROM user WHERE user.login = ? AND user.is_online = 1;";
+
+    private static final String SQL_SELECT_USER =
+            "SELECT * FROM user WHERE user.login = ?";
 
 
     private static UserDAO instance = null;
@@ -48,88 +55,37 @@ public class UserDAO {
         return instance;
     }
 
+
     private UserDAO() {
+        super(new CommonUserBuilder());
     }
 
-    public User find(String login, String password, String role) throws SQLException {
-        dbPool = DBPool.getInstance();
-        User newUser = null;
+    public CommonUser find(String login, String password) throws BuberSQLException {
+        return super.find(login, password, SQL_SELECT_USER);
+    }
+
+    public void setRole(String login, UserType role) throws BuberSQLException {
         Connection connection = dbPool.getConnection();
-
-        try (PreparedStatement st = connection.prepareStatement(SQL_SELECT_USER)) {
-            st.setString(1, login);
-            try (ResultSet resultSet = st.executeQuery()) {
-                while (resultSet.next()) {
-                    if (role.equals(resultSet.getString("role"))) {
-                        if (resultSet.getString("password").equals(password)) {
-                            newUser = createUser(resultSet);
-                        }
-                    }
-                }
-            }
-        } finally {
-            dbPool.putConnection(connection);
-        }
-        return newUser;
-    }
-
-    private User createUser(ResultSet resultSet) throws SQLException {
-        User user = new User();
-        user.setLogin(resultSet.getString("login"));
-        user.setRole(resultSet.getString("role"));
-        return user;
-    }
-
-
-    public boolean isExist(String login) throws SQLException {
-        Connection connection = dbPool.getConnection();
-        return isConsist(login, connection, SQL_SELECT_USER);
-    }
-
-
-    public boolean isOnline(String login) throws SQLException {
-        Connection connection = dbPool.getConnection();
-        return isConsist(login, connection, SQL_SELECT_USER_IF_ONLINE);
-    }
-
-    public void update(String login, boolean isOnline, boolean isMuted) throws SQLException {
-        dbPool = DBPool.getInstance();
-        Connection connection = dbPool.getConnection();
-
-        try (PreparedStatement st = connection.prepareStatement(SQL_UPDATE_USER_ONLINE_AND_MUTED)) {
-            st.setBoolean(1, isOnline);
-            st.setBoolean(2, isMuted);
-            st.setString(3, login);
-            st.executeUpdate();
+        try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_ROLE)) {
+            statement.setString(1, role.name());
+            statement.setString(2, login);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new BuberSQLException("Something went wrong.", e);
         } finally {
             dbPool.putConnection(connection);
         }
     }
 
-    public void update(String login, boolean isOnline) throws SQLException {
-        dbPool = DBPool.getInstance();
-        Connection connection = dbPool.getConnection();
-
-        try (PreparedStatement st = connection.prepareStatement(SQL_UPDATE_USER_ONLINE)) {
-            st.setBoolean(1, isOnline);
-            st.setString(2, login);
-            st.executeUpdate();
-        } finally {
-            dbPool.putConnection(connection);
-        }
+    public void setOnline(String login, boolean isOnline) throws BuberSQLException {
+        super.update(login, isOnline, SQL_UPDATE_ONLINE);
     }
 
+    public void setMuted(String login, boolean isMuted) throws BuberSQLException {
+        super.update(login, isMuted, SQL_UPDATE_MUTED);
+    }
 
-    private boolean isConsist(String login, Connection connection, String sqlSelectUser) throws SQLException {
-        boolean isExist;
-        try (PreparedStatement st = connection.prepareStatement(sqlSelectUser)) {
-            st.setString(1, login);
-            try (ResultSet resultSet = st.executeQuery()) {
-                isExist = resultSet.next();
-            }
-        } finally {
-            dbPool.putConnection(connection);
-        }
-        return isExist;
+    public boolean isOnline(String login) throws BuberSQLException {
+        return super.find(login, SQL_SELECT_USER_IF_ONLINE) != null;
     }
 }

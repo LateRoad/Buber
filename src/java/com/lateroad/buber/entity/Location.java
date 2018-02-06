@@ -2,7 +2,7 @@ package com.lateroad.buber.entity;
 
 import java.util.Objects;
 
-public class Location extends Entity {
+public class Location implements Entity {
     private String login;
     private String country;
     private String city;
@@ -11,21 +11,19 @@ public class Location extends Entity {
     private String lat;
     private String lng;
 
-    public Location() {
 
-    }
-
-    public Location(String lat, String lng) {
-        this.lat = lat;
-        this.lng = lng;
-    }
-
-    public Location(String login, String country, String city, String street, String houseNumber) {
+    public Location(String login, String country, String city, String street, String houseNumber, String lat, String lng) {
         this.login = login;
         this.country = country;
         this.city = city;
         this.street = street;
         this.houseNumber = houseNumber;
+        this.lat = lat;
+        this.lng = lng;
+    }
+
+    public Location() {
+
     }
 
     public String getLogin() {

@@ -64,7 +64,7 @@ function calculateRouteInfo() {
     });
 }
 
-function showDirection() {
+function showDirection(origin, destination) {
     directionsService.route({
         origin: origin.position,
         destination: destination.position,

@@ -1,6 +1,6 @@
 package com.lateroad.tag;
 
-import com.lateroad.buber.entity.User;
+import com.lateroad.buber.entity.role.User;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
 
 import javax.servlet.jsp.JspTagException;
@@ -18,7 +18,7 @@ public class UserInfoCard extends RequestContextAwareTag {
         try {
             out.write("<div class=\"card mb-3\">");
             out.write("    <div class=\"card-body\">");
-            out.write("        <h6 class=\"card-title mb-1\"><a href=\"\">" + user.getUserInfo().getName() + user.getUserInfo().getSurname() + "</a></h6>");
+            out.write("        <h6 class=\"card-title mb-1\"><a href=\"\">" + user.getName() + " " + user.getSurname() + "</a></h6>");
             out.write("        <p class=\"card-text small\">" + user.getRole() + " " + user.getLogin() + "</p>");
             out.write("        <h6 class=\"card-title mb-1\">" + bundle.getString("userInfo-card-title") + "</h6>");
             out.write("    </div>");
@@ -29,28 +29,28 @@ public class UserInfoCard extends RequestContextAwareTag {
             out.write("            <tbody>");
             out.write("                <tr>");
             out.write("                    <td>" + bundle.getString("input-name-label") + ":</td>");
-            out.write("                    <td align=\"center\" id=\"name\">" + user.getUserInfo().getName() + "</td>");
+            out.write("                    <td align=\"center\" id=\"name\">" + user.getName() + "</td>");
             out.write("                    <td align = \"center\">");
             out.write("                        <button onclick = \"change('name', 'editNameBtn')\" id = \"editNameBtn\" class=\"btn btn-primary\">" + bundle.getString("button-edit") + "</button>");
             out.write("                    </td>");
             out.write("                </tr>");
             out.write("                <tr>");
             out.write("                    <td>" + bundle.getString("input-surname-label") + ":</td>");
-            out.write("                    <td align=\"center\" id=\"surname\">" + user.getUserInfo().getSurname() + "</td>");
+            out.write("                    <td align=\"center\" id=\"surname\">" + user.getSurname() + "</td>");
             out.write("                    <td align = \"center\">");
             out.write("                        <button onclick = \"change('surname', 'editSurnameBtn')\" id = \"editSurnameBtn\" class=\"btn btn-primary\">" + bundle.getString("button-edit") + "</button>");
             out.write("                    </td>");
             out.write("                </tr>");
             out.write("                <tr>");
             out.write("                    <td>" + bundle.getString("input-lastname-label") + ":</td>");
-            out.write("                    <td align=\"center\" id=\"lastname\">" + user.getUserInfo().getLastname() + "</td>");
+            out.write("                    <td align=\"center\" id=\"lastname\">" + user.getLastname() + "</td>");
             out.write("                    <td align = \"center\">");
             out.write("                        <button onclick = \"change('lastname', 'editLastnameBtn')\" id = \"editLastnameBtn\" class=\"btn btn-primary\">" + bundle.getString("button-edit") + "</button>");
             out.write("                    </td>");
             out.write("                </tr>");
             out.write("                <tr>");
             out.write("                    <td>" + bundle.getString("input-email-label") + ":</td>");
-            out.write("                    <td align=\"center\" id=\"email\">" + user.getUserInfo().getEmail() + "</td>");
+            out.write("                    <td align=\"center\" id=\"email\">" + user.getEmail() + "</td>");
             out.write("                    <td align = \"center\">");
             out.write("                        <button onclick = \"change('email', 'editEmailBtn')\" id = \"editEmailBtn\" class=\"btn btn-primary\">" + bundle.getString("button-edit") + "</button>");
             out.write("                    </td>");
