@@ -1,9 +1,10 @@
-package com.lateroad.buber.command.impl;
+package com.lateroad.buber.command.impl.user;
 
 import com.lateroad.buber.command.ICommand;
-import com.lateroad.buber.entity.role.Driver;
+import com.lateroad.buber.entity.Order;
 import com.lateroad.buber.exception.BuberSQLException;
-import com.lateroad.buber.service.role.AdminService;
+import com.lateroad.buber.model.CurrentModel;
+import com.lateroad.buber.service.OrderService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,15 +14,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class GetDriversCommand implements ICommand {
+public class GetTripsCommand implements ICommand {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
-        AdminService adminService = new AdminService();
+        OrderService orderService = new OrderService();
         try {
-            List<Driver> drivers = adminService.findAllDrivers();
-            req.setAttribute("drivers", drivers);
+            List<Order> trips = orderService.findTrips(((CurrentModel) req.getSession().getAttribute("user")).getCurrentUser());
+            req.setAttribute("trips", trips);
 
-            RequestDispatcher requestDispatcher = servlet.getServletContext().getRequestDispatcher("/drivers.jsp");
+            RequestDispatcher requestDispatcher = servlet.getServletContext().getRequestDispatcher("/trips.jsp");
             requestDispatcher.forward(req, resp);
         } catch (ServletException | IOException e) {
             e.printStackTrace();

@@ -14,7 +14,7 @@
        value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
        scope="session"/>
 <fmt:setLocale value="${language}"/>
-<fmt:setBundle basename="translate"/>
+<fmt:setBundle basename="translation"/>
 
 <html lang="${language}">
 <head>
@@ -94,8 +94,9 @@
 <script src="src/vendor/datatables/jquery.dataTables.js"></script>
 <script src="src/vendor/datatables/dataTables.bootstrap4.js"></script>
 <!-- Custom scripts for all pages-->
-<script src="src/js/sb-admin.js"></script>
-<script src="src/js/sb-admin-datatables.min.js"></script>
-<script src="src/js/commonOperations.js"></script>
+<script src="src/js/script.js"></script>
+<script src="src/js/script-datatables.min.js"></script>
+<script src="src/js/role/admin.js"></script>
+<script src="src/js/role/commonOperation.js"></script>
 </body>
 </html>

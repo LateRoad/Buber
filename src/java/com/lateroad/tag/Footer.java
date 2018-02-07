@@ -1,7 +1,5 @@
 package com.lateroad.tag;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
@@ -11,8 +9,22 @@ public class Footer extends TagSupport {
     private String developer;
     private String project;
 
+
+    public void setYear(short year) {
+        this.year = year;
+    }
+
+    public void setDeveloper(String developer) {
+        this.developer = developer;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
+    }
+
+
     @Override
-    public int doStartTag() throws JspException {
+    public int doStartTag() {
         JspWriter out = pageContext.getOut();
         try {
             out.write("<footer class=\"sticky-footer\">");
@@ -23,40 +35,10 @@ public class Footer extends TagSupport {
             out.write("        </div>");
             out.write("    </div>");
             out.write("</footer>");
-
         } catch (IOException e) {
-            throw new JspTagException(e.getMessage());
+            e.printStackTrace();
         }
-        return EVAL_BODY_INCLUDE;
-    }
 
-    @Override
-    public int doEndTag() {
-        return EVAL_PAGE;
+        return SKIP_BODY;
     }
-
-    public short getYear() {
-        return year;
-    }
-
-    public void setYear(short year) {
-        this.year = year;
-    }
-
-    public String getDeveloper() {
-        return developer;
-    }
-
-    public void setDeveloper(String developer) {
-        this.developer = developer;
-    }
-
-    public String getProject() {
-        return project;
-    }
-
-    public void setProject(String project) {
-        this.project = project;
-    }
-
 }

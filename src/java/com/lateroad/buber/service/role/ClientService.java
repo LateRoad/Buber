@@ -49,9 +49,9 @@ public class ClientService implements CommonUserService<CurrentModel> {
 //
 //    @Override
 //    public User userGetByEmailAndPassword(String login, String password) throws SQLException, BuberSQLException {
-//        User client = clientInfoDAO.find(login, password);
-//        setOnline(client.getLogin(), true);
-//        return client;
+//        User user = clientInfoDAO.find(login, password);
+//        setOnline(user.getLogin(), true);
+//        return user;
 //    }
 //
     public void takeTaxi(String login, String driverLogin, String money) throws BuberSQLException {

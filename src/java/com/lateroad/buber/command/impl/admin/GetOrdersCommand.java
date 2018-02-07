@@ -1,10 +1,9 @@
-package com.lateroad.buber.command.impl;
+package com.lateroad.buber.command.impl.admin;
 
 import com.lateroad.buber.command.ICommand;
 import com.lateroad.buber.entity.Order;
 import com.lateroad.buber.exception.BuberSQLException;
-import com.lateroad.buber.model.CurrentModel;
-import com.lateroad.buber.service.OrderService;
+import com.lateroad.buber.service.role.AdminService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,15 +13,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class GetTripsCommand implements ICommand {
+public class GetOrdersCommand implements ICommand {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
-        OrderService orderService = new OrderService();
+        AdminService adminService = new AdminService();
         try {
-            List<Order> trips = orderService.findTrips(((CurrentModel) req.getSession().getAttribute("user")).getCurrentUser());
-            req.setAttribute("trips", trips);
+            List<Order> orders = adminService.findAllOrders();
+            req.setAttribute("orders", orders);
 
-            RequestDispatcher requestDispatcher = servlet.getServletContext().getRequestDispatcher("/trips.jsp");
+            RequestDispatcher requestDispatcher = servlet.getServletContext().getRequestDispatcher("/orders.jsp");
             requestDispatcher.forward(req, resp);
         } catch (ServletException | IOException e) {
             e.printStackTrace();

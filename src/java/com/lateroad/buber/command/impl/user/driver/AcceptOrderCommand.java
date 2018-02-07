@@ -1,4 +1,4 @@
-package com.lateroad.buber.command.impl;
+package com.lateroad.buber.command.impl.user.driver;
 
 import com.lateroad.buber.command.ICommand;
 import com.lateroad.buber.exception.BuberSQLException;

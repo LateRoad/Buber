@@ -1,19 +1,26 @@
 package com.lateroad.tag;
 
 import com.lateroad.buber.entity.role.Client;
-import org.springframework.web.servlet.tags.RequestContextAwareTag;
 
-import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class ClientInfoCard extends RequestContextAwareTag {
+public class ClientInfoCard extends TagSupport {
     private Client client;
 
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+
     @Override
-    protected int doStartTagInternal() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("translate", getRequestContext().getLocale());
+    public int doStartTag() {
+        Locale language = (Locale) this.pageContext.getSession().getAttribute("language");
+        ResourceBundle bundle = ResourceBundle.getBundle("translation", language);
+
         JspWriter out = pageContext.getOut();
         try {
             out.write("<div class=\"card mb-3\">");
@@ -43,22 +50,8 @@ public class ClientInfoCard extends RequestContextAwareTag {
             out.write("    <div class=\"card-footer small text-muted\">" + bundle.getString("powered-by-lateroad") + "</div>");
             out.write("</div>");
         } catch (IOException e) {
-            throw new JspTagException(e.getMessage());
+            e.printStackTrace();
         }
-        return EVAL_BODY_INCLUDE;
+        return SKIP_BODY;
     }
-
-    @Override
-    public int doEndTag() {
-        return EVAL_PAGE;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
 }

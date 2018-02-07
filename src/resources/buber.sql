@@ -8,7 +8,7 @@ USE `buber`;
 CREATE TABLE IF NOT EXISTS `buber`.`user` (
   `login` VARCHAR(45) NOT NULL COMMENT 'Логин, под которым производится вход на сайт.',
   `password` VARCHAR(45) NOT NULL COMMENT 'Пароль, под которым производится вход на сайт.',
-  `role` ENUM('admin', 'client', 'driver') NOT NULL DEFAULT 'client' COMMENT 'Показывает уровень доступа к внутренним данным базы данных. Админ способен «банить», давать премии постоянным клиентам.',
+  `role` ENUM('admin', 'user', 'driver') NOT NULL DEFAULT 'user' COMMENT 'Показывает уровень доступа к внутренним данным базы данных. Админ способен «банить», давать премии постоянным клиентам.',
   `is_muted` TINYINT NOT NULL DEFAULT 0 COMMENT 'Показатель того, является ли пользователь заблокированным',
   `is_online` TINYINT NOT NULL DEFAULT 0 COMMENT 'Показатель того, является ли пользователь водителем. При положительном исходе, пользователю веб-приложения предложат выбрать режим входа: Войти как клиент или Войти как водитель.',
    PRIMARY KEY (`login`),

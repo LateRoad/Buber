@@ -34,35 +34,7 @@ var image = {
 };
 
 
-function updateActiveOrders() {
-    $.ajax({
-        url: "/userServlet?action=updateActiveOrders",
-        data: {name: 'abc'},
-        type: 'post',
-        cache: false,
-        success: function () {
-            $('#activeOrders').load("/home.jsp" + ' #activeOrders');
-        },
-        error: function () {
-            alert('error');
-        }
-    });
-}
 
-function calculateRouteInfo() {
-    $.ajax({
-        url: "/userServlet?action=getRouteInfo&from=" + $originInput.val() + "&to=" + $destinationInput.val() + "&fromLat=" + origin.position.lat() + "&fromLng=" + origin.position.lng() + "&toLat=" + destination.position.lat() + "&toLng=" + destination.position.lng(),
-        data: {name: 'abc'},
-        type: 'post',
-        cache: false,
-        success: function () {
-            $('#routeClientInfo').load("/home.jsp" + ' #routeClientInfo');
-        },
-        error: function () {
-            alert('error');
-        }
-    });
-}
 
 function showDirection(origin, destination) {
     directionsService.route({
@@ -302,3 +274,4 @@ function handleLocationError(browserHasGeolocation, pos) {
         'Error: The Geolocation service failed.' :
         'Error: Your browser doesn\'t support geolocation.');
 }
+

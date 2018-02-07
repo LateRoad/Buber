@@ -1,0 +1,1 @@
+mysql -u root -D buber  -p021929 -e "update user set is_online = 0;"

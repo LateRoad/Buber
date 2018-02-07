@@ -10,7 +10,7 @@ public interface CommonUserService<E extends CurrentModel> {
 
 
 //    public User userGetByEmailAndPassword(String login, String password) throws SQLException, BuberSQLException {
-//        User user = UserDAO.getInstance().find(login, password, "client");
+//        User user = UserDAO.getInstance().find(login, password, "user");
 //        setOnline(user.getLogin(), true);
 //        return user;
 //    }

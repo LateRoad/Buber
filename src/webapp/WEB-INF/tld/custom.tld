@@ -96,16 +96,11 @@
     </tag>
 
     <tag>
-        <name>driver-card</name>
-        <tag-class>com.lateroad.tag.DriverCard</tag-class>
-        <body-content>scriptless</body-content>
+        <name>user-card</name>
+        <tag-class>com.lateroad.tag.UserCard</tag-class>
+        <body-content>JSP</body-content>
         <attribute>
-            <name>driver</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>priceForOrder</name>
+            <name>user</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

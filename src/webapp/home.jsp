@@ -14,7 +14,7 @@
        value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
        scope="session"/>
 <fmt:setLocale value="${language}"/>
-<fmt:setBundle basename="translate"/>
+<fmt:setBundle basename="translation"/>
 
 <html lang="${language}">
 <head>
@@ -70,7 +70,10 @@
                             </div>
                             <div class="card-body">
                                 <c:forEach var="driver" items="${nearestDrivers}">
-                                    <ctg:driver-card driver="${driver}" priceForOrder="${price}"/>
+                                    <ctg:user-card user="${driver}">
+                                        <button onclick="takeTaxi('driver.getLogin()', 'priceForOrder')" type="button"
+                                                class="btn btn-primary"><fmt:message key="button-take-taxi"/></button>
+                                    </ctg:user-card>
                                 </c:forEach>
                             </div>
                         </div>
@@ -112,11 +115,11 @@
 <!-- Core plugin JavaScript-->
 <script src="src/vendor/jquery-easing/jquery.easing.min.js"></script>
 <!-- Custom scripts for all pages-->
-<script async src="src/js/sb-admin.js"></script>
+<script async src="src/js/script.js"></script>
 <script async src="src/js/googlemap.js"></script>
-<script async src="src/js/routeInfo.js"></script>
-<script async src="src/js/home.js"></script>
-<script src="src/js/commonOperations.js"></script>
+<script src="src/js/role/user/driver.js"></script>
+<script src="src/js/role/user/client.js"></script>
+<script src="src/js/role/commonOperation.js"></script>
 
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYpnDCcwayuy4jZ-1IzCUpg3AHFVO80Is&libraries=places&callback=initMap&language=${language}"></script>

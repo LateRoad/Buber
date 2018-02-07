@@ -6,12 +6,18 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+@WebFilter(urlPatterns = {"*.jsp", "/servlet"},
+        initParams = {@WebInitParam(name = "INDEX_PATH", value = "/index.jsp"),
+                @WebInitParam(name = "ERROR_PATH", value = "/error.jsp")})
 public class SecurityFilter implements Filter {
     static {
         new DOMConfigurator().doConfigure("log4j2.xml", LogManager.getLoggerRepository());
@@ -24,7 +30,7 @@ public class SecurityFilter implements Filter {
             "/orders.jsp",
             "/clients.jsp",
             "/drivers.jsp",
-            "/adminServlet");
+            "/servlet");
 
     private static final List<String> clientFilterPaths = Arrays.asList(
             "/index.jsp",
@@ -32,7 +38,7 @@ public class SecurityFilter implements Filter {
             "/payment.jsp",
             "/profile.jsp",
             "/trips.jsp",
-            "/userServlet");
+            "/servlet");
 
     private static final List<String> driverFilterPaths = Arrays.asList(
             "/index.jsp",
@@ -41,109 +47,92 @@ public class SecurityFilter implements Filter {
             "/payment.jsp",
             "/profile.jsp",
             "/trips.jsp",
-            "/userServlet");
+            "/servlet");
 
-    private static final List<String> beforeAuthFilter = Arrays.asList(
+    private static final List<String> guestFilterPaths = Arrays.asList(
             "/index.jsp",
             "/auth-admin.jsp",
             "/auth-driver.jsp",
             "/auth-client.jsp",
-            "/signin.jsp");
-
-    private static final List<String> serviceUriPaths = Arrays.asList(
-            "/favicon.ico",
-            "/src",
-            "/commonOperation");
+            "/signin.jsp",
+            "/servlet");
 
 
-    public void init(FilterConfig filterConfig) throws ServletException {
+    private String indexPath;
+    private String errorPath;
 
+
+    public void init(FilterConfig filterConfig) {
+        indexPath = filterConfig.getInitParameter("INDEX_PATH");
+        errorPath = filterConfig.getInitParameter("ERROR_PATH");
     }
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        String errorJSP = "/error.jsp";
-        String indexJSP = "/index.jsp";
-        String uri = ((HttpServletRequest) request).getRequestURI();
-        HttpSession session = ((HttpServletRequest) request).getSession();
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) {
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
+        HttpSession session = req.getSession();
 
-        logger.info("URI: " + uri + ((HttpServletRequest) request).getMethod());
         CurrentModel user = (CurrentModel) session.getAttribute("user");
 
-        if ("/".equals(uri)) {
-//            RequestDispatcher dispatcher = request.getRequestDispatcher(indexJSP);
-//            dispatcher.forward(request, response);
-            filterChain.doFilter(request, response);
-            return;
-        }
+        String uri = req.getRequestURI();
+        logger.info("URI: " + uri + req.getMethod());
 
-        for (String serviceUri : serviceUriPaths) {
-            if (uri.contains(serviceUri)) {
-                filterChain.doFilter(request, response);
+        try {
+            if ("/".equals(uri)) {
+                req.getRequestDispatcher(indexPath).forward(req, resp);
                 return;
             }
-        }
 
-        if (user == null) {
-            if (!beforeAuthFilter.contains(uri)) {
-                RequestDispatcher dispatcher = request.getRequestDispatcher(errorJSP);
-                dispatcher.forward(request, response);
-                return;
+
+            if (user == null) {
+                if (!guestFilterPaths.contains(uri)) {
+                    req.getRequestDispatcher(errorPath).forward(req, resp);
+                    return;
+                }
             }
-        }
 
-        if (user != null) {
-            switch (user.getCurrentUser().getRole()) {
-                case CLIENT:
-                    if (!clientFilterPaths.contains(uri)) {
-                        RequestDispatcher dispatcher = request.getRequestDispatcher(errorJSP);
-                        dispatcher.forward(request, response);
-                        return;
-                    }
-                    break;
-                case DRIVER:
-                    if (!driverFilterPaths.contains(uri)) {
-                        RequestDispatcher dispatcher = request.getRequestDispatcher(errorJSP);
-                        dispatcher.forward(request, response);
-                        return;
-                    }
-                    break;
-                case ADMIN:
-                    if (!adminFilterPaths.contains(uri)) {
-                        RequestDispatcher dispatcher = request.getRequestDispatcher(errorJSP);
-                        dispatcher.forward(request, response);
-                        return;
-                    }
-                    break;
-                default:
-                    break;
+            if (user != null) {
+                if (guestFilterPaths.contains(uri)) {
+                    filterChain.doFilter(req, resp);
+                    return;
+                }
+
+                switch (user.getCurrentUser().getRole()) {
+                    case CLIENT:
+                        if (!clientFilterPaths.contains(uri)) {
+                            req.getRequestDispatcher(errorPath).forward(req, resp);
+                            return;
+                        }
+                        break;
+                    case DRIVER:
+                        if (!driverFilterPaths.contains(uri)) {
+                            req.getRequestDispatcher(errorPath).forward(req, resp);
+                            filterChain.doFilter(req, resp);
+                            return;
+                        }
+                        break;
+                    case ADMIN:
+                        if (!adminFilterPaths.contains(uri)) {
+                            req.getRequestDispatcher(errorPath).forward(req, resp);
+                            return;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
+            filterChain.doFilter(req, resp);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        filterChain.doFilter(request, response);
-//
-//        if(user != null){
-//            if("/signin.html".equals(uri) || "/signin.jsp".equals(uri)){
-//                ((HttpServletResponse)response).sendRedirect("/index.jsp");
-//                return;
-//            }
-//            else{
-//                filterChain.doFilter(request, response);
-//                return;
-//            }
-//        }
-//        if (!pathFilters.contains(uri)) {
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
-//
-////?????
-//        ((HttpServletResponse)response).sendRedirect("signin.jsp?=invalid");
-
     }
 
     public void destroy() {
 
     }
+
 
     private static String getClientIp(HttpServletRequest request) {
 

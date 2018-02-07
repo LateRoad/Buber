@@ -1,21 +1,35 @@
 package com.lateroad.tag;
 
-import org.springframework.web.servlet.tags.RequestContextAwareTag;
-
-import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class RouteInfoCard extends RequestContextAwareTag {
+public class RouteInfoCard extends TagSupport {
     private String price;
     private String distance;
     private String time;
 
 
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+
     @Override
-    protected int doStartTagInternal() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("translate", getRequestContext().getLocale());
+    public int doStartTag() {
+        Locale language = (Locale) this.pageContext.getSession().getAttribute("language");
+        ResourceBundle bundle = ResourceBundle.getBundle("translation", language);
+
         JspWriter out = pageContext.getOut();
         try {
             out.write("<div class=\"card mb-3\">");
@@ -32,37 +46,8 @@ public class RouteInfoCard extends RequestContextAwareTag {
             out.write("    </div>");
             out.write("</div>");
         } catch (IOException e) {
-            throw new JspTagException(e.getMessage());
+            e.printStackTrace();
         }
-        return EVAL_BODY_INCLUDE;
-    }
-
-    @Override
-    public int doEndTag() {
-        return EVAL_PAGE;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getDistance() {
-        return distance;
-    }
-
-    public void setDistance(String distance) {
-        this.distance = distance;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
+        return SKIP_BODY;
     }
 }

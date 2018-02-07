@@ -1,6 +1,7 @@
 package com.lateroad.buber.command.impl;
 
 import com.lateroad.buber.command.ICommand;
+import com.lateroad.buber.entity.type.UserType;
 import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.model.CurrentModel;
 import com.lateroad.buber.service.CommonUserService;
@@ -49,7 +50,9 @@ public class SignInCommand implements ICommand {
 //                    requestDispatcher.forward(req, resp);
                     resp.setStatus(200);
                     resp.getWriter().write(user.getCurrentUser().getRole().toString());
-//                    resp.sendRedirect("/home.jsp");
+                    if (user.getCurrentUser().getRole().equals(UserType.CLIENT)) {
+                        session.setMaxInactiveInterval(60);
+                    }
                 }
             }
         } catch (BuberSQLException e) {

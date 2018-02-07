@@ -1,4 +1,4 @@
-package com.lateroad.buber.command.impl;
+package com.lateroad.buber.command.impl.admin;
 
 import com.lateroad.buber.command.ICommand;
 import com.lateroad.buber.entity.role.Client;

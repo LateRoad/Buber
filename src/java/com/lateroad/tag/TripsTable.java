@@ -2,21 +2,33 @@ package com.lateroad.tag;
 
 import com.lateroad.buber.entity.Order;
 import com.lateroad.buber.entity.type.UserType;
-import org.springframework.web.servlet.tags.RequestContextAwareTag;
 
-import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class TripsTable extends RequestContextAwareTag {
+public class TripsTable extends TagSupport {
     private UserType role;
     private List<Order> trips;
 
+
+    public void setRole(UserType role) {
+        this.role = role;
+    }
+
+    public void setTrips(List<Order> trips) {
+        this.trips = trips;
+    }
+
+
     @Override
-    protected int doStartTagInternal() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("translate", getRequestContext().getLocale());
+    public int doStartTag() {
+        Locale language = (Locale) this.pageContext.getSession().getAttribute("language");
+        ResourceBundle bundle = ResourceBundle.getBundle("translation", language);
+
         JspWriter out = pageContext.getOut();
         try {
             out.write("<div class=\"card mb-3\">");
@@ -87,30 +99,8 @@ public class TripsTable extends RequestContextAwareTag {
             out.write("    </div>");
             out.write("</div>");
         } catch (IOException e) {
-            throw new JspTagException(e.getMessage());
+            e.printStackTrace();
         }
-        return EVAL_BODY_INCLUDE;
-    }
-
-
-    @Override
-    public int doEndTag() {
-        return EVAL_PAGE;
-    }
-
-    public UserType getRole() {
-        return role;
-    }
-
-    public void setRole(UserType role) {
-        this.role = role;
-    }
-
-    public List<Order> getTrips() {
-        return trips;
-    }
-
-    public void setTrips(List<Order> trips) {
-        this.trips = trips;
+        return SKIP_BODY;
     }
 }

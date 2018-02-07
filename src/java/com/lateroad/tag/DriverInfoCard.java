@@ -1,19 +1,26 @@
 package com.lateroad.tag;
 
 import com.lateroad.buber.entity.role.Driver;
-import org.springframework.web.servlet.tags.RequestContextAwareTag;
 
-import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class DriverInfoCard extends RequestContextAwareTag {
+public class DriverInfoCard extends TagSupport {
     private Driver driver;
 
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+
+
     @Override
-    protected int doStartTagInternal() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("translate", getRequestContext().getLocale());
+    public int doStartTag() {
+        Locale language = (Locale) this.pageContext.getSession().getAttribute("language");
+        ResourceBundle bundle = ResourceBundle.getBundle("translation", language);
+
         JspWriter out = pageContext.getOut();
         try {
             out.write("<div class=\"card mb-3\">");
@@ -50,21 +57,8 @@ public class DriverInfoCard extends RequestContextAwareTag {
             out.write("    <div class=\"card-footer small text-muted\">" + bundle.getString("powered-by-lateroad") + "</div>");
             out.write("</div>");
         } catch (IOException e) {
-            throw new JspTagException(e.getMessage());
+            e.printStackTrace();
         }
-        return EVAL_BODY_INCLUDE;
-    }
-
-    @Override
-    public int doEndTag() {
-        return EVAL_PAGE;
-    }
-
-    public Driver getDriver() {
-        return driver;
-    }
-
-    public void setDriver(Driver driver) {
-        this.driver = driver;
+        return SKIP_BODY;
     }
 }

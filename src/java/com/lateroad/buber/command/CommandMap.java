@@ -1,6 +1,19 @@
 package com.lateroad.buber.command;
 
-import com.lateroad.buber.command.impl.*;
+
+import com.lateroad.buber.command.impl.ChangeLanguage;
+import com.lateroad.buber.command.impl.SignInCommand;
+import com.lateroad.buber.command.impl.SignOutCommand;
+import com.lateroad.buber.command.impl.admin.GetClientsCommand;
+import com.lateroad.buber.command.impl.admin.GetDriversCommand;
+import com.lateroad.buber.command.impl.admin.GetOrdersCommand;
+import com.lateroad.buber.command.impl.user.GetTripsCommand;
+import com.lateroad.buber.command.impl.user.SetCurrentLocation;
+import com.lateroad.buber.command.impl.user.UpdateInfoCommand;
+import com.lateroad.buber.command.impl.user.client.GetRouteInfoCommand;
+import com.lateroad.buber.command.impl.user.client.TakeTaxiCommand;
+import com.lateroad.buber.command.impl.user.driver.AcceptOrderCommand;
+import com.lateroad.buber.command.impl.user.driver.UpdateActiveOrdersCommand;
 
 import java.util.HashMap;
 

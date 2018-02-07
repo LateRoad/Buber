@@ -14,7 +14,7 @@
        value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
        scope="session"/>
 <fmt:setLocale value="${language}"/>
-<fmt:setBundle basename="translate"/>
+<fmt:setBundle basename="translation"/>
 
 <html lang="${language}">
 <head>
@@ -52,7 +52,9 @@
 <!-- Core plugin JavaScript-->
 <script src="src/vendor/jquery-easing/jquery.easing.min.js"></script>
 <!-- Custom scripts for all pages-->
-<script src="src/js/sb-admin.js"></script>
-<script src="src/js/commonOperations.js"></script>
+<script src="src/js/script.js"></script>
+<script src="src/js/script-datatables.js"></script>
+<script src="src/js/role/admin.js"></script>
+<script src="src/js/role/commonOperation.js"></script>
 </body>
 </html>

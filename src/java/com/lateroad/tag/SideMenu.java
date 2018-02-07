@@ -1,20 +1,16 @@
 package com.lateroad.tag;
 
 import com.lateroad.buber.model.CurrentModel;
-import org.springframework.web.servlet.tags.RequestContextAwareTag;
 
-import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class SideMenu extends RequestContextAwareTag {
-
+public class SideMenu extends TagSupport {
     private CurrentModel user;
 
-    public CurrentModel getUser() {
-        return user;
-    }
 
     public void setUser(CurrentModel user) {
         this.user = user;
@@ -22,8 +18,10 @@ public class SideMenu extends RequestContextAwareTag {
 
 
     @Override
-    protected int doStartTagInternal() throws Exception {
-        ResourceBundle bundle = ResourceBundle.getBundle("translate", getRequestContext().getLocale());
+    public int doStartTag() {
+        Locale language = (Locale) this.pageContext.getSession().getAttribute("language");
+        ResourceBundle bundle = ResourceBundle.getBundle("translation", language);
+
         JspWriter out = pageContext.getOut();
         try {
             out.write("<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark fixed-top\" id=\"mainNav\">");
@@ -58,13 +56,13 @@ public class SideMenu extends RequestContextAwareTag {
             out.write("                <li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Language\">");
             out.write("                    <a class=\"nav-link nav-link-collapse collapsed\" data-toggle=\"collapse\" href=\"#language\" data-parent=\"#language\">");
             out.write("                        <i class=\"fa fa-fw fa-language\"></i>");
-            out.write("                        <span class=\"nav-link-text\">" + bundle.getString("nav-language") + "</span>");
+            out.write("                        <span class=\"nav-link-text\">" + bundle.getString("nav-language") + " " + language + "</span>");
             out.write("                    </a>");
 
             out.write("                    <ul class=\"sidenav-second-level collapse\" id=\"language\">");
-            out.write("                        <li><a onclick=\"changeLang(\'ru\')\">" + bundle.getString("lang-russian") + "</a></li>");
-            out.write("                        <li><a onclick=\"changeLang(\'by\')\">" + bundle.getString("lang-belarussian") + "</a></li>");
-            out.write("                        <li><a onclick=\"changeLang(\'en\')\">" + bundle.getString("lang-english") + "</a></li>");
+            out.write("                        <li><a onclick=\"changeLang(\'ru_RU\')\">" + bundle.getString("lang-russian") + "</a></li>");
+            out.write("                        <li><a onclick=\"changeLang(\'be_BY\')\">" + bundle.getString("lang-belarussian") + "</a></li>");
+            out.write("                        <li><a onclick=\"changeLang(\'en_US\')\">" + bundle.getString("lang-english") + "</a></li>");
             out.write("                    </ul>");
             out.write("                </li>");
             out.write("            </ul>");
@@ -98,9 +96,9 @@ public class SideMenu extends RequestContextAwareTag {
 
             logOutModal(out, bundle);
         } catch (IOException e) {
-            throw new JspTagException(e.getMessage());
+            e.printStackTrace();
         }
-        return EVAL_BODY_INCLUDE;
+        return SKIP_BODY;
     }
 
     private void logOutModal(JspWriter out, ResourceBundle bundle) throws IOException {
@@ -117,23 +115,18 @@ public class SideMenu extends RequestContextAwareTag {
         out.write("            <div class=\"modal-body\">" + bundle.getString("modal-sign-out-body") + "</div>");
         out.write("            <div class=\"modal-footer\">");
         out.write("                <button class=\"btn btn-secondary\" type=\"button\" data-dismiss=\"modal\">" + bundle.getString("button-cancel") + "</button>");
-        out.write("                <a class=\"btn btn-primary\" href=\"/commonOperation?action=signOut\" name=\"action\"value=\"signOut\">" + bundle.getString("button-sign-out") + "</a>");
+        out.write("                <a class=\"btn btn-primary\" href=\"/servlet?action=signOut\">" + bundle.getString("button-sign-out") + "</a>");
         out.write("            </div>");
         out.write("        </div>");
         out.write("    </div>");
         out.write("</div>");
     }
 
-    @Override
-    public int doEndTag() {
-        return EVAL_PAGE;
-    }
-
     private void userMenu(JspWriter out, ResourceBundle bundle) throws IOException {
         out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\" " + bundle.getString("nav-profile") + "\"><a class=\"nav-link\" href=\"/profile.jsp\"><i class=\"fa fa-user fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-profile") + "</span></a></li>");
         out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\" " + bundle.getString("nav-payments") + "\"><a class=\"nav-link\" href=\"/payment.jsp\"><i class=\"fa fa-credit-card fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-payments") + "</span></a></li>");
         out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\" " + bundle.getString("nav-trips") + "\">");
-        out.write("    <a class=\"nav-link\" href=\"/commonOperation?action=getTrips\"><i class=\"fa fa-car fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-trips") + "</span></a>");
+        out.write("    <a class=\"nav-link\" href=\"/servlet?action=getTrips\"><i class=\"fa fa-car fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-trips") + "</span></a>");
         out.write("</li>");
     }
 
@@ -148,8 +141,8 @@ public class SideMenu extends RequestContextAwareTag {
     }
 
     private void adminMenu(JspWriter out, ResourceBundle bundle) throws IOException {
-        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Orders\"><a class=\"nav-link\" href=\"/adminServlet?action=getDrivers\"><i class=\"fa fa-taxi fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-drivers") + "</span></a></li>");
-        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Users\"><a class=\"nav-link\" href=\"/adminServlet?action=getClients\"><i class=\"fa fa-group fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-clients") + "</span></a></li>");
-        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Orders\"><a class=\"nav-link\" href=\"/adminServlet?action=getOrders\"><i class=\"fa fa-list-alt fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-orders") + "</span></a></li>");
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Orders\"><a class=\"nav-link\" href=\"/servlet?action=getDrivers\"><i class=\"fa fa-taxi fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-drivers") + "</span></a></li>");
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Users\"><a class=\"nav-link\" href=\"/servlet?action=getClients\"><i class=\"fa fa-group fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-clients") + "</span></a></li>");
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Orders\"><a class=\"nav-link\" href=\"/servlet?action=getOrders\"><i class=\"fa fa-list-alt fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-orders") + "</span></a></li>");
     }
 }
