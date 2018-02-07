@@ -1,6 +1,6 @@
 package com.lateroad.buber.service;
 
-import com.lateroad.buber.database.dao.UserDAO;
+import com.lateroad.buber.command.impl.database.dao.UserDAO;
 import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.model.CurrentModel;
 

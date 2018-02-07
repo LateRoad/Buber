@@ -5,12 +5,11 @@ import com.lateroad.buber.command.ICommand;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Locale;
 
 public class ChangeLanguage implements ICommand {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
         String language = req.getParameter("lang");
-        req.getSession().setAttribute("language", new Locale(language));
+        req.getSession().setAttribute("language", language);
     }
 }

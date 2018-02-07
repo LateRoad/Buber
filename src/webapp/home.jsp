@@ -71,7 +71,7 @@
                             <div class="card-body">
                                 <c:forEach var="driver" items="${nearestDrivers}">
                                     <ctg:user-card user="${driver}">
-                                        <button onclick="takeTaxi('driver.getLogin()', 'priceForOrder')" type="button"
+                                        <button onclick="takeTaxi('${driver.getLogin()}', '${price}')" type="button"
                                                 class="btn btn-primary"><fmt:message key="button-take-taxi"/></button>
                                     </ctg:user-card>
                                 </c:forEach>

@@ -25,6 +25,7 @@ public class DriverBuilder implements RoleBuilder<Driver>, StatementBuilder<Driv
                     resultSet.getString("phone_number"),
                     resultSet.getInt("trips_number"),
                     resultSet.getInt("reputation"),
+                    resultSet.getBoolean("is_muted"),
                     resultSet.getString("car_number"));
         } catch (SQLException e) {
             throw new BuberSQLException("Something went wrong.", e);

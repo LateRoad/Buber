@@ -11,7 +11,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:set var="language"
-       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale.language}"
        scope="session"/>
 <fmt:setLocale value="${language}"/>
 <fmt:setBundle basename="translation"/>
@@ -44,28 +44,37 @@
         <div class="card card-register mx-auto mt-5">
             <div class="card-header"><fmt:message key="register-form-header"/></div>
             <div class="card-body">
-                <form>
+                <form id="registration_form">
+                    <div class="form-group">
+                        <label for="inputLogin"><fmt:message key="input-login-label"/></label>
+                        <input id="inputLogin" name="login" class="form-control" type="text"
+                               aria-describedby="loginHelp"
+                               placeholder="<fmt:message key="input-login-placeholder"/>">
+                    </div>
                     <div class="form-group">
                         <div class="form-row">
                             <div class="col-md-6">
                                 <label for="inputName"><fmt:message key="input-name-label"/></label>
-                                <input class="form-control" id="inputName" type="text"
-                                       aria-describedby="nameHelp" placeholder="<fmt:message key="input-name-placeholder"/>">
+                                <input name="name" class="form-control" id="inputName" type="text"
+                                       aria-describedby="nameHelp"
+                                       placeholder="<fmt:message key="input-name-placeholder"/>">
                             </div>
                             <div class="col-md-6">
-                                <label for="inputName"><fmt:message key="input-surname-label"/></label>
-                                <input class="form-control" id="inputSurname" type="text"
-                                       aria-describedby="nameHelp" placeholder="<fmt:message key="input-surname-placeholder"/>">
+                                <label for="inputSurname"><fmt:message key="input-surname-label"/></label>
+                                <input name="surname" class="form-control" id="inputSurname" type="text"
+                                       aria-describedby="surnameHelp"
+                                       placeholder="<fmt:message key="input-surname-placeholder"/>">
                             </div>
                             <div class="col-md-6">
                                 <label for="inputLastName"><fmt:message key="input-lastname-label"/></label>
-                                <input class="form-control" id="inputLastName" type="text"
-                                       aria-describedby="nameHelp" placeholder="<fmt:message key="input-lastname-placeholder"/>">
+                                <input name="lastname" class="form-control" id="inputLastName" type="text"
+                                       aria-describedby="nameHelp"
+                                       placeholder="<fmt:message key="input-lastname-placeholder"/>">
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputEmail"><fmt:message key="input-email-label"/></label>
+                        <label name="email" for="inputEmail"><fmt:message key="input-email-label"/></label>
                         <input class="form-control" id="inputEmail" type="email" aria-describedby="emailHelp"
                                placeholder="<fmt:message key="input-email-placeholder"/>">
                     </div>
@@ -73,17 +82,18 @@
                         <div class="form-row">
                             <div class="col-md-6">
                                 <label for="inputPassword"><fmt:message key="input-password-label"/></label>
-                                <input class="form-control" id="inputPassword" type="password"
+                                <input name="password" class="form-control" id="inputPassword" type="password"
                                        placeholder="<fmt:message key="input-password-placeholder"/>">
                             </div>
                             <div class="col-md-6">
                                 <label for="confirmPassword"><fmt:message key="input-confirmPassword-label"/></label>
-                                <input class="form-control" id="confirmPassword" type="password"
+                                <input name="confirmPassword" class="form-control" id="confirmPassword" type="password"
                                        placeholder="<fmt:message key="input-confirmPassword-placeholder"/>">
                             </div>
                         </div>
                     </div>
-                    <a class="btn btn-primary btn-block" href=""><fmt:message key="button-register"/></a>
+                    <button class="btn btn-primary btn-block" onclick="register('client')"><fmt:message
+                            key="button-register"/></button>
                 </form>
             </div>
         </div>

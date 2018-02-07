@@ -1,4 +1,4 @@
-package com.lateroad.buber.database.dao;
+package com.lateroad.buber.command.impl.database.dao;
 
 import com.lateroad.buber.builder.LocationBuilder;
 import com.lateroad.buber.entity.Location;

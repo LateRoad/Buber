@@ -1,9 +1,9 @@
 package com.lateroad.buber.service.role;
 
-import com.lateroad.buber.database.dao.LocationInfoDAO;
-import com.lateroad.buber.database.dao.OrderDAO;
-import com.lateroad.buber.database.dao.UserDAO;
-import com.lateroad.buber.database.dao.role.DriverDAO;
+import com.lateroad.buber.command.impl.database.dao.LocationInfoDAO;
+import com.lateroad.buber.command.impl.database.dao.OrderDAO;
+import com.lateroad.buber.command.impl.database.dao.UserDAO;
+import com.lateroad.buber.command.impl.database.dao.role.DriverDAO;
 import com.lateroad.buber.entity.Location;
 import com.lateroad.buber.entity.Order;
 import com.lateroad.buber.entity.role.Driver;

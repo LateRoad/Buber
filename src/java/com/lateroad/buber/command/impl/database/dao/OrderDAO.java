@@ -1,6 +1,6 @@
-package com.lateroad.buber.database.dao;
+package com.lateroad.buber.command.impl.database.dao;
 
-import com.lateroad.buber.database.DAO;
+import com.lateroad.buber.command.impl.database.DAO;
 import com.lateroad.buber.entity.Order;
 import com.lateroad.buber.entity.type.OrderType;
 import com.lateroad.buber.entity.type.UserType;

@@ -1,4 +1,4 @@
-package com.lateroad.buber.database.dao.role;
+package com.lateroad.buber.command.impl.database.dao.role;
 
 import com.lateroad.buber.entity.role.CommonUser;
 import com.lateroad.buber.exception.BuberSQLException;

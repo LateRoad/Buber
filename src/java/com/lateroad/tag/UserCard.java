@@ -24,8 +24,8 @@ public class UserCard extends BodyTagSupport {
 
     @Override
     public int doAfterBody() {
-        Locale language = (Locale) this.pageContext.getSession().getAttribute("language");
-        ResourceBundle bundle = ResourceBundle.getBundle("translation", language);
+        String language = (String) this.pageContext.getSession().getAttribute("language");
+        ResourceBundle bundle = ResourceBundle.getBundle("translation", new Locale(language));
 
         BodyContent bodyContent = super.getBodyContent();
         String bodyString = bodyContent.getString();

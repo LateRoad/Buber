@@ -35,12 +35,55 @@
 <div class="content-wrapper">
     <div class="container-fluid">
 
-        <c:forEach var="client" items="${clients}">
-            <tr>
-                <td><c:out value="${client.login}"/></td>
-            </tr>
-        </c:forEach>
-
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fa fa-table"></i> <fmt:message key="title-clients"/>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th><fmt:message key="login"/></th>
+                            <th><fmt:message key="string-reputation"/></th>
+                            <th><fmt:message key="string-trips-count"/></th>
+                            <th><fmt:message key="actions"/></th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th><fmt:message key="login"/></th>
+                            <th><fmt:message key="string-reputation"/></th>
+                            <th><fmt:message key="string-trips-count"/></th>
+                            <th><fmt:message key="actions"/></th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        <c:forEach var="client" items="${clients}">
+                            <tr>
+                                <td><c:out value="${client.login}"/></td>
+                                <td><c:out value="${client.reputation}"/></td>
+                                <td><c:out value="${client.tripsNumber}"/></td>
+                                <c:if test="${client.isMuted == true}">
+                                    <td>
+                                        <button onclick="setMuted('${client.login}', false)" type="button"
+                                                class="btn btn-primary"><fmt:message key="setUnmuted"/></button>
+                                    </td>
+                                </c:if>
+                                <c:if test="${client.isMuted == false}">
+                                    <td>
+                                        <button onclick="setMuted('${client.login}', true)" type="button"
+                                                class="btn btn-primary"><fmt:message key="setMuted"/></button>
+                                    </td>
+                                </c:if>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer small text-muted"><fmt:message key="powered-by-lateroad"/></div>
+        </div>
     </div>
 </div>
 

@@ -7,8 +7,8 @@ import java.util.Objects;
 public class Driver extends User {
     private String carNumber;
 
-    public Driver(String login, UserType role, String name, String surname, String lastname, String email, String phoneNumber, int tripsNumber, int reputation, String carNumber) {
-        super(login, role, name, surname, lastname, email, phoneNumber, tripsNumber, reputation);
+    public Driver(String login, UserType role, String name, String surname, String lastname, String email, String phoneNumber, int tripsNumber, int reputation, boolean isMuted, String carNumber) {
+        super(login, role, name, surname, lastname, email, phoneNumber, tripsNumber, reputation, isMuted);
         this.carNumber = carNumber;
     }
 

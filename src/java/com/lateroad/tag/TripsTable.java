@@ -1,7 +1,6 @@
 package com.lateroad.tag;
 
 import com.lateroad.buber.entity.Order;
-import com.lateroad.buber.entity.type.UserType;
 
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -11,13 +10,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class TripsTable extends TagSupport {
-    private UserType role;
     private List<Order> trips;
 
-
-    public void setRole(UserType role) {
-        this.role = role;
-    }
 
     public void setTrips(List<Order> trips) {
         this.trips = trips;
@@ -26,8 +20,8 @@ public class TripsTable extends TagSupport {
 
     @Override
     public int doStartTag() {
-        Locale language = (Locale) this.pageContext.getSession().getAttribute("language");
-        ResourceBundle bundle = ResourceBundle.getBundle("translation", language);
+        String language = (String) this.pageContext.getSession().getAttribute("language");
+        ResourceBundle bundle = ResourceBundle.getBundle("translation", new Locale(language));
 
         JspWriter out = pageContext.getOut();
         try {
@@ -40,11 +34,8 @@ public class TripsTable extends TagSupport {
             if (trips != null) {
                 out.write("                <thead>");
                 out.write("                <tr>");
-                if (UserType.CLIENT.equals(role)) {
-                    out.write("                <th>" + bundle.getString("trips-table-yo-driver") + "</th>");
-                } else if (UserType.DRIVER.equals(role)) {
-                    out.write("                <th>" + bundle.getString("trips-table-yo-client") + "</th>");
-                }
+                out.write("                    <th>" + bundle.getString("driver") + "</th>");
+                out.write("                    <th>" + bundle.getString("client") + "</th>");
                 out.write("                    <th>" + bundle.getString("trips-table-order-price") + "</th>");
                 out.write("                    <th>" + bundle.getString("trips-table-order-date") + "</th>");
                 out.write("                    <th>" + bundle.getString("trips-table-order-status") + "</th>");
@@ -52,11 +43,8 @@ public class TripsTable extends TagSupport {
                 out.write("                </thead>");
                 out.write("                <tfoot>");
                 out.write("                <tr>");
-                if (UserType.CLIENT.equals(role)) {
-                    out.write("                <th>" + bundle.getString("trips-table-yo-driver") + "</th>");
-                } else if (UserType.DRIVER.equals(role)) {
-                    out.write("                <th>" + bundle.getString("trips-table-yo-client") + "</th>");
-                }
+                out.write("                    <th>" + bundle.getString("driver") + "</th>");
+                out.write("                    <th>" + bundle.getString("client") + "</th>");
                 out.write("                    <th>" + bundle.getString("trips-table-order-price") + "</th>");
                 out.write("                    <th>" + bundle.getString("trips-table-order-date") + "</th>");
                 out.write("                    <th>" + bundle.getString("trips-table-order-status") + "</th>");
@@ -65,11 +53,9 @@ public class TripsTable extends TagSupport {
                 out.write("                <tbody>");
                 for (Order trip : trips) {
                     out.write("            <tr>");
-                    if (UserType.CLIENT.equals(role)) {
-                        out.write("            <td>" + trip.getDriverLogin() + "</td>");
-                    } else if (UserType.DRIVER.equals(role)) {
-                        out.write("            <td>" + trip.getClientLogin() + "</td>");
-                    }
+                    out.write("                <td>" + trip.getDriverLogin() + "</td>");
+                    out.write("                <td>" + trip.getClientLogin() + "</td>");
+
 
                     out.write("                <td>" + trip.getMoney() + "</td>");
                     out.write("                <td>" + trip.getDate() + "</td>");
@@ -91,7 +77,7 @@ public class TripsTable extends TagSupport {
                     out.write("        </tbody>");
                 }
             } else {
-                out.write("                <td>" + "Вы еще не сделали ни одной поездки" + "</td>");
+                out.write("                <td>" + "Не сделано ни одной поездки." + "</td>");
             }
 
             out.write("            </table>");

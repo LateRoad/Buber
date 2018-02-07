@@ -13,8 +13,9 @@ public abstract class User extends CommonUser implements Entity {
     protected String phoneNumber;
     protected int tripsNumber;
     protected int reputation;
+    protected boolean isMuted;
 
-    public User(String login, UserType role, String name, String surname, String lastname, String email, String phoneNumber, int tripsNumber, int reputation) {
+    public User(String login, UserType role, String name, String surname, String lastname, String email, String phoneNumber, int tripsNumber, int reputation, boolean isMuted) {
         super(login, role);
         this.name = name;
         this.surname = surname;
@@ -23,6 +24,7 @@ public abstract class User extends CommonUser implements Entity {
         this.phoneNumber = phoneNumber;
         this.tripsNumber = tripsNumber;
         this.reputation = reputation;
+        this.isMuted = isMuted;
     }
 
     public String getName() {
@@ -81,6 +83,13 @@ public abstract class User extends CommonUser implements Entity {
         this.reputation = reputation;
     }
 
+    public boolean getIsMuted() {
+        return isMuted;
+    }
+
+    public void setIsMuted(boolean isMuted) {
+        this.isMuted = isMuted;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -88,19 +97,19 @@ public abstract class User extends CommonUser implements Entity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         User user = (User) o;
-        return reputation == user.reputation &&
+        return tripsNumber == user.tripsNumber &&
+                reputation == user.reputation &&
+                isMuted == user.isMuted &&
                 Objects.equals(name, user.name) &&
                 Objects.equals(surname, user.surname) &&
                 Objects.equals(lastname, user.lastname) &&
                 Objects.equals(email, user.email) &&
-                Objects.equals(phoneNumber, user.phoneNumber) &&
-                Objects.equals(tripsNumber, user.tripsNumber);
+                Objects.equals(phoneNumber, user.phoneNumber);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(super.hashCode(), name, surname, lastname, email, phoneNumber, tripsNumber, reputation);
+        return Objects.hash(super.hashCode(), name, surname, lastname, email, phoneNumber, tripsNumber, reputation, isMuted);
     }
 
     @Override
@@ -111,8 +120,9 @@ public abstract class User extends CommonUser implements Entity {
                 ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", tripsNumber='" + tripsNumber + '\'' +
+                ", tripsNumber=" + tripsNumber +
                 ", reputation=" + reputation +
+                ", isMuted=" + isMuted +
                 '}';
     }
 }

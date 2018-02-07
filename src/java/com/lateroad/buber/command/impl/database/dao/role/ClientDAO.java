@@ -1,7 +1,7 @@
-package com.lateroad.buber.database.dao.role;
+package com.lateroad.buber.command.impl.database.dao.role;
 
 import com.lateroad.buber.builder.role.ClientBuilder;
-import com.lateroad.buber.database.dao.CommonDAO;
+import com.lateroad.buber.command.impl.database.dao.CommonDAO;
 import com.lateroad.buber.entity.role.Client;
 import com.lateroad.buber.exception.BuberSQLException;
 
@@ -21,7 +21,7 @@ public class ClientDAO extends CommonDAO<Client> implements RoleInfoDAO<Client> 
                     "  JOIN `buber`.`location` AS loc ON (u.`login` = loc.`login`)" +
                     "JOIN `buber`.`client_info` AS ci ON (u.`login` = ci.`login`) ";
 
-    private static final String SQL_INSERT_CLIENT_INFO =
+    private static final String SQL_INSERT_CLIENT =
             "INSERT INTO `buber`.`client_info` (`login`, `trips_number`, `reputation`, `phone_number`) " +
                     "VALUES (?, ?, ?, ?); ";
 
@@ -80,7 +80,7 @@ public class ClientDAO extends CommonDAO<Client> implements RoleInfoDAO<Client> 
 
     @Override
     public void insert(String login, Client client) throws BuberSQLException {
-        super.insert(login, client, SQL_INSERT_CLIENT_INFO);
+        super.insert(login, client, SQL_INSERT_CLIENT);
     }
 
     @Override

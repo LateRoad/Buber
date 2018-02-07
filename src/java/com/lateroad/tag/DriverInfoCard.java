@@ -18,8 +18,8 @@ public class DriverInfoCard extends TagSupport {
 
     @Override
     public int doStartTag() {
-        Locale language = (Locale) this.pageContext.getSession().getAttribute("language");
-        ResourceBundle bundle = ResourceBundle.getBundle("translation", language);
+        String language = (String) this.pageContext.getSession().getAttribute("language");
+        ResourceBundle bundle = ResourceBundle.getBundle("translation", new Locale(language));
 
         JspWriter out = pageContext.getOut();
         try {

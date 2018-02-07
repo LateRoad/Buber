@@ -1,4 +1,4 @@
-package com.lateroad.buber.database;
+package com.lateroad.buber.command.impl.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

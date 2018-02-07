@@ -19,7 +19,7 @@ public class SideMenu extends TagSupport {
 
     @Override
     public int doStartTag() {
-        Locale language = (Locale) this.pageContext.getSession().getAttribute("language");
+        Locale language = new Locale((String) this.pageContext.getSession().getAttribute("language"));
         ResourceBundle bundle = ResourceBundle.getBundle("translation", language);
 
         JspWriter out = pageContext.getOut();
@@ -60,9 +60,9 @@ public class SideMenu extends TagSupport {
             out.write("                    </a>");
 
             out.write("                    <ul class=\"sidenav-second-level collapse\" id=\"language\">");
-            out.write("                        <li><a onclick=\"changeLang(\'ru_RU\')\">" + bundle.getString("lang-russian") + "</a></li>");
-            out.write("                        <li><a onclick=\"changeLang(\'be_BY\')\">" + bundle.getString("lang-belarussian") + "</a></li>");
-            out.write("                        <li><a onclick=\"changeLang(\'en_US\')\">" + bundle.getString("lang-english") + "</a></li>");
+            out.write("                        <li><a onclick=\"changeLang(\'ru\')\">" + bundle.getString("lang-russian") + "</a></li>");
+            out.write("                        <li><a onclick=\"changeLang(\'be\')\">" + bundle.getString("lang-belarussian") + "</a></li>");
+            out.write("                        <li><a onclick=\"changeLang(\'en\')\">" + bundle.getString("lang-english") + "</a></li>");
             out.write("                    </ul>");
             out.write("                </li>");
             out.write("            </ul>");

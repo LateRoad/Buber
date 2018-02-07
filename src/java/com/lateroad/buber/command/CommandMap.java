@@ -2,11 +2,13 @@ package com.lateroad.buber.command;
 
 
 import com.lateroad.buber.command.impl.ChangeLanguage;
+import com.lateroad.buber.command.impl.RegisterCommand;
 import com.lateroad.buber.command.impl.SignInCommand;
 import com.lateroad.buber.command.impl.SignOutCommand;
 import com.lateroad.buber.command.impl.admin.GetClientsCommand;
 import com.lateroad.buber.command.impl.admin.GetDriversCommand;
 import com.lateroad.buber.command.impl.admin.GetOrdersCommand;
+import com.lateroad.buber.command.impl.admin.SetMutedCommand;
 import com.lateroad.buber.command.impl.user.GetTripsCommand;
 import com.lateroad.buber.command.impl.user.SetCurrentLocation;
 import com.lateroad.buber.command.impl.user.UpdateInfoCommand;
@@ -40,6 +42,8 @@ public class CommandMap {
         commandsMap.put("updateInfo", new UpdateInfoCommand());
         commandsMap.put("changeLanguage", new ChangeLanguage());
         commandsMap.put("setCurrentLocation", new SetCurrentLocation());
+        commandsMap.put("setMuted", new SetMutedCommand());
+        commandsMap.put("register", new RegisterCommand());
 //        commandsMap.put("deleteUser", new DeleteUserCommand());
 //        commandsMap.put("setDiscount", new SetDiscount());
     }

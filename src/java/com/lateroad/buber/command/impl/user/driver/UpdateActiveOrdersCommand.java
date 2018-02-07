@@ -1,7 +1,7 @@
 package com.lateroad.buber.command.impl.user.driver;
 
 import com.lateroad.buber.command.ICommand;
-import com.lateroad.buber.database.dao.role.ClientDAO;
+import com.lateroad.buber.command.impl.database.dao.role.ClientDAO;
 import com.lateroad.buber.entity.Order;
 import com.lateroad.buber.entity.role.User;
 import com.lateroad.buber.exception.BuberSQLException;

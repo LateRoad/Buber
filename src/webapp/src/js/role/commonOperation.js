@@ -32,6 +32,25 @@ function changeLang(lang) {
     });
 }
 
+function register(role) {
+    alert("/servlet?action=register&role=" + role + "&" + $("#registration_form").serialize());
+    $.ajax({
+        url: "/servlet?action=register&role=" + role + "&" + $("#registration_form").serialize(),
+        type: 'post',
+        async: true,
+        success: function (data, response, options) {
+            if (response.status = 200) {
+                window.location.assign("/index.jsp");
+            }
+        },
+        error: function () {
+            alert("fuck");
+        }
+    });
+    event.preventDefault();
+}
+
+
 let $originInput = $('#originInput');
 let $destinationInput = $('#destinationInput');
 

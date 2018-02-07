@@ -33,7 +33,7 @@
 
 <div class="content-wrapper">
     <div class="container-fluid">
-        <ctg:trips-table role="${user.currentUser.role}" trips="${trips}"/>
+        <ctg:trips-table trips="${trips}"/>
     </div>
 </div>
 

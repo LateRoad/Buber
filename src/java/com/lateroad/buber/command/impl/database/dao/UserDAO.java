@@ -1,7 +1,7 @@
-package com.lateroad.buber.database.dao;
+package com.lateroad.buber.command.impl.database.dao;
 
 import com.lateroad.buber.builder.CommonUserBuilder;
-import com.lateroad.buber.database.DAO;
+import com.lateroad.buber.command.impl.database.DAO;
 import com.lateroad.buber.entity.role.CommonUser;
 import com.lateroad.buber.entity.type.UserType;
 import com.lateroad.buber.exception.BuberSQLException;
@@ -16,8 +16,8 @@ public class UserDAO extends CommonDAO<CommonUser> implements DAO {
 
     private static final String SQL_UPDATE_MUTED =
             "UPDATE `buber`.`user` " +
-                    "SET user.is_muted = ?" +
-                    "WHERE user.login = ?";
+                    "SET user.is_muted = ? " +
+                    "WHERE user.login = ? ";
 
     private static final String SQL_UPDATE_ONLINE =
             "UPDATE user " +
@@ -87,5 +87,9 @@ public class UserDAO extends CommonDAO<CommonUser> implements DAO {
 
     public boolean isOnline(String login) throws BuberSQLException {
         return super.find(login, SQL_SELECT_USER_IF_ONLINE) != null;
+    }
+
+    public boolean isExist(String login) throws BuberSQLException {
+        return super.find(login, SQL_SELECT_USER) != null;
     }
 }

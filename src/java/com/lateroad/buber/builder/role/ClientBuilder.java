@@ -24,7 +24,8 @@ public class ClientBuilder implements RoleBuilder<Client>, StatementBuilder<Clie
                     resultSet.getString("email"),
                     resultSet.getString("phone_number"),
                     resultSet.getInt("trips_number"),
-                    resultSet.getInt("reputation"));
+                    resultSet.getInt("reputation"),
+                    resultSet.getBoolean("is_muted"));
         } catch (SQLException e) {
             throw new BuberSQLException("Something went wrong.", e);
         }

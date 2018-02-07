@@ -35,12 +35,55 @@
 <div class="content-wrapper">
     <div class="container-fluid">
 
-        <c:forEach var="driver" items="${drivers}">
-            <tr>
-                <td><c:out value="${driver.login}"/></td>
-            </tr>
-        </c:forEach>
-
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fa fa-table"></i> <fmt:message key="title-drivers"/>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th><fmt:message key="login"/></th>
+                            <th><fmt:message key="string-reputation"/></th>
+                            <th><fmt:message key="string-trips-count"/></th>
+                            <th><fmt:message key="actions"/></th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th><fmt:message key="login"/></th>
+                            <th><fmt:message key="string-reputation"/></th>
+                            <th><fmt:message key="string-trips-count"/></th>
+                            <th><fmt:message key="actions"/></th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        <c:forEach var="driver" items="${drivers}">
+                            <tr>
+                                <td><c:out value="${driver.login}"/></td>
+                                <td><c:out value="${driver.reputation}"/></td>
+                                <td><c:out value="${driver.tripsNumber}"/></td>
+                                <c:if test="${driver.isMuted == true}">
+                                    <td>
+                                        <button onclick="setMuted('${driver.login}', false)" type="button"
+                                                class="btn btn-primary"><fmt:message key="setUnmuted"/></button>
+                                    </td>
+                                </c:if>
+                                <c:if test="${driver.isMuted == false}">
+                                    <td>
+                                        <button onclick="setMuted('${driver.login}', true)" type="button"
+                                                class="btn btn-primary"><fmt:message key="setMuted"/></button>
+                                    </td>
+                                </c:if>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer small text-muted"><fmt:message key="powered-by-lateroad"/></div>
+        </div>
     </div>
 </div>
 

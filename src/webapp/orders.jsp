@@ -34,54 +34,7 @@
 
 <div class="content-wrapper">
     <div class="container-fluid">
-
-        <div class="card mb-3">
-            <div class="card-header">
-                <i class="fa fa-table"></i><fmt:message key="card-header-table-orders"/>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                        <tr>
-                            <th><fmt:message key="th-client"/></th>
-                            <th><fmt:message key="th-driver"/></th>
-                            <%--<th>Origin</th>--%>
-                            <%--<th>Destination</th>--%>
-                            <th><fmt:message key="th-status"/></th>
-                            <th><fmt:message key="th-date"/></th>
-                            <th><fmt:message key="th-money"/></th>
-                        </tr>
-                        </thead>
-                        <tfoot>
-                        <tr>
-                            <th><fmt:message key="th-client"/></th>
-                            <th><fmt:message key="th-driver"/></th>
-                            <%--<th>Origin</th>--%>
-                            <%--<th>Destination</th>--%>
-                            <th><fmt:message key="th-status"/></th>
-                            <th><fmt:message key="th-date"/></th>
-                            <th><fmt:message key="th-money"/></th>
-                        </tr>
-                        </tfoot>
-                        <tbody>
-                        <c:forEach var="order" items="${orders}">
-                            <tr>
-                                <td><c:out value="${order.clientLogin}"/></td>
-                                <td><c:out value="${order.driverLogin}"/></td>
-                                    <%--<td><c:out value="${order.origin}"/></td>--%>
-                                    <%--<td><c:out value="${order.destination}"/></td>--%>
-                                <td><c:out value="${order.status}"/></td>
-                                <td><c:out value="${order.date}"/></td>
-                                <td>$<c:out value="${order.money}"/></td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="card-footer small text-muted"><fmt:message key="powered-by-lateroad"/></div>
-        </div>
+        <ctg:trips-table trips="${orders}"/>
     </div>
 </div>
 <ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>

@@ -1,7 +1,7 @@
-package com.lateroad.buber.database.dao.role;
+package com.lateroad.buber.command.impl.database.dao.role;
 
 import com.lateroad.buber.builder.role.DriverBuilder;
-import com.lateroad.buber.database.dao.CommonDAO;
+import com.lateroad.buber.command.impl.database.dao.CommonDAO;
 import com.lateroad.buber.entity.role.Driver;
 import com.lateroad.buber.exception.BuberSQLException;
 
@@ -34,7 +34,7 @@ public class DriverDAO extends CommonDAO<Driver> {
                     "JOIN `buber`.`user_info` AS ui ON (u.`login` = ui.`login`) " +
                     "JOIN `buber`.`driver_info` AS di ON (u.`login` = di.`login`);";
 
-    private static final String SQL_INSERT_DRIVER_INFO =
+    private static final String SQL_INSERT_DRIVER =
             "INSERT INTO `buber`.`driver_info` (`car_number`, `phone_number`, `login`) " +
                     "VALUES (?, ?, ?);";
 
@@ -88,7 +88,7 @@ public class DriverDAO extends CommonDAO<Driver> {
     }
 
     public void insert(String login, Driver driver) throws BuberSQLException {
-        super.insert(login, driver, SQL_INSERT_DRIVER_INFO);
+        super.insert(login, driver, SQL_INSERT_DRIVER);
     }
 
     public void delete(String login) throws BuberSQLException {
