@@ -41,7 +41,7 @@
 
 <div class="content-wrapper">
     <div class="container-fluid">
-        <div class="card card-register mx-auto mt-5">
+        <div class="card card-register mx-auto mt-5 mb-5">
             <div class="card-header"><fmt:message key="register-form-header"/></div>
             <div class="card-body">
                 <form id="registration_form">
@@ -71,12 +71,25 @@
                                        aria-describedby="nameHelp"
                                        placeholder="<fmt:message key="input-lastname-placeholder"/>">
                             </div>
+                            <div class="col-md-6">
+                                <label for="inputPhone"><fmt:message key="input-phone-label"/></label>
+                                <input name="phoneNumber" class="form-control" id="inputPhone" type="text"
+                                       aria-describedby="nameHelp"
+                                       placeholder="<fmt:message key="input-phone-placeholder"/>">
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label name="email" for="inputEmail"><fmt:message key="input-email-label"/></label>
-                        <input class="form-control" id="inputEmail" type="email" aria-describedby="emailHelp"
+                        <label for="inputEmail"><fmt:message key="input-email-label"/></label>
+                        <input name="email" class="form-control" id="inputEmail" type="email"
+                               aria-describedby="emailHelp"
                                placeholder="<fmt:message key="input-email-placeholder"/>">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCar"><fmt:message key="input-car-label"/></label>
+                        <input name="carNumber" class="form-control" id="inputCar" type="text"
+                               aria-describedby="emailHelp"
+                               placeholder="<fmt:message key="input-car-placeholder"/>">
                     </div>
                     <div class="form-group">
                         <div class="form-row">
@@ -92,15 +105,19 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-block" onclick="register('client')"><fmt:message
-                            key="button-register"/></button>
+                    <div class="row">
+                        <button class="btn btn-primary btn-block" onclick="register('client')"><fmt:message
+                                key="button-register-as-client"/></button>
+                        <button class="btn btn-primary btn-block" onclick="register('driver')"><fmt:message
+                                key="button-register-as-driver"/></button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>
 </div>
+<ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>
 <!-- Bootstrap core JavaScript-->
 <script src="src/vendor/jquery/jquery.min.js"></script>
 <script src="src/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

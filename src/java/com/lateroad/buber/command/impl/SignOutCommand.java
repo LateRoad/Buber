@@ -1,8 +1,8 @@
 package com.lateroad.buber.command.impl;
 
 import com.lateroad.buber.command.ICommand;
+import com.lateroad.buber.entity.role.CommonUser;
 import com.lateroad.buber.exception.BuberSQLException;
-import com.lateroad.buber.model.CurrentModel;
 import com.lateroad.buber.service.CommonUserService;
 import com.lateroad.buber.service.role.ClientService;
 
@@ -18,10 +18,10 @@ public class SignOutCommand implements ICommand {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
         try {
-            CurrentModel currentUser = (CurrentModel) req.getSession().getAttribute("user");
+            CommonUser user = (CommonUser) req.getSession().getAttribute("user");
             CommonUserService commonUserService = new ClientService();
-            if (currentUser != null) {
-                commonUserService.setOnline(currentUser.getCurrentUser().getLogin(), false);
+            if (user != null) {
+                commonUserService.setOnline(user.getLogin(), false);
             }
             req.getSession().invalidate();
             RequestDispatcher requestDispatcher = servlet.getServletContext().getRequestDispatcher("/index.jsp");
@@ -37,9 +37,9 @@ public class SignOutCommand implements ICommand {
 
     public void execute(HttpSession session) {
         try {
-            CurrentModel currentUser = (CurrentModel) session.getAttribute("user");
+            CommonUser user = (CommonUser) session.getAttribute("user");
             CommonUserService commonUserService = new ClientService();
-            commonUserService.setOnline(currentUser.getCurrentUser().getLogin(), false);
+            commonUserService.setOnline(user.getLogin(), false);
             session.invalidate();
         } catch (BuberSQLException e) {
             e.printStackTrace();

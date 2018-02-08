@@ -2,6 +2,7 @@ package com.lateroad.buber.command.impl.user.client;
 
 
 import com.lateroad.buber.command.ICommand;
+import com.lateroad.buber.entity.role.CommonUser;
 import com.lateroad.buber.entity.role.Driver;
 import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.service.MapService;
@@ -28,7 +29,7 @@ public class GetRouteInfoCommand implements ICommand {
             time = mapService.calculatePrice(from, to);
             distance = mapService.calculateDistance(from, to);
             List<Driver> drivers = null;
-            drivers = driverService.getNearestDrivers(((Driver) req.getSession().getAttribute("user")).getLogin());
+            drivers = driverService.getNearestDrivers(((CommonUser) req.getSession().getAttribute("user")).getLogin());
 
             req.getSession().setAttribute("nearestDrivers", drivers);
             req.getSession().setAttribute("time", time);

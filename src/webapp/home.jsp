@@ -11,7 +11,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:set var="language"
-       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale.language}"
        scope="session"/>
 <fmt:setLocale value="${language}"/>
 <fmt:setBundle basename="translation"/>
@@ -41,7 +41,7 @@
             </div>
             <div class="card-body">
                 <div id="map"></div>
-                <c:if test="${user.currentUser.role == \"CLIENT\" }">
+                <c:if test="${user.role == \"CLIENT\" }">
                     <div id="location-settings">
                         <div class="form-group">
                             <label for="originInput"><fmt:message key="origin"/></label>
@@ -58,7 +58,7 @@
                 </c:if>
             </div>
         </div>
-        <c:if test="${user.currentUser.role == \"CLIENT\" }">
+        <c:if test="${user.role == \"CLIENT\" }">
             <div id="routeClientInfo">
                 <div class="row">
 
@@ -87,7 +87,7 @@
         </c:if>
 
 
-        <c:if test="${user.currentUser.role == \"DRIVER\" }">
+        <c:if test="${user.role == \"DRIVER\" }">
             <div id="activeOrders">
                 <div class="card mb-3">
                     <div class="card-header">
@@ -119,6 +119,7 @@
 <script async src="src/js/googlemap.js"></script>
 <script src="src/js/role/user/driver.js"></script>
 <script src="src/js/role/user/client.js"></script>
+<script src="src/js/role/user/user.js"></script>
 <script src="src/js/role/commonOperation.js"></script>
 
 <script async defer

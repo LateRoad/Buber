@@ -1,9 +1,10 @@
 package com.lateroad.buber.command.impl;
 
 import com.lateroad.buber.command.ICommand;
+import com.lateroad.buber.entity.role.CommonUser;
 import com.lateroad.buber.entity.type.UserType;
+import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
-import com.lateroad.buber.model.CurrentModel;
 import com.lateroad.buber.service.CommonUserService;
 import com.lateroad.buber.service.role.AdminService;
 import com.lateroad.buber.service.role.ClientService;
@@ -42,15 +43,12 @@ public class SignInCommand implements ICommand {
 
         try {
             if (login != null && password != null) {
-                CurrentModel user = service.authentication(login, password);
+                CommonUser user = service.authentication(login, password);
                 if (user != null) {
                     session.setAttribute("user", user);
-
-//                    RequestDispatcher requestDispatcher = servlet.getServletContext().getRequestDispatcher("/home.jsp");
-//                    requestDispatcher.forward(req, resp);
                     resp.setStatus(200);
-                    resp.getWriter().write(user.getCurrentUser().getRole().toString());
-                    if (user.getCurrentUser().getRole().equals(UserType.CLIENT)) {
+                    resp.getWriter().write(user.getRole().toString());
+                    if (user.getRole().equals(UserType.CLIENT)) {
                         session.setMaxInactiveInterval(60);
                     }
                 }
@@ -58,6 +56,8 @@ public class SignInCommand implements ICommand {
         } catch (BuberSQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (BuberLogicException e) {
             e.printStackTrace();
         }
     }

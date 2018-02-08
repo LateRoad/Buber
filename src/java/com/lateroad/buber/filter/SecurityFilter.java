@@ -1,6 +1,6 @@
 package com.lateroad.buber.filter;
 
-import com.lateroad.buber.model.CurrentModel;
+import com.lateroad.buber.entity.role.CommonUser;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-@WebFilter(urlPatterns = {"*.jsp", "/servlet"},
+@WebFilter(urlPatterns = {"*.jsp", "/userOperation", "/commonOperation"},
         initParams = {@WebInitParam(name = "INDEX_PATH", value = "/index.jsp"),
                 @WebInitParam(name = "ERROR_PATH", value = "/error.jsp")})
 public class SecurityFilter implements Filter {
@@ -30,7 +30,8 @@ public class SecurityFilter implements Filter {
             "/orders.jsp",
             "/clients.jsp",
             "/drivers.jsp",
-            "/servlet");
+            "/userOperation",
+            "commonOperation");
 
     private static final List<String> clientFilterPaths = Arrays.asList(
             "/index.jsp",
@@ -38,7 +39,8 @@ public class SecurityFilter implements Filter {
             "/payment.jsp",
             "/profile.jsp",
             "/trips.jsp",
-            "/servlet");
+            "/userOperation",
+            "commonOperation");
 
     private static final List<String> driverFilterPaths = Arrays.asList(
             "/index.jsp",
@@ -47,7 +49,8 @@ public class SecurityFilter implements Filter {
             "/payment.jsp",
             "/profile.jsp",
             "/trips.jsp",
-            "/servlet");
+            "/userOperation",
+            "commonOperation");
 
     private static final List<String> guestFilterPaths = Arrays.asList(
             "/index.jsp",
@@ -55,7 +58,7 @@ public class SecurityFilter implements Filter {
             "/auth-driver.jsp",
             "/auth-client.jsp",
             "/signin.jsp",
-            "/servlet");
+            "/commonOperation");
 
 
     private String indexPath;
@@ -72,13 +75,18 @@ public class SecurityFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession();
 
-        CurrentModel user = (CurrentModel) session.getAttribute("user");
+        CommonUser user = (CommonUser) session.getAttribute("user");
 
         String uri = req.getRequestURI();
         logger.info("URI: " + uri + req.getMethod());
 
         try {
             if ("/".equals(uri)) {
+                req.getRequestDispatcher(indexPath).forward(req, resp);
+                return;
+            }
+
+            if ("/userOperation".equals(uri) && user == null) {
                 req.getRequestDispatcher(indexPath).forward(req, resp);
                 return;
             }
@@ -97,7 +105,7 @@ public class SecurityFilter implements Filter {
                     return;
                 }
 
-                switch (user.getCurrentUser().getRole()) {
+                switch (user.getRole()) {
                     case CLIENT:
                         if (!clientFilterPaths.contains(uri)) {
                             req.getRequestDispatcher(errorPath).forward(req, resp);

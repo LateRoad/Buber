@@ -1,6 +1,6 @@
 function calculateRouteInfo() {
     $.ajax({
-        url: "/servlet?action=getRouteInfo&from=" + $originInput.val() + "&to=" + $destinationInput.val() + "&fromLat=" + origin.position.lat() + "&fromLng=" + origin.position.lng() + "&toLat=" + destination.position.lat() + "&toLng=" + destination.position.lng(),
+        url: "/userOperation?action=getRouteInfo&from=" + $originInput.val() + "&to=" + $destinationInput.val() + "&fromLat=" + origin.position.lat() + "&fromLng=" + origin.position.lng() + "&toLat=" + destination.position.lat() + "&toLng=" + destination.position.lng(),
         data: {name: 'abc'},
         type: 'post',
         cache: false,
@@ -16,7 +16,7 @@ function calculateRouteInfo() {
 
 function takeTaxi(driver, money) {
     $.ajax({
-        url: "/servlet?action=takeTaxi&driver=" + driver + "&money=" + money,
+        url: "/userOperation?action=takeTaxi&driver=" + driver + "&money=" + money,
         data: {name: 'abc'},
         type: 'POST',
         cache: false,

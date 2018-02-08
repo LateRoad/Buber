@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ClientBuilder implements RoleBuilder<Client>, StatementBuilder<Client> {
+public class ClientBuilder implements StatementBuilder<Client> {
 
     @Override
     public Client build(ResultSet resultSet) throws BuberSQLException {
@@ -32,18 +32,42 @@ public class ClientBuilder implements RoleBuilder<Client>, StatementBuilder<Clie
         return client;
     }
 
+
     @Override
-    public void makeInsertStatement(String login, Client clientInfo, PreparedStatement statement) {
+    public void makeSecurityInsertStatement(String login, String password, Client client, PreparedStatement statement) throws BuberSQLException {
         try {
             statement.setString(1, login);
-            statement.setString(2, clientInfo.getPhoneNumber());
+            statement.setString(2, password);
+            statement.setString(3, client.getRole().name());
+            statement.setString(4, login);
+            statement.setString(5, client.getName());
+            statement.setString(6, client.getSurname());
+            statement.setString(7, client.getLastname());
+            statement.setString(8, client.getEmail());
+            statement.setString(9, login);
+            statement.setString(10, client.getPhoneNumber());
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new BuberSQLException("Something went wrong.", e);
         }
     }
 
     @Override
-    public void makeUpdateStatement(String login, Client entity, PreparedStatement statement) {
+    public void makeInsertStatement(String login, Client client, PreparedStatement statement) throws BuberSQLException {
+        try {
+            statement.setString(1, login);
+            statement.setString(2, client.getPhoneNumber());
+        } catch (SQLException e) {
+            throw new BuberSQLException("Something went wrong.", e);
+        }
+    }
 
+    @Override
+    public void makeUpdateStatement(String login, Client client, PreparedStatement statement) throws BuberSQLException {
+        try {
+            statement.setString(1, login);
+            statement.setString(2, client.getPhoneNumber());
+        } catch (SQLException e) {
+            throw new BuberSQLException("Something went wrong.", e);
+        }
     }
 }

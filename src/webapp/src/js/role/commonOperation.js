@@ -2,7 +2,7 @@ function signIn(role) {
     let login = $("#inputLogin").val();
     let password = $("#inputPassword").val();
     $.ajax({
-        url: "/servlet?action=signIn&login=" + login + "&password=" + password + "&role=" + role,
+        url: "/commonOperation?action=signIn&login=" + login + "&password=" + password + "&role=" + role,
         type: 'post',
         async: true,
         success: function (data, response, options) {
@@ -24,7 +24,7 @@ function signIn(role) {
 
 function changeLang(lang) {
     $.ajax({
-        url: "/servlet?action=changeLanguage&lang=" + lang,
+        url: "/commonOperation?action=changeLanguage&lang=" + lang,
         type: 'GET',
         success: function () {
             location.reload();
@@ -33,14 +33,19 @@ function changeLang(lang) {
 }
 
 function register(role) {
-    alert("/servlet?action=register&role=" + role + "&" + $("#registration_form").serialize());
+    alert("/commonOperation?action=register&role=" + role + "&" + $("#registration_form").serialize());
     $.ajax({
-        url: "/servlet?action=register&role=" + role + "&" + $("#registration_form").serialize(),
+        url: "/commonOperation?action=register&role=" + role + "&" + $("#registration_form").serialize(),
         type: 'post',
         async: true,
         success: function (data, response, options) {
             if (response.status = 200) {
-                window.location.assign("/index.jsp");
+                if (data === "ADMIN") {
+                    window.location.assign("/clients.jsp");
+                }
+                else {
+                    window.location.assign("/home.jsp");
+                }
             }
         },
         error: function () {
@@ -67,3 +72,4 @@ $($originInput).add($destinationInput).on("focusout", function () {
     $routeClientInfo.show();
     showDirection(origin, destination);
 });
+

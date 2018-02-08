@@ -18,6 +18,7 @@ var destinationInput = document.getElementById('destinationInput');
 //
 var origin;
 var destination;
+var currentLocation;
 
 var $routeClientInfo = $('#routeClientInfo');
 
@@ -34,8 +35,6 @@ var image = {
 };
 
 
-
-
 function showDirection(origin, destination) {
     directionsService.route({
         origin: origin.position,
@@ -47,6 +46,15 @@ function showDirection(origin, destination) {
         } else {
             window.alert('Directions request failed due to ' + status);
         }
+    });
+}
+
+function getCurrentLocation() {
+    navigator.geolocation.getCurrentPosition(function (position) {
+        currentLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        };
     });
 }
 
@@ -67,7 +75,19 @@ function initMap() {
     addInputToMarkerListenerOrigin(searchBoxOrigin);
     addInputToMarkerListenerDestination(searchBoxDestination);
 
-    getCurrentLocation();
+    getCurrentLocationAndSetOrigin();
+
+    (function setCurrentLocation() {
+        if (currentLocation != null) {
+            $.ajax({
+                url: "/commonOperation?action=setCurrentLocation&lat=" + currentLocation.lat + "&lng=" + currentLocation.lng,
+                type: 'post',
+            });
+        }
+        getCurrentLocation();
+
+        setTimeout(arguments.callee, 6000);
+    })();
 
     directionsDisplay.setMap(map);
     directionsDisplay.setOptions({suppressMarkers: true});
@@ -242,7 +262,7 @@ function fillInput(coordinates, input) {
 //
 //    Handle current location
 //
-function getCurrentLocation() {
+function getCurrentLocationAndSetOrigin() {
     let currentLocation;
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -274,4 +294,5 @@ function handleLocationError(browserHasGeolocation, pos) {
         'Error: The Geolocation service failed.' :
         'Error: Your browser doesn\'t support geolocation.');
 }
+
 

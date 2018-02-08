@@ -1,8 +1,9 @@
-package com.lateroad.buber.command.impl.database.dao;
+package com.lateroad.buber.database.dao;
 
 import com.lateroad.buber.builder.CardBuilder;
-import com.lateroad.buber.command.impl.database.DAO;
+import com.lateroad.buber.database.DAO;
 import com.lateroad.buber.entity.Card;
+import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
 
 import java.sql.Connection;
@@ -52,7 +53,7 @@ public class CardDAO extends CommonDAO<Card> implements DAO {
     }
 
 
-    public Card find(String login) throws BuberSQLException {
+    public Card find(String login) throws BuberSQLException, BuberLogicException {
         return super.find(login, SQL_SELECT_CARD);
     }
 

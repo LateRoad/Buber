@@ -1,8 +1,9 @@
-package com.lateroad.buber.command.impl.database.dao.role;
+package com.lateroad.buber.database.dao.role;
 
 import com.lateroad.buber.builder.role.ClientBuilder;
-import com.lateroad.buber.command.impl.database.dao.CommonDAO;
+import com.lateroad.buber.database.dao.CommonDAO;
 import com.lateroad.buber.entity.role.Client;
+import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
 
 import java.util.List;
@@ -22,8 +23,16 @@ public class ClientDAO extends CommonDAO<Client> implements RoleInfoDAO<Client> 
                     "JOIN `buber`.`client_info` AS ci ON (u.`login` = ci.`login`) ";
 
     private static final String SQL_INSERT_CLIENT =
-            "INSERT INTO `buber`.`client_info` (`login`, `trips_number`, `reputation`, `phone_number`) " +
-                    "VALUES (?, ?, ?, ?); ";
+            "INSERT INTO buber.user (login, password, role) " +
+                    "VALUES (?, ?, ?);  " +
+                    "INSERT INTO buber.user_info (login, name, surname, lastname, email) " +
+                    "VALUES (?, ?, ?, ?, ?); " +
+                    "INSERT INTO buber.client_info (login, phone_number) " +
+                    "VALUES (?, ?)";
+
+    private static final String SQL_INSERT_CLIENT_INFO =
+            "INSERT INTO buber.client_info (login, phone_number) " +
+                    "VALUES (?, ?)";
 
     private static final String SQL_DELETE_CLIENT =
             "DELETE FROM `buber`.`client_info` WHERE `client_info`.`login` = ?; ";
@@ -64,12 +73,12 @@ public class ClientDAO extends CommonDAO<Client> implements RoleInfoDAO<Client> 
 
 
     @Override
-    public Client find(String login, String password) throws BuberSQLException {
+    public Client find(String login, String password) throws BuberSQLException, BuberLogicException {
         return super.find(login, password, SQL_SELECT_CLIENT);
     }
 
     @Override
-    public Client find(String login) throws BuberSQLException {
+    public Client find(String login) throws BuberSQLException, BuberLogicException {
         return super.find(login, SQL_SELECT_CLIENT);
     }
 
@@ -80,7 +89,11 @@ public class ClientDAO extends CommonDAO<Client> implements RoleInfoDAO<Client> 
 
     @Override
     public void insert(String login, Client client) throws BuberSQLException {
-        super.insert(login, client, SQL_INSERT_CLIENT);
+        super.insert(login, client, SQL_INSERT_CLIENT_INFO);
+    }
+
+    public void insert(String login, String password, Client client) throws BuberSQLException {
+        super.insert(login, password, client, SQL_INSERT_CLIENT);
     }
 
     @Override

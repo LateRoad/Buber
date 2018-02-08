@@ -1,6 +1,8 @@
 package com.lateroad.buber.builder;
 
 import com.lateroad.buber.entity.Location;
+import com.lateroad.buber.exception.BuberSQLException;
+import com.lateroad.buber.exception.BuberUnsupportedOperation;
 import com.lateroad.buber.map.Geodecoder;
 import org.json.JSONException;
 
@@ -43,13 +45,16 @@ public class LocationBuilder implements StatementBuilder<Location> {
     @Override
     public void makeUpdateStatement(String login, Location location, PreparedStatement statement) {
         try {
-            statement.setString(1, location.getCountry());
-            statement.setString(2, location.getCity());
-            statement.setString(3, location.getStreet());
-            statement.setString(4, location.getHouseNumber());
-            statement.setString(5, login);
+            statement.setString(1, location.getLat());
+            statement.setString(2, location.getLng());
+            statement.setString(3, login);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void makeSecurityInsertStatement(String login, String password, Location entity, PreparedStatement statement) throws BuberSQLException {
+        throw new BuberUnsupportedOperation();
     }
 }

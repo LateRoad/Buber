@@ -1,6 +1,6 @@
 package com.lateroad.tag;
 
-import com.lateroad.buber.model.CurrentModel;
+import com.lateroad.buber.entity.role.CommonUser;
 
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -9,10 +9,10 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class SideMenu extends TagSupport {
-    private CurrentModel user;
+    private CommonUser user;
 
 
-    public void setUser(CurrentModel user) {
+    public void setUser(CommonUser user) {
         this.user = user;
     }
 
@@ -36,7 +36,7 @@ public class SideMenu extends TagSupport {
             out.write("            <ul class=\"navbar-nav navbar-sidenav\" id=\"exampleAccordion\">");
 
             if (user != null) {
-                switch (user.getCurrentUser().getRole()) {
+                switch (user.getRole()) {
                     case CLIENT:
                         clientMenu(out, bundle);
                         break;
@@ -77,7 +77,7 @@ public class SideMenu extends TagSupport {
 
             out.write("            <ul class=\"navbar-nav ml-auto\">");
             if (user != null) {
-                out.write("                <li class=\"nav-item\"><a href=\"/home.jsp\"  class=\"nav-link\" style=\"color: white;\">" + user.getCurrentUser().getLogin() + " - " + user.getCurrentUser().getRole() + "</a></li>");
+                out.write("                <li class=\"nav-item\"><a href=\"/home.jsp\"  class=\"nav-link\" style=\"color: white;\">" + user.getLogin() + " - " + user.getRole() + "</a></li>");
                 out.write("                <li class=\"nav-item\"></li>");
                 out.write("                <li class=\"nav-item\">");
                 out.write("                    <a class=\"nav-link\" data-toggle=\"modal\" data-target=\"#modal-sign-out\">");
@@ -115,7 +115,7 @@ public class SideMenu extends TagSupport {
         out.write("            <div class=\"modal-body\">" + bundle.getString("modal-sign-out-body") + "</div>");
         out.write("            <div class=\"modal-footer\">");
         out.write("                <button class=\"btn btn-secondary\" type=\"button\" data-dismiss=\"modal\">" + bundle.getString("button-cancel") + "</button>");
-        out.write("                <a class=\"btn btn-primary\" href=\"/servlet?action=signOut\">" + bundle.getString("button-sign-out") + "</a>");
+        out.write("                <a class=\"btn btn-primary\" href=\"/commonOperation?action=signOut\">" + bundle.getString("button-sign-out") + "</a>");
         out.write("            </div>");
         out.write("        </div>");
         out.write("    </div>");
@@ -126,7 +126,7 @@ public class SideMenu extends TagSupport {
         out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\" " + bundle.getString("nav-profile") + "\"><a class=\"nav-link\" href=\"/profile.jsp\"><i class=\"fa fa-user fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-profile") + "</span></a></li>");
         out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\" " + bundle.getString("nav-payments") + "\"><a class=\"nav-link\" href=\"/payment.jsp\"><i class=\"fa fa-credit-card fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-payments") + "</span></a></li>");
         out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\" " + bundle.getString("nav-trips") + "\">");
-        out.write("    <a class=\"nav-link\" href=\"/servlet?action=getTrips\"><i class=\"fa fa-car fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-trips") + "</span></a>");
+        out.write("    <a class=\"nav-link\" href=\"/userOperation?action=getTrips\"><i class=\"fa fa-car fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-trips") + "</span></a>");
         out.write("</li>");
     }
 
@@ -141,8 +141,8 @@ public class SideMenu extends TagSupport {
     }
 
     private void adminMenu(JspWriter out, ResourceBundle bundle) throws IOException {
-        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Orders\"><a class=\"nav-link\" href=\"/servlet?action=getDrivers\"><i class=\"fa fa-taxi fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-drivers") + "</span></a></li>");
-        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Users\"><a class=\"nav-link\" href=\"/servlet?action=getClients\"><i class=\"fa fa-group fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-clients") + "</span></a></li>");
-        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Orders\"><a class=\"nav-link\" href=\"/servlet?action=getOrders\"><i class=\"fa fa-list-alt fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-orders") + "</span></a></li>");
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Orders\"><a class=\"nav-link\" href=\"/userOperation?action=getDrivers\"><i class=\"fa fa-taxi fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-drivers") + "</span></a></li>");
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Users\"><a class=\"nav-link\" href=\"/userOperation?action=getClients\"><i class=\"fa fa-group fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-clients") + "</span></a></li>");
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"Orders\"><a class=\"nav-link\" href=\"/userOperation?action=getOrders\"><i class=\"fa fa-list-alt fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-orders") + "</span></a></li>");
     }
 }

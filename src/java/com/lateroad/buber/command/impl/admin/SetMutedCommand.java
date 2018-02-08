@@ -12,7 +12,6 @@ public class SetMutedCommand implements ICommand {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
         try {
-            System.out.println(req.getParameter("status"));
             boolean status = Boolean.parseBoolean(req.getParameter("status"));
             String login = req.getParameter("user");
             AdminService adminService = new AdminService();

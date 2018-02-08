@@ -11,7 +11,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:set var="language"
-       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale.language}"
        scope="session"/>
 <fmt:setLocale value="${language}"/>
 <fmt:setBundle basename="translation"/>
@@ -33,14 +33,14 @@
 
 <div class="content-wrapper">
     <div class="container-fluid">
-        <ctg:user-info-card user="${user.currentUser}"/>
+        <ctg:user-info-card user="${user}"/>
 
-        <c:if test="${user.currentUser.role == \"CLIENT\"}">
-            <ctg:client-info-card client="${user.currentUser}"/>
+        <c:if test="${user.role == \"CLIENT\"}">
+            <ctg:client-info-card client="${user}"/>
         </c:if>
 
-        <c:if test="${user.currentUser.role == \"DRIVER\"}">
-            <ctg:driver-info-card driver="${user.currentUser}"/>
+        <c:if test="${user.role == \"DRIVER\"}">
+            <ctg:driver-info-card driver="${user}"/>
         </c:if>
     </div>
 </div>

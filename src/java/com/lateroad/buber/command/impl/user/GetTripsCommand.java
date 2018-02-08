@@ -2,8 +2,8 @@ package com.lateroad.buber.command.impl.user;
 
 import com.lateroad.buber.command.ICommand;
 import com.lateroad.buber.entity.Order;
+import com.lateroad.buber.entity.role.CommonUser;
 import com.lateroad.buber.exception.BuberSQLException;
-import com.lateroad.buber.model.CurrentModel;
 import com.lateroad.buber.service.OrderService;
 
 import javax.servlet.RequestDispatcher;
@@ -19,7 +19,7 @@ public class GetTripsCommand implements ICommand {
     public void execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
         OrderService orderService = new OrderService();
         try {
-            List<Order> trips = orderService.findTrips(((CurrentModel) req.getSession().getAttribute("user")).getCurrentUser());
+            List<Order> trips = orderService.findTrips(((CommonUser) req.getSession().getAttribute("user")));
             req.setAttribute("trips", trips);
 
             RequestDispatcher requestDispatcher = servlet.getServletContext().getRequestDispatcher("/trips.jsp");

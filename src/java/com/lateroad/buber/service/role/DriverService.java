@@ -1,40 +1,43 @@
 package com.lateroad.buber.service.role;
 
-import com.lateroad.buber.command.impl.database.dao.LocationInfoDAO;
-import com.lateroad.buber.command.impl.database.dao.OrderDAO;
-import com.lateroad.buber.command.impl.database.dao.UserDAO;
-import com.lateroad.buber.command.impl.database.dao.role.DriverDAO;
-import com.lateroad.buber.entity.Location;
-import com.lateroad.buber.entity.Order;
+import com.lateroad.buber.database.dao.CommonUserDAO;
+import com.lateroad.buber.database.dao.OrderDAO;
+import com.lateroad.buber.database.dao.UserDAO;
+import com.lateroad.buber.database.dao.role.DriverDAO;
 import com.lateroad.buber.entity.role.Driver;
-import com.lateroad.buber.entity.type.OrderType;
 import com.lateroad.buber.entity.type.UserType;
+import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
-import com.lateroad.buber.model.CurrentModel;
 import com.lateroad.buber.service.CommonUserService;
 
 import java.util.List;
 
-public class DriverService implements CommonUserService<CurrentModel> {
+public class DriverService implements CommonUserService<Driver> {
     private static final int COUNT_OF_ITERATION = 3;
     private static final int KILOMETERS_IN_ITERATION = 8;
 
     @Override
-    public CurrentModel authentication(String login, String password) throws BuberSQLException {
-        CurrentModel model = null;
-        Driver driver = DriverDAO.getInstance().find(login, password);
-        Order currentOrder = OrderDAO.getInstance().find(login, UserType.DRIVER, OrderType.ACCEPTED);
-        List<Order> orders = OrderDAO.getInstance().findAll(login, UserType.DRIVER);
-        Location location = LocationInfoDAO.getInstance().find(login);
-        model = new CurrentModel(driver, location, currentOrder, orders);
-        UserDAO.getInstance().setOnline(login, true);
-        UserDAO.getInstance().setRole(login, UserType.DRIVER);
-        return model;
+    public Driver authentication(String login, String password) throws BuberSQLException, BuberLogicException {
+        Driver driver = null;
+        driver = DriverDAO.getInstance().find(login, password);
+        CommonUserDAO.getInstance().setOnline(login, true);
+        CommonUserDAO.getInstance().setRole(login, UserType.DRIVER);
+        return driver;
     }
 
     @Override
-    public CurrentModel registration(String... params) throws BuberSQLException {
-        return null;
+    public Driver registration(String... params) throws BuberSQLException, BuberLogicException {
+        Driver driver = null;
+        if (!CommonUserDAO.getInstance().isExist(params[0])) {
+            driver = new Driver(params[0], UserType.DRIVER, params[2], params[3], params[4], params[5], params[6], params[7]);
+            CommonUserDAO.getInstance().insert(driver.getLogin(), params[1], driver.getRole());
+            UserDAO.getInstance().insert(driver.getLogin(), driver);
+            DriverDAO.getInstance().insert(driver.getLogin(), driver);
+            CommonUserDAO.getInstance().setOnline(driver.getLogin(), true);
+        } else {
+            DriverDAO.getInstance().insert(driver.getLogin(), driver);
+        }
+        return driver;
     }
 
     public List<Driver> getNearestDrivers(String clientLogin) throws BuberSQLException {

@@ -1,17 +1,18 @@
 package com.lateroad.buber.service;
 
-import com.lateroad.buber.command.impl.database.dao.UserDAO;
+import com.lateroad.buber.database.dao.CommonUserDAO;
+import com.lateroad.buber.entity.role.CommonUser;
+import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
-import com.lateroad.buber.model.CurrentModel;
 
-public interface CommonUserService<E extends CurrentModel> {
+public interface CommonUserService<E extends CommonUser> {
 
-    E authentication(String login, String password) throws BuberSQLException;
+    E authentication(String login, String password) throws BuberSQLException, BuberLogicException;
 
-    E registration(String... params) throws BuberSQLException;
+    E registration(String... params) throws BuberSQLException, BuberLogicException;
 
 
     default void setOnline(String login, boolean status) throws BuberSQLException {
-        UserDAO.getInstance().setOnline(login, status);
+        CommonUserDAO.getInstance().setOnline(login, status);
     }
 }

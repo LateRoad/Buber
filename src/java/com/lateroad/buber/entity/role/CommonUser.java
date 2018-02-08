@@ -47,7 +47,7 @@ public class CommonUser implements Entity {
 
     @Override
     public String toString() {
-        return "CommonUser{" +
+        return "CommonUserBuilder{" +
                 "login='" + login + '\'' +
                 ", role=" + role +
                 '}';

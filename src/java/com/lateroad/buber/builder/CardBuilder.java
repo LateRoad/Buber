@@ -2,6 +2,7 @@ package com.lateroad.buber.builder;
 
 import com.lateroad.buber.entity.Card;
 import com.lateroad.buber.exception.BuberSQLException;
+import com.lateroad.buber.exception.BuberUnsupportedOperation;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,6 +36,11 @@ public class CardBuilder implements StatementBuilder<Card> {
 
     @Override
     public void makeUpdateStatement(String login, Card entity, PreparedStatement statement) {
-        throw new UnsupportedOperationException();
+        throw new BuberUnsupportedOperation();
+    }
+
+    @Override
+    public void makeSecurityInsertStatement(String login, String password, Card entity, PreparedStatement statement) throws BuberSQLException {
+        throw new BuberUnsupportedOperation();
     }
 }

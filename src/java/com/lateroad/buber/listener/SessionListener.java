@@ -1,7 +1,7 @@
 package com.lateroad.buber.listener;
 
 import com.lateroad.buber.command.impl.SignOutCommand;
-import com.lateroad.buber.model.CurrentModel;
+import com.lateroad.buber.entity.role.CommonUser;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletContextEvent;
@@ -46,8 +46,8 @@ public class SessionListener implements ServletContextListener,
     }
 
     public void sessionDestroyed(HttpSessionEvent se) {
-        CurrentModel currentUser = (CurrentModel) se.getSession().getAttribute("user");
-        logger.info("Session destroyed." + se.getSession().getLastAccessedTime() + " " + currentUser.getCurrentUser().getLogin());
+        CommonUser user = (CommonUser) se.getSession().getAttribute("user");
+        logger.info("Session destroyed." + se.getSession().getLastAccessedTime() + " " + user.getLogin());
         SignOutCommand command = new SignOutCommand();
         command.execute(se.getSession());
     }

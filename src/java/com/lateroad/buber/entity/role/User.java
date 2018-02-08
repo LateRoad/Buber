@@ -27,6 +27,14 @@ public class User extends CommonUser implements Entity {
         this.isMuted = isMuted;
     }
 
+    public User(String login, UserType role, String name, String surname, String lastname, String email) {
+        super(login, role);
+        this.name = name;
+        this.surname = surname;
+        this.lastname = lastname;
+        this.email = email;
+    }
+
     public String getName() {
         return name;
     }

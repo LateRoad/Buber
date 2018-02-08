@@ -1,8 +1,9 @@
-package com.lateroad.buber.command.impl.database.dao.role;
+package com.lateroad.buber.database.dao.role;
 
 import com.lateroad.buber.builder.role.DriverBuilder;
-import com.lateroad.buber.command.impl.database.dao.CommonDAO;
+import com.lateroad.buber.database.dao.CommonDAO;
 import com.lateroad.buber.entity.role.Driver;
+import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
 
 import java.sql.CallableStatement;
@@ -35,8 +36,16 @@ public class DriverDAO extends CommonDAO<Driver> implements RoleInfoDAO<Driver> 
                     "JOIN `buber`.`driver_info` AS di ON (u.`login` = di.`login`);";
 
     private static final String SQL_INSERT_DRIVER =
-            "INSERT INTO `buber`.`driver_info` (`car_number`, `phone_number`, `login` ) " +
-                    "VALUES (?, ?, ?);";
+            "INSERT INTO buber.user (login, password, role) " +
+                    "VALUES (?, ?, ?);  " +
+                    "INSERT INTO buber.user_info (login, name, surname, lastname, email) " +
+                    "VALUES (?, ?, ?, ?, ?); " +
+                    "INSERT INTO buber.driver_info (login, phone_number, car_number) " +
+                    "VALUES (?, ?, ?)";
+
+    private static final String SQL_INSERT_DRIVER_INFO =
+            "INSERT INTO buber.driver_info (login, phone_number, car_number) " +
+                    "VALUES (?, ?, ?)";
 
     private static final String SQL_DELETE_DRIVER =
             "DELETE FROM `buber`.`driver_info` WHERE `driver_info`.`login` = ?; ";
@@ -75,11 +84,11 @@ public class DriverDAO extends CommonDAO<Driver> implements RoleInfoDAO<Driver> 
         super(new DriverBuilder());
     }
 
-    public Driver find(String login, String password) throws BuberSQLException {
+    public Driver find(String login, String password) throws BuberSQLException, BuberLogicException {
         return super.find(login, password, SQL_SELECT_DRIVER);
     }
 
-    public Driver find(String login) throws BuberSQLException {
+    public Driver find(String login) throws BuberSQLException, BuberLogicException {
         return super.find(login, SQL_SELECT_DRIVER);
     }
 
@@ -88,7 +97,11 @@ public class DriverDAO extends CommonDAO<Driver> implements RoleInfoDAO<Driver> 
     }
 
     public void insert(String login, Driver driver) throws BuberSQLException {
-        super.insert(login, driver, SQL_INSERT_DRIVER);
+        super.insert(login, driver, SQL_INSERT_DRIVER_INFO);
+    }
+
+    public void insert(String login, String password, Driver driver) throws BuberSQLException {
+        super.insert(login, password, driver, SQL_INSERT_DRIVER);
     }
 
     public void delete(String login) throws BuberSQLException {

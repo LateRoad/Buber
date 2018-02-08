@@ -26,6 +26,12 @@ public class Location implements Entity {
 
     }
 
+    public Location(String login, String lat, String lng) {
+        this.login = login;
+        this.lat = lat;
+        this.lng = lng;
+    }
+
     public String getLogin() {
         return login;
     }

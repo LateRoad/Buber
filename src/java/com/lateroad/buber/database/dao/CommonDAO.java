@@ -1,8 +1,9 @@
-package com.lateroad.buber.command.impl.database.dao;
+package com.lateroad.buber.database.dao;
 
 import com.lateroad.buber.builder.StatementBuilder;
-import com.lateroad.buber.command.impl.database.DAO;
+import com.lateroad.buber.database.DAO;
 import com.lateroad.buber.entity.Entity;
+import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
 
 import java.sql.*;
@@ -17,7 +18,7 @@ public abstract class CommonDAO<E extends Entity> implements DAO {
         this.builder = builder;
     }
 
-    protected E find(String login, String query) throws BuberSQLException {
+    protected E find(String login, String query) throws BuberSQLException, BuberLogicException {
         E info = null;
         Connection connection = dbPool.getConnection();
         try (PreparedStatement st = connection.prepareStatement(query)) {
@@ -95,6 +96,19 @@ public abstract class CommonDAO<E extends Entity> implements DAO {
         }
     }
 
+    protected void insert(String login, String password, E entity, String query) throws BuberSQLException {
+        Connection connection = dbPool.getConnection();
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            builder.makeSecurityInsertStatement(login, password, entity, statement);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new BuberSQLException("Something went wrong.", e);
+        } finally {
+            dbPool.putConnection(connection);
+        }
+    }
+
     protected void update(String login, E entity, String query) throws BuberSQLException {
         Connection connection = dbPool.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -107,7 +121,7 @@ public abstract class CommonDAO<E extends Entity> implements DAO {
         }
     }
 
-    protected E find(String login, String password, String query) throws BuberSQLException {
+    protected E find(String login, String password, String query) throws BuberSQLException, BuberLogicException {
         E info = null;
         Connection connection = dbPool.getConnection();
 
@@ -119,10 +133,10 @@ public abstract class CommonDAO<E extends Entity> implements DAO {
                         if (resultSet.getString("password").equals(password)) {
                             info = (E) builder.build(resultSet);
                         } else {
-                            throw new BuberSQLException("Wrong login or password.");
+                            throw new BuberLogicException("Wrong login or password.");
                         }
                     } else {
-                        throw new BuberSQLException("User is already online.");
+                        throw new BuberLogicException("User is already online.");
                     }
                 }
             } finally {

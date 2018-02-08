@@ -1,14 +1,15 @@
-package com.lateroad.buber.command.impl.database.dao.role;
+package com.lateroad.buber.database.dao.role;
 
 import com.lateroad.buber.entity.role.CommonUser;
+import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
 
 import java.util.List;
 
 public interface RoleInfoDAO<E extends CommonUser> {
-    E find(String login, String password) throws BuberSQLException;
+    E find(String login, String password) throws BuberSQLException, BuberLogicException;
 
-    E find(String login) throws BuberSQLException;
+    E find(String login) throws BuberSQLException, BuberLogicException;
 
     List<E> findAll() throws BuberSQLException;
 

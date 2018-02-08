@@ -1,4 +1,4 @@
-package com.lateroad.buber.command.impl.database;
+package com.lateroad.buber.database;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -30,11 +30,6 @@ public class DBPool {
     }
 
     private DBPool() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
         createPool();
     }
 

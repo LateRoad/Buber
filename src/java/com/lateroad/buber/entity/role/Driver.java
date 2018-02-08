@@ -12,6 +12,11 @@ public class Driver extends User {
         this.carNumber = carNumber;
     }
 
+    public Driver(String login, UserType role, String name, String surname, String lastname, String email, String phoneNumber, String carNumber) {
+        super(login, UserType.DRIVER, name, surname, lastname, email, phoneNumber, 0, 0, false);
+        this.carNumber = carNumber;
+    }
+
     public String getCarNumber() {
         return carNumber;
     }

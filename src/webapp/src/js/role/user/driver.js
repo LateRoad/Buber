@@ -1,6 +1,6 @@
 function acceptOrder(orderId) {
     $.ajax({
-        url: "/servlet?action=acceptOrder&id=" + orderId,
+        url: "/userOperation?action=acceptOrder&id=" + orderId,
         data: {name: 'abc'},
         type: 'POST',
         cache: false,
@@ -16,7 +16,7 @@ function acceptOrder(orderId) {
 
 function updateActiveOrders() {
     $.ajax({
-        url: "/servlet?action=updateActiveOrders",
+        url: "/userOperation?action=updateActiveOrders",
         data: {name: 'abc'},
         type: 'post',
         cache: false,
