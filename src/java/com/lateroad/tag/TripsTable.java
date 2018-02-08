@@ -39,6 +39,7 @@ public class TripsTable extends TagSupport {
                 out.write("                    <th>" + bundle.getString("trips-table-order-price") + "</th>");
                 out.write("                    <th>" + bundle.getString("trips-table-order-date") + "</th>");
                 out.write("                    <th>" + bundle.getString("trips-table-order-status") + "</th>");
+                out.write("                    <th>" + bundle.getString("actions") + "</th>");
                 out.write("                </tr>");
                 out.write("                </thead>");
                 out.write("                <tfoot>");
@@ -48,6 +49,7 @@ public class TripsTable extends TagSupport {
                 out.write("                    <th>" + bundle.getString("trips-table-order-price") + "</th>");
                 out.write("                    <th>" + bundle.getString("trips-table-order-date") + "</th>");
                 out.write("                    <th>" + bundle.getString("trips-table-order-status") + "</th>");
+                out.write("                    <th>" + bundle.getString("actions") + "</th>");
                 out.write("                </tr>");
                 out.write("                </tfoot>");
                 out.write("                <tbody>");
@@ -62,12 +64,17 @@ public class TripsTable extends TagSupport {
                     switch (trip.getStatus()) {
                         case DONE:
                             out.write("        <td>" + bundle.getString("order-status-done") + "</td>");
+                            out.write("        <td></td>");
                             break;
                         case UNDONE:
                             out.write("        <td>" + bundle.getString("order-status-active") + "</td>");
+                            out.write("        <td>");
+                            out.write("            <button onclick=\"setOrderStatus(" + trip.getId() + ", \'CANCELLED\')\" type=\"button\"\n class=\"btn btn-primary\">" + bundle.getString("button-cancel") + "</button>\n");
+                            out.write("        </td>");
                             break;
                         case CANCELLED:
                             out.write("        <td>" + bundle.getString("order-status-cancelled") + "</td>");
+                            out.write("        <td></td>");
                             break;
                         default:
                             //log

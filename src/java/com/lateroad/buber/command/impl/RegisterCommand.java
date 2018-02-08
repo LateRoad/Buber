@@ -59,7 +59,7 @@ public class RegisterCommand implements ICommand {
                 resp.setStatus(200);
                 resp.getWriter().write(user.getRole().toString());
                 if (user.getRole().equals(UserType.CLIENT)) {
-                    req.getSession().setMaxInactiveInterval(60);
+                    req.getSession().setMaxInactiveInterval(60 * 10);
                 }
             }
         } catch (BuberLogicException e) {

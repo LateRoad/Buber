@@ -32,10 +32,15 @@ public class OrderDAO implements DAO {
 
     private static final String SQL_DELETE_ORDER = "DELETE FROM `buber`.`order` WHERE `order`.`id` = ?; ";
 
-    private static final String SQL_UPDATE_ORDER_STATUS =
+    private static final String SQL_UPDATE_ORDER_INFO =
             "UPDATE `buber`.`order` " +
                     "SET `client_login` = ?, `driver_login` = ?, `money` = ?, `date` = ? " +
                     "WHERE `order`.`login` = ? ";
+
+    private static final String SQL_UPDATE_ORDER_STATUS =
+            "UPDATE `buber`.`order` " +
+                    "SET `status` = ? " +
+                    "WHERE `order`.`id` = ? ";
 
     private static final String SQL_UPDATE_ORDER_STATUS_AND_DRIVER =
             "UPDATE `buber`.`order` " +
@@ -247,7 +252,7 @@ public class OrderDAO implements DAO {
     public void update(Order order) throws BuberSQLException {
         Connection connection = dbPool.getConnection();
 
-        try (PreparedStatement st = connection.prepareStatement(SQL_UPDATE_ORDER_STATUS)) {
+        try (PreparedStatement st = connection.prepareStatement(SQL_UPDATE_ORDER_INFO)) {
             st.setString(1, order.getStatus().name());
             st.setInt(2, order.getId());
             st.executeUpdate();
@@ -263,6 +268,20 @@ public class OrderDAO implements DAO {
 
         try (PreparedStatement st = connection.prepareStatement(SQL_UPDATE_ORDER_STATUS_AND_DRIVER)) {
             st.setString(1, driverLogin);
+            st.setInt(2, orderID);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new BuberSQLException("Something went wrong.", e);
+        } finally {
+            dbPool.putConnection(connection);
+        }
+    }
+
+    public void update(int orderID, OrderType status) throws BuberSQLException {
+        Connection connection = dbPool.getConnection();
+
+        try (PreparedStatement st = connection.prepareStatement(SQL_UPDATE_ORDER_STATUS)) {
+            st.setString(1, status.name());
             st.setInt(2, orderID);
             st.executeUpdate();
         } catch (SQLException e) {

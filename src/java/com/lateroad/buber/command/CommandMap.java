@@ -11,6 +11,7 @@ import com.lateroad.buber.command.impl.admin.GetOrdersCommand;
 import com.lateroad.buber.command.impl.admin.SetMutedCommand;
 import com.lateroad.buber.command.impl.user.GetTripsCommand;
 import com.lateroad.buber.command.impl.user.SetCurrentLocation;
+import com.lateroad.buber.command.impl.user.SetOrderStatusCommand;
 import com.lateroad.buber.command.impl.user.UpdateInfoCommand;
 import com.lateroad.buber.command.impl.user.client.GetRouteInfoCommand;
 import com.lateroad.buber.command.impl.user.client.TakeTaxiCommand;
@@ -31,6 +32,7 @@ public class CommandMap {
         commandsMap = new HashMap<>();
         commandsMap.put("signIn", new SignInCommand());
         commandsMap.put("signOut", new SignOutCommand());
+        commandsMap.put("register", new RegisterCommand());
         commandsMap.put("getTrips", new GetTripsCommand());
         commandsMap.put("getRouteInfo", new GetRouteInfoCommand());
         commandsMap.put("takeTaxi", new TakeTaxiCommand());
@@ -43,7 +45,7 @@ public class CommandMap {
         commandsMap.put("changeLanguage", new ChangeLanguage());
         commandsMap.put("setCurrentLocation", new SetCurrentLocation());
         commandsMap.put("setMuted", new SetMutedCommand());
-        commandsMap.put("register", new RegisterCommand());
+        commandsMap.put("setOrderStatus", new SetOrderStatusCommand());
 //        commandsMap.put("deleteUser", new DeleteUserCommand());
 //        commandsMap.put("setDiscount", new SetDiscount());
     }

@@ -53,7 +53,7 @@
 <script src="src/vendor/jquery-easing/jquery.easing.min.js"></script>
 <!-- Custom scripts for all pages-->
 <script src="src/js/script.js"></script>
-<script src="src/js/editInfo.js"></script>
+<script src="src/js/role/user/user.js"></script>
 <script src="src/js/role/admin.js"></script>
 <script src="src/js/role/commonOperation.js"></script>
 </body>

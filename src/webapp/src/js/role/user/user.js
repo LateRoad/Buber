@@ -20,3 +20,19 @@ function change(item, button) {
         td.appendChild(input);
     }
 }
+
+function setOrderStatus(id, status) {
+    alert("/userOperation?action=setOrderStatus&id=" + id + "&status=" + status);
+    $.ajax({
+        url: "/userOperation?action=setOrderStatus&id=" + id + "&status=" + status ,
+        data: {name: 'abc'},
+        type: 'post',
+        cache: false,
+        success: function () {
+            $('#activeOrders').load("/home.jsp" + ' #activeOrders');
+        },
+        error: function () {
+            alert('error');
+        }
+    });
+}

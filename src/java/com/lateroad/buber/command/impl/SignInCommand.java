@@ -49,7 +49,7 @@ public class SignInCommand implements ICommand {
                     resp.setStatus(200);
                     resp.getWriter().write(user.getRole().toString());
                     if (user.getRole().equals(UserType.CLIENT)) {
-                        session.setMaxInactiveInterval(60);
+                        session.setMaxInactiveInterval(60 * 10);
                     }
                 }
             }

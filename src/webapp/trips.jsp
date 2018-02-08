@@ -50,6 +50,7 @@
 <script src="src/js/script.js"></script>
 <script src="src/js/script-datatables.min.js"></script>
 <script src="src/js/role/admin.js"></script>
+<script src="src/js/role/user/user.js"></script>
 <script src="src/js/role/commonOperation.js"></script>
 </body>
 </html>

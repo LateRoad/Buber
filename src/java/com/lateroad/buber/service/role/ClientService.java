@@ -1,12 +1,10 @@
 package com.lateroad.buber.service.role;
 
 import com.lateroad.buber.database.dao.CommonUserDAO;
-import com.lateroad.buber.database.dao.LocationDAO;
 import com.lateroad.buber.database.dao.OrderDAO;
 import com.lateroad.buber.database.dao.UserDAO;
 import com.lateroad.buber.database.dao.role.ClientDAO;
 import com.lateroad.buber.database.dao.role.DriverDAO;
-import com.lateroad.buber.entity.Location;
 import com.lateroad.buber.entity.Order;
 import com.lateroad.buber.entity.role.Client;
 import com.lateroad.buber.entity.role.User;
@@ -50,9 +48,5 @@ public class ClientService implements CommonUserService<Client> {
         }
         OrderDAO.getInstance().insert(new Order(login, driver.getLogin(), money, OrderType.UNDONE));
         DriverDAO.getInstance().update(login, true);
-    }
-
-    public void setLocation(String login, String lat, String lng) throws BuberSQLException {
-        LocationDAO.getInstance().update(login, new Location(login, lat, lng));
     }
 }
