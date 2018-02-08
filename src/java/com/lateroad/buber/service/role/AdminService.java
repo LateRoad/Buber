@@ -27,19 +27,19 @@ public class AdminService implements CommonUserService<CommonUser> {
         throw new UnsupportedOperationException();
     }
 
-    public List<Order> findAllOrders() throws BuberSQLException {
+    public List<Order> findAllOrders() throws BuberSQLException, BuberLogicException {
         return OrderDAO.getInstance().findAll();
     }
 
-    public List<Driver> findAllDrivers() throws BuberSQLException {
+    public List<Driver> findAllDrivers() throws BuberSQLException, BuberLogicException {
         return DriverDAO.getInstance().findAll();
     }
 
-    public List<Client> findAllClients() throws BuberSQLException {
+    public List<Client> findAllClients() throws BuberSQLException, BuberLogicException {
         return ClientDAO.getInstance().findAll();
     }
 
-    public void setMuted(String login, boolean status) throws BuberSQLException {
+    public void setMuted(String login, boolean status) throws BuberSQLException, BuberLogicException {
         CommonUserDAO.getInstance().setMuted(login, status);
     }
 

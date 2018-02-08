@@ -18,7 +18,7 @@ public class DriverService implements CommonUserService<Driver> {
 
     @Override
     public Driver authentication(String login, String password) throws BuberSQLException, BuberLogicException {
-        Driver driver = null;
+        Driver driver;
         driver = DriverDAO.getInstance().find(login, password);
         CommonUserDAO.getInstance().setOnline(login, true);
         CommonUserDAO.getInstance().setRole(login, UserType.DRIVER);
@@ -27,9 +27,8 @@ public class DriverService implements CommonUserService<Driver> {
 
     @Override
     public Driver registration(String... params) throws BuberSQLException, BuberLogicException {
-        Driver driver = null;
+        Driver driver = new Driver(params[0], UserType.DRIVER, params[2], params[3], params[4], params[5], params[6], params[7]);
         if (!CommonUserDAO.getInstance().isExist(params[0])) {
-            driver = new Driver(params[0], UserType.DRIVER, params[2], params[3], params[4], params[5], params[6], params[7]);
             CommonUserDAO.getInstance().insert(driver.getLogin(), params[1], driver.getRole());
             UserDAO.getInstance().insert(driver.getLogin(), driver);
             DriverDAO.getInstance().insert(driver.getLogin(), driver);
@@ -40,7 +39,7 @@ public class DriverService implements CommonUserService<Driver> {
         return driver;
     }
 
-    public List<Driver> getNearestDrivers(String clientLogin) throws BuberSQLException {
+    public List<Driver> getNearestDrivers(String clientLogin) throws BuberSQLException, BuberLogicException {
         List<Driver> nearestDrivers = null;
         for (int i = 1; i <= COUNT_OF_ITERATION && nearestDrivers == null; ++i) {
             nearestDrivers = DriverDAO.getInstance().find(clientLogin, KILOMETERS_IN_ITERATION * i);
@@ -49,7 +48,7 @@ public class DriverService implements CommonUserService<Driver> {
     }
 
 
-    public void acceptOrder(String login, int id) throws BuberSQLException {
+    public void acceptOrder(String login, int id) throws BuberSQLException, BuberLogicException {
         OrderDAO.getInstance().update(login, id);
     }
 }

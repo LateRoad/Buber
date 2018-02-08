@@ -1,6 +1,7 @@
 package com.lateroad.tag;
 
 import com.lateroad.buber.entity.role.Driver;
+import org.apache.log4j.Logger;
 
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -9,6 +10,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class DriverInfoCard extends TagSupport {
+    private static final Logger LOGGER = Logger.getLogger(DriverInfoCard.class);
+
     private Driver driver;
 
     public void setDriver(Driver driver) {
@@ -57,7 +60,7 @@ public class DriverInfoCard extends TagSupport {
             out.write("    <div class=\"card-footer small text-muted\">" + bundle.getString("powered-by-lateroad") + "</div>");
             out.write("</div>");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("ERROR during displaying DriverInfoCard tag.", e);
         }
         return SKIP_BODY;
     }

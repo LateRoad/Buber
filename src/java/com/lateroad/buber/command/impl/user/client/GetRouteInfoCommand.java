@@ -26,7 +26,7 @@ public class GetRouteInfoCommand implements ICommand {
         String time = null;
         String distance = null;
         try {
-            time = mapService.calculatePrice(from, to);
+            time = mapService.calculateDuration(from, to);
             distance = mapService.calculateDistance(from, to);
             List<Driver> drivers = null;
             drivers = driverService.getNearestDrivers(((CommonUser) req.getSession().getAttribute("user")).getLogin());

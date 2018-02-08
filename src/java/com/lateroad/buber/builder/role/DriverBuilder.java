@@ -4,12 +4,15 @@ import com.lateroad.buber.builder.StatementBuilder;
 import com.lateroad.buber.entity.role.Driver;
 import com.lateroad.buber.entity.type.UserType;
 import com.lateroad.buber.exception.BuberSQLException;
+import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DriverBuilder implements StatementBuilder<Driver> {
+    private static final Logger LOGGER = Logger.getLogger(DriverBuilder.class);
+
 
     @Override
     public Driver build(ResultSet resultSet) throws BuberSQLException {
@@ -28,7 +31,8 @@ public class DriverBuilder implements StatementBuilder<Driver> {
                     resultSet.getBoolean("is_muted"),
                     resultSet.getString("car_number"));
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred building a driver entity.", e);
+            throw new BuberSQLException("Something went wrong.");
         }
         return driver;
     }
@@ -48,7 +52,8 @@ public class DriverBuilder implements StatementBuilder<Driver> {
             statement.setString(10, driver.getPhoneNumber());
             statement.setString(11, driver.getCarNumber());
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred building a security insert statement for driver.", e);
+            throw new BuberSQLException("Something went wrong.");
         }
     }
 
@@ -59,7 +64,8 @@ public class DriverBuilder implements StatementBuilder<Driver> {
             statement.setString(2, driver.getPhoneNumber());
             statement.setString(3, driver.getCarNumber());
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred building an insert statement for driver.", e);
+            throw new BuberSQLException("Something went wrong.");
         }
     }
 
@@ -70,7 +76,8 @@ public class DriverBuilder implements StatementBuilder<Driver> {
             statement.setString(2, driver.getPhoneNumber());
             statement.setString(3, driver.getCarNumber());
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred building an update statement for driver.", e);
+            throw new BuberSQLException("Something went wrong.");
         }
     }
 }

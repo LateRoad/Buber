@@ -4,7 +4,9 @@ import com.lateroad.buber.database.DAO;
 import com.lateroad.buber.entity.Order;
 import com.lateroad.buber.entity.type.OrderType;
 import com.lateroad.buber.entity.type.UserType;
+import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
+import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -15,6 +17,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class OrderDAO implements DAO {
+    private static final Logger LOGGER = Logger.getLogger(OrderDAO.class);
+
+    private static OrderDAO instance = null;
+    private static ReentrantLock lock = new ReentrantLock();
+    private static AtomicBoolean instanceCreated = new AtomicBoolean(false);
+
+
     private static final String SQL_SELECT_ORDER_BY_DATE = "SELECT * FROM `buber`.`order` AS o WHERE o.`date` = ? ";
 
     private static final String SQL_SELECT_ALL_ORDERS = "SELECT * FROM `buber`.`order` ";
@@ -48,10 +57,6 @@ public class OrderDAO implements DAO {
                     "WHERE `order`.`id` = ?";
 
 
-    private static OrderDAO instance = null;
-    private static ReentrantLock lock = new ReentrantLock();
-    private static AtomicBoolean instanceCreated = new AtomicBoolean(false);
-
     public static OrderDAO getInstance() {
         if (!instanceCreated.get()) {
             lock.lock();
@@ -70,9 +75,9 @@ public class OrderDAO implements DAO {
     private OrderDAO() {
     }
 
-    public Order find(String login, UserType role, OrderType status) throws BuberSQLException {
+    public Order find(String login, UserType role, OrderType status) throws BuberSQLException, BuberLogicException {
         Order order = null;
-        Connection connection = dbPool.getConnection();
+        Connection connection = connectionPool.getConnection();
         if (UserType.CLIENT.equals(role)) {
             order = findByRoleAndType(login, connection, SQL_SELECT_ALL_ORDERS_BY_CLIENT_LOGIN_AND_TYPE, status);
         } else if (UserType.DRIVER.equals(role)) {
@@ -81,26 +86,27 @@ public class OrderDAO implements DAO {
         return order;
     }
 
-    public List<Order> findAll() throws BuberSQLException {
+    public List<Order> findAll() throws BuberSQLException, BuberLogicException {
         List<Order> orders = new ArrayList<>();
-        Connection cn = dbPool.getConnection();
+        Connection cn = connectionPool.getConnection();
         try (Statement st = cn.createStatement();
              ResultSet resultSet = st.executeQuery(SQL_SELECT_ALL_ORDERS)) {
             while (resultSet.next()) {
                 orders.add(createOrder(resultSet));
             }
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred while executing query.", e);
+            throw new BuberSQLException("Something went wrong.");
         } finally {
-            dbPool.putConnection(cn);
+            connectionPool.putConnection(cn);
         }
         return orders;
     }
 
 
-    public List<Order> findAll(String login, UserType role) throws BuberSQLException {
+    public List<Order> findAll(String login, UserType role) throws BuberSQLException, BuberLogicException {
         List<Order> orders = new ArrayList<>();
-        Connection connection = dbPool.getConnection();
+        Connection connection = connectionPool.getConnection();
         if (UserType.CLIENT.equals(role)) {
             orders = findAllByRole(login, connection, SQL_SELECT_ALL_ORDERS_BY_CLIENT_LOGIN);
         } else if (UserType.DRIVER.equals(role)) {
@@ -109,9 +115,9 @@ public class OrderDAO implements DAO {
         return orders;
     }
 
-    public List<Order> findAll(String login, UserType role, OrderType status) throws BuberSQLException {
+    public List<Order> findAll(String login, UserType role, OrderType status) throws BuberSQLException, BuberLogicException {
         List<Order> orders = new ArrayList<>();
-        Connection connection = dbPool.getConnection();
+        Connection connection = connectionPool.getConnection();
         if (UserType.CLIENT.equals(role)) {
             orders = findAllByRoleAndType(login, connection, SQL_SELECT_ALL_ORDERS_BY_CLIENT_LOGIN_AND_TYPE, status);
         } else if (UserType.DRIVER.equals(role)) {
@@ -120,7 +126,7 @@ public class OrderDAO implements DAO {
         return orders;
     }
 
-    private List<Order> findAllByRoleAndType(String login, Connection connection, String query, OrderType status) throws BuberSQLException {
+    private List<Order> findAllByRoleAndType(String login, Connection connection, String query, OrderType status) throws BuberSQLException, BuberLogicException {
         List<Order> orders = new ArrayList<>();
         try (PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, login);
@@ -131,14 +137,15 @@ public class OrderDAO implements DAO {
                 }
             }
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred while executing query.", e);
+            throw new BuberSQLException("Something went wrong.");
         } finally {
-            dbPool.putConnection(connection);
+            connectionPool.putConnection(connection);
         }
         return orders;
     }
 
-    private Order findByRoleAndType(String login, Connection connection, String query, OrderType status) throws BuberSQLException {
+    private Order findByRoleAndType(String login, Connection connection, String query, OrderType status) throws BuberSQLException, BuberLogicException {
         Order order = null;
         try (PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, login);
@@ -149,15 +156,16 @@ public class OrderDAO implements DAO {
                 }
             }
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred while executing query.", e);
+            throw new BuberSQLException("Something went wrong.");
         } finally {
-            dbPool.putConnection(connection);
+            connectionPool.putConnection(connection);
         }
         return order;
     }
 
 
-    private List<Order> findAllByRole(String login, Connection connection, String query) throws BuberSQLException {
+    private List<Order> findAllByRole(String login, Connection connection, String query) throws BuberSQLException, BuberLogicException {
         List<Order> orders = new ArrayList<>();
         try (PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, login);
@@ -167,17 +175,17 @@ public class OrderDAO implements DAO {
                 }
             }
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred while executing query.", e);
+            throw new BuberSQLException("Something went wrong.");
         } finally {
-            dbPool.putConnection(connection);
+            connectionPool.putConnection(connection);
         }
         return orders;
     }
 
 
-    public void insert(Order order) throws BuberSQLException {
-        Connection connection = dbPool.getConnection();
-
+    public void insert(Order order) throws BuberSQLException, BuberLogicException {
+        Connection connection = connectionPool.getConnection();
         try (PreparedStatement st = connection.prepareStatement(SQL_INSERT_ORDER)) {
             st.setString(1, order.getClientLogin());
             st.setString(2, order.getDriverLogin());
@@ -185,28 +193,29 @@ public class OrderDAO implements DAO {
             st.setDate(4, order.getDate());
             st.executeUpdate();
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred while executing query.", e);
+            throw new BuberSQLException("Something went wrong.");
         } finally {
-            dbPool.putConnection(connection);
+            connectionPool.putConnection(connection);
         }
     }
 
 
-    public void delete(Order order) throws BuberSQLException {
-        Connection connection = dbPool.getConnection();
-
+    public void delete(Order order) throws BuberSQLException, BuberLogicException {
+        Connection connection = connectionPool.getConnection();
         try (PreparedStatement st = connection.prepareStatement(SQL_DELETE_ORDER)) {
             st.setInt(1, order.getId());
             st.executeUpdate();
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred while executing query.", e);
+            throw new BuberSQLException("Something went wrong.");
         } finally {
-            dbPool.putConnection(connection);
+            connectionPool.putConnection(connection);
         }
     }
 
-    public void delete(int... orders) throws BuberSQLException {
-        Connection connection = dbPool.getConnection();
+    public void delete(int... orders) throws BuberSQLException, BuberLogicException {
+        Connection connection = connectionPool.getConnection();
         try (PreparedStatement st = connection.prepareStatement(SQL_DELETE_ORDER)) {
             for (int orderId : orders) {
                 st.setInt(1, orderId);
@@ -214,14 +223,15 @@ public class OrderDAO implements DAO {
             }
             st.executeUpdate();
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred while executing query.", e);
+            throw new BuberSQLException("Something went wrong.");
         } finally {
-            dbPool.putConnection(connection);
+            connectionPool.putConnection(connection);
         }
     }
 
-    public void delete(Order... orders) throws BuberSQLException {
-        Connection connection = dbPool.getConnection();
+    public void delete(Order... orders) throws BuberSQLException, BuberLogicException {
+        Connection connection = connectionPool.getConnection();
         try (PreparedStatement st = connection.prepareStatement(SQL_DELETE_ORDER)) {
             for (Order order : orders) {
                 st.setInt(1, order.getId());
@@ -229,65 +239,66 @@ public class OrderDAO implements DAO {
             }
             st.executeUpdate();
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred while executing query.", e);
+            throw new BuberSQLException("Something went wrong.");
         } finally {
-            dbPool.putConnection(connection);
+            connectionPool.putConnection(connection);
         }
     }
 
-    public void delete(int id) throws BuberSQLException {
-        Connection connection = dbPool.getConnection();
-
+    public void delete(int id) throws BuberSQLException, BuberLogicException {
+        Connection connection = connectionPool.getConnection();
         try (PreparedStatement st = connection.prepareStatement(SQL_DELETE_ORDER)) {
             st.setInt(1, id);
             st.executeUpdate();
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred while executing query.", e);
+            throw new BuberSQLException("Something went wrong.");
         } finally {
-            dbPool.putConnection(connection);
+            connectionPool.putConnection(connection);
         }
     }
 
 
-    public void update(Order order) throws BuberSQLException {
-        Connection connection = dbPool.getConnection();
-
+    public void update(Order order) throws BuberSQLException, BuberLogicException {
+        Connection connection = connectionPool.getConnection();
         try (PreparedStatement st = connection.prepareStatement(SQL_UPDATE_ORDER_INFO)) {
             st.setString(1, order.getStatus().name());
             st.setInt(2, order.getId());
             st.executeUpdate();
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred while executing query.", e);
+            throw new BuberSQLException("Something went wrong.");
         } finally {
-            dbPool.putConnection(connection);
+            connectionPool.putConnection(connection);
         }
     }
 
-    public void update(String driverLogin, int orderID) throws BuberSQLException {
-        Connection connection = dbPool.getConnection();
-
+    public void update(String driverLogin, int orderID) throws BuberSQLException, BuberLogicException {
+        Connection connection = connectionPool.getConnection();
         try (PreparedStatement st = connection.prepareStatement(SQL_UPDATE_ORDER_STATUS_AND_DRIVER)) {
             st.setString(1, driverLogin);
             st.setInt(2, orderID);
             st.executeUpdate();
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred while executing query.", e);
+            throw new BuberSQLException("Something went wrong.");
         } finally {
-            dbPool.putConnection(connection);
+            connectionPool.putConnection(connection);
         }
     }
 
-    public void update(int orderID, OrderType status) throws BuberSQLException {
-        Connection connection = dbPool.getConnection();
-
+    public void update(int orderID, OrderType status) throws BuberSQLException, BuberLogicException {
+        Connection connection = connectionPool.getConnection();
         try (PreparedStatement st = connection.prepareStatement(SQL_UPDATE_ORDER_STATUS)) {
             st.setString(1, status.name());
             st.setInt(2, orderID);
             st.executeUpdate();
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred while executing query.", e);
+            throw new BuberSQLException("Something went wrong.");
         } finally {
-            dbPool.putConnection(connection);
+            connectionPool.putConnection(connection);
         }
     }
 
@@ -302,7 +313,8 @@ public class OrderDAO implements DAO {
             order.setStatus(OrderType.valueOf(resultSet.getString("status").toUpperCase(Locale.ENGLISH)));
             order.setDate(resultSet.getDate("date"));
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred while creating order.", e);
+            throw new BuberSQLException("Something went wrong.");
         }
         return order;
     }

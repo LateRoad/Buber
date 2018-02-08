@@ -23,8 +23,7 @@ public class JsonReader {
         try {
             final BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
             final String jsonText = readAll(rd);
-            final JSONObject json = new JSONObject(jsonText);
-            return json;
+            return new JSONObject(jsonText);
         } finally {
             is.close();
         }

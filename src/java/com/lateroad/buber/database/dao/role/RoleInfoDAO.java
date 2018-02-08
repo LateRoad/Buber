@@ -11,14 +11,14 @@ public interface RoleInfoDAO<E extends CommonUser> {
 
     E find(String login) throws BuberSQLException, BuberLogicException;
 
-    List<E> findAll() throws BuberSQLException;
+    List<E> findAll() throws BuberSQLException, BuberLogicException;
 
-    void insert(String login, E roleInfo) throws BuberSQLException;
+    void insert(String login, E roleInfo) throws BuberSQLException, BuberLogicException;
 
-    void delete(String login) throws BuberSQLException;
+    void delete(String login) throws BuberSQLException, BuberLogicException;
 
-    void update(String login, E roleInfo) throws BuberSQLException;
+    void update(String login, E roleInfo) throws BuberSQLException, BuberLogicException;
 
-    void update(String login, boolean isOnline) throws BuberSQLException;
+    void update(String login, boolean isOnline) throws BuberSQLException, BuberLogicException;
 
 }

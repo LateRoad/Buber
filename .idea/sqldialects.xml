@@ -2,6 +2,7 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/src/java/com/lateroad/buber/database/dao/CardDAO.java" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/java/com/lateroad/buber/database/dao/CommonUserDAO.java" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/java/com/lateroad/buber/database/dao/LocationDAO.java" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/java/com/lateroad/buber/database/dao/OrderDAO.java" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/java/com/lateroad/buber/database/dao/UserDAO.java" dialect="MySQL" />

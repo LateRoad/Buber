@@ -1,10 +1,14 @@
 package com.lateroad.tag;
 
+import org.apache.log4j.Logger;
+
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 
 public class Footer extends TagSupport {
+    private static final Logger LOGGER = Logger.getLogger(Footer.class);
+
     private short year;
     private String developer;
     private String project;
@@ -36,7 +40,7 @@ public class Footer extends TagSupport {
             out.write("    </div>");
             out.write("</footer>");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("ERROR during displaying Footer tag.", e);
         }
 
         return SKIP_BODY;

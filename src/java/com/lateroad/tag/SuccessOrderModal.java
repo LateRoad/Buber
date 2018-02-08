@@ -1,5 +1,7 @@
 package com.lateroad.tag;
 
+import org.apache.log4j.Logger;
+
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
@@ -7,6 +9,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class SuccessOrderModal extends TagSupport {
+    private static final Logger LOGGER = Logger.getLogger(SuccessOrderModal.class);
 
 
     @Override
@@ -34,7 +37,7 @@ public class SuccessOrderModal extends TagSupport {
             out.write("    </div>");
             out.write("</div>");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("ERROR during displaying SuccessOrderModal tag.", e);
         }
         return SKIP_BODY;
     }

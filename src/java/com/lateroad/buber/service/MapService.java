@@ -1,19 +1,36 @@
 package com.lateroad.buber.service;
 
+import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.map.DirectionCalculator;
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-
 public class MapService {
-    public String calculatePrice(String from, String to) throws IOException, JSONException {
-        JSONObject location = DirectionCalculator.calculateRoute(from, to);
-        return location.getJSONObject("duration").getString("text");
+    private static final Logger LOGGER = Logger.getLogger(MapService.class);
+
+
+    public String calculateDuration(String from, String to) throws BuberLogicException {
+        String duration;
+        try {
+            JSONObject location = DirectionCalculator.calculateRoute(from, to);
+            duration = location.getJSONObject("duration").getString("text");
+        } catch (JSONException e) {
+            LOGGER.error("JSONException was occurred while getting JSON from duration.", e);
+            throw new BuberLogicException("Can't calculate your route.");
+        }
+        return duration;
     }
 
-    public String calculateDistance(String from, String to) throws IOException, JSONException {
-        JSONObject location = DirectionCalculator.calculateRoute(from, to);
-        return location.getJSONObject("distance").getString("text");
+    public String calculateDistance(String from, String to) throws BuberLogicException {
+        String duration;
+        try {
+            JSONObject location = DirectionCalculator.calculateRoute(from, to);
+            duration = location.getJSONObject("distance").getString("text");
+        } catch (JSONException e) {
+            LOGGER.error("JSONException was occurred while getting JSON from distance.", e);
+            throw new BuberLogicException("Can't calculate your route.");
+        }
+        return duration;
     }
 }

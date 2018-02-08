@@ -4,16 +4,19 @@ import com.lateroad.buber.builder.StatementBuilder;
 import com.lateroad.buber.entity.role.Client;
 import com.lateroad.buber.entity.type.UserType;
 import com.lateroad.buber.exception.BuberSQLException;
+import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ClientBuilder implements StatementBuilder<Client> {
+    private static final Logger LOGGER = Logger.getLogger(ClientBuilder.class);
+
 
     @Override
     public Client build(ResultSet resultSet) throws BuberSQLException {
-        Client client = null;
+        Client client;
         try {
             client = new Client(
                     resultSet.getString("login"),
@@ -27,7 +30,8 @@ public class ClientBuilder implements StatementBuilder<Client> {
                     resultSet.getInt("reputation"),
                     resultSet.getBoolean("is_muted"));
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred building a client entity.", e);
+            throw new BuberSQLException("Something went wrong.");
         }
         return client;
     }
@@ -47,7 +51,8 @@ public class ClientBuilder implements StatementBuilder<Client> {
             statement.setString(9, login);
             statement.setString(10, client.getPhoneNumber());
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred building a security insert statement for client.", e);
+            throw new BuberSQLException("Something went wrong.");
         }
     }
 
@@ -57,7 +62,8 @@ public class ClientBuilder implements StatementBuilder<Client> {
             statement.setString(1, login);
             statement.setString(2, client.getPhoneNumber());
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred building an insert statement for client.", e);
+            throw new BuberSQLException("Something went wrong.");
         }
     }
 
@@ -67,7 +73,8 @@ public class ClientBuilder implements StatementBuilder<Client> {
             statement.setString(1, login);
             statement.setString(2, client.getPhoneNumber());
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred building an update statement for client.", e);
+            throw new BuberSQLException("Something went wrong.");
         }
     }
 }

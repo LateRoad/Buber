@@ -1,6 +1,7 @@
 package com.lateroad.tag;
 
 import com.lateroad.buber.entity.Order;
+import org.apache.log4j.Logger;
 
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -10,6 +11,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class TripsTable extends TagSupport {
+    private static final Logger LOGGER = Logger.getLogger(TripsTable.class);
+
     private List<Order> trips;
 
 
@@ -92,7 +95,7 @@ public class TripsTable extends TagSupport {
             out.write("    </div>");
             out.write("</div>");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("ERROR during displaying TripsTable tag.", e);
         }
         return SKIP_BODY;
     }

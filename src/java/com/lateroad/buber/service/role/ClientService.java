@@ -27,9 +27,8 @@ public class ClientService implements CommonUserService<Client> {
 
     @Override
     public Client registration(String... params) throws BuberSQLException, BuberLogicException {
-        Client client = null;
+        Client client = new Client(params[0], UserType.CLIENT, params[2], params[3], params[4], params[5], params[6]);
         if (!CommonUserDAO.getInstance().isExist(params[0])) {
-            client = new Client(params[0], UserType.CLIENT, params[2], params[3], params[4], params[5], params[6]);
             CommonUserDAO.getInstance().insert(client.getLogin(), params[1], client.getRole());
             UserDAO.getInstance().insert(client.getLogin(), client);
             ClientDAO.getInstance().insert(client.getLogin(), client);
@@ -41,10 +40,10 @@ public class ClientService implements CommonUserService<Client> {
     }
 
 
-    public void takeTaxi(String login, String driverLogin, String money) throws BuberSQLException {
+    public void takeTaxi(String login, String driverLogin, String money) throws BuberSQLException, BuberLogicException {
         User driver = DriverDAO.getInstance().find(driverLogin, false);
         if (driver == null) {
-            throw new BuberSQLException("Водитель занят");
+            throw new BuberLogicException("Driver is already busy.");
         }
         OrderDAO.getInstance().insert(new Order(login, driver.getLogin(), money, OrderType.UNDONE));
         DriverDAO.getInstance().update(login, true);

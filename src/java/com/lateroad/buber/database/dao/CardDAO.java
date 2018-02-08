@@ -5,6 +5,8 @@ import com.lateroad.buber.database.DAO;
 import com.lateroad.buber.entity.Card;
 import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
+import com.lateroad.buber.exception.BuberUnsupportedOperationException;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,6 +16,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class CardDAO extends CommonDAO<Card> implements DAO {
+    private static final Logger LOGGER = Logger.getLogger(CardDAO.class);
+
+    private static CardDAO instance = null;
+    private static ReentrantLock lock = new ReentrantLock();
+    private static AtomicBoolean instanceCreated = new AtomicBoolean(false);
+
+
     private static final String SQL_SELECT_CARD = "SELECT * FROM `buber`.`card_detail` AS c WHERE c.`login` = ? ";
 
     private static final String SQL_SELECT_ALL_CARDS = "SELECT * FROM `buber`.`card_detail` ";
@@ -28,10 +37,6 @@ public class CardDAO extends CommonDAO<Card> implements DAO {
     private static final String SQL_DELETE_CARD_BY_ID =
             "DELETE FROM `buber`.`card` WHERE `card`.`id` = ?; ";
 
-
-    private static CardDAO instance = null;
-    private static ReentrantLock lock = new ReentrantLock();
-    private static AtomicBoolean instanceCreated = new AtomicBoolean(false);
 
     public static CardDAO getInstance() {
         if (!instanceCreated.get()) {
@@ -58,31 +63,34 @@ public class CardDAO extends CommonDAO<Card> implements DAO {
     }
 
 
-    public List<Card> findAll() throws BuberSQLException {
+    public List<Card> findAll() throws BuberSQLException, BuberLogicException {
         return super.findAll(SQL_SELECT_ALL_CARDS);
     }
 
 
-    public void insert(String login, Card card) throws BuberSQLException {
+    public void insert(String login, Card card) throws BuberSQLException, BuberLogicException {
         super.insert(login, card, SQL_INSERT_CARD);
     }
 
 
-    public void delete(String login) throws BuberSQLException {
+    public void delete(String login) throws BuberSQLException, BuberLogicException {
         super.delete(login, SQL_DELETE_CARD_BY_LOGIN);
     }
 
     public void update(Card card) {
-        throw new UnsupportedOperationException();
+        throw new BuberUnsupportedOperationException();
     }
 
-    public void delete(int id) throws SQLException {
-        Connection connection = dbPool.getConnection();
+    public void delete(int id) throws BuberSQLException, BuberLogicException {
+        Connection connection = connectionPool.getConnection();
         try (PreparedStatement st = connection.prepareStatement(SQL_DELETE_CARD_BY_ID)) {
             st.setInt(1, id);
             st.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("SQLException was occurred while executing query.", e);
+            throw new BuberSQLException("Something went wrong.");
         } finally {
-            dbPool.putConnection(connection);
+            connectionPool.putConnection(connection);
         }
     }
 }

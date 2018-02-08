@@ -1,5 +1,7 @@
 package com.lateroad.tag;
 
+import org.apache.log4j.Logger;
+
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
@@ -7,6 +9,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class RouteInfoCard extends TagSupport {
+    private static final Logger LOGGER = Logger.getLogger(RouteInfoCard.class);
+
     private String price;
     private String distance;
     private String time;
@@ -46,7 +50,7 @@ public class RouteInfoCard extends TagSupport {
             out.write("    </div>");
             out.write("</div>");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("ERROR during displaying RouteInfoCard tag.");
         }
         return SKIP_BODY;
     }

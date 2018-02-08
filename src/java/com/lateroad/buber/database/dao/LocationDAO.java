@@ -10,6 +10,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class LocationDAO extends CommonDAO<Location> {
+
+    private static LocationDAO instance = null;
+    private static ReentrantLock lock = new ReentrantLock();
+    private static AtomicBoolean instanceCreated = new AtomicBoolean(false);
+
+
     private static final String SQL_SELECT_LOCATION = "SELECT * FROM `buber`.`location` AS l WHERE l.`login` = ? ";
 
     private static final String SQL_SELECT_ALL_LOCATIONS = "SELECT * FROM `buber`.`user` AS u ";
@@ -26,10 +32,6 @@ public class LocationDAO extends CommonDAO<Location> {
                     "SET `lat` = ?, `lng` = ? " +
                     "WHERE `location`.`login` = ?;";
 
-
-    private static LocationDAO instance = null;
-    private static ReentrantLock lock = new ReentrantLock();
-    private static AtomicBoolean instanceCreated = new AtomicBoolean(false);
 
     public static LocationDAO getInstance() {
         if (!instanceCreated.get()) {
@@ -56,22 +58,22 @@ public class LocationDAO extends CommonDAO<Location> {
     }
 
 
-    public List<Location> findAll() throws BuberSQLException {
+    public List<Location> findAll() throws BuberSQLException, BuberLogicException {
         return super.findAll(SQL_SELECT_ALL_LOCATIONS);
     }
 
 
-    public void insert(String login, Location location) throws BuberSQLException {
+    public void insert(String login, Location location) throws BuberSQLException, BuberLogicException {
         super.insert(login, location, SQL_INSERT_LOCATION);
     }
 
 
-    public void delete(String login) throws BuberSQLException {
+    public void delete(String login) throws BuberSQLException, BuberLogicException {
         super.delete(login, SQL_DELETE_LOCATION);
     }
 
 
-    public void update(String login, Location location) throws BuberSQLException {
+    public void update(String login, Location location) throws BuberSQLException, BuberLogicException {
         super.update(login, location, SQL_UPDATE_LOCATION);
     }
 }

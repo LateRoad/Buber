@@ -5,6 +5,7 @@ import com.lateroad.buber.database.dao.CommonDAO;
 import com.lateroad.buber.entity.role.Driver;
 import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
+import org.apache.log4j.Logger;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -16,6 +17,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class DriverDAO extends CommonDAO<Driver> implements RoleInfoDAO<Driver> {
+    private static final Logger LOGGER = Logger.getLogger(DriverDAO.class);
+
+    private static DriverDAO instance = null;
+    private static ReentrantLock lock = new ReentrantLock();
+    private static AtomicBoolean instanceCreated = new AtomicBoolean(false);
+
+
     private static final String SQL_SELECT_NEAREST_DRIVERS = "{CALL `buber`.findDriversInRadius(?, ?)}";
 
     private static final String SQL_SELECT_DRIVER =
@@ -61,10 +69,6 @@ public class DriverDAO extends CommonDAO<Driver> implements RoleInfoDAO<Driver> 
                     "WHERE `driver_info`.`login` = ?;";
 
 
-    private static DriverDAO instance = null;
-    private static ReentrantLock lock = new ReentrantLock();
-    private static AtomicBoolean instanceCreated = new AtomicBoolean(false);
-
     public static DriverDAO getInstance() {
         if (!instanceCreated.get()) {
             lock.lock();
@@ -92,34 +96,37 @@ public class DriverDAO extends CommonDAO<Driver> implements RoleInfoDAO<Driver> 
         return super.find(login, SQL_SELECT_DRIVER);
     }
 
-    public List<Driver> findAll() throws BuberSQLException {
+    public List<Driver> findAll() throws BuberSQLException, BuberLogicException {
         return super.findAll(SQL_SELECT_ALL_DRIVERS);
     }
 
-    public void insert(String login, Driver driver) throws BuberSQLException {
+    public void insert(String login, Driver driver) throws BuberSQLException, BuberLogicException {
         super.insert(login, driver, SQL_INSERT_DRIVER_INFO);
     }
 
-    public void insert(String login, String password, Driver driver) throws BuberSQLException {
+    public void insert(String login, String password, Driver driver) throws BuberSQLException, BuberLogicException {
         super.insert(login, password, driver, SQL_INSERT_DRIVER);
     }
 
-    public void delete(String login) throws BuberSQLException {
+    public void delete(String login) throws BuberSQLException, BuberLogicException {
         super.delete(login, SQL_DELETE_DRIVER);
     }
 
-    public void update(String login, Driver driver) throws BuberSQLException {
+    public void update(String login, Driver driver) throws BuberSQLException, BuberLogicException {
         super.update(login, driver, SQL_UPDATE_DRIVER_INFO);
     }
 
-    public void update(String login, boolean isBusy) throws BuberSQLException {
+    public void update(String login, boolean isBusy) throws BuberSQLException, BuberLogicException {
         super.update(login, isBusy, SQL_UPDATE_DRIVER_INFO_AND_STATUS);
     }
 
-    public List<Driver> find(String login, int radius) throws BuberSQLException {
-        List<Driver> users = new ArrayList<>();
-        Connection connection = dbPool.getConnection();
+    public Driver find(String login, boolean isBusy) throws BuberSQLException, BuberLogicException {
+        return super.find(login, isBusy, SQL_SELECT_DRIVER_WITH_STATUS);
+    }
 
+    public List<Driver> find(String login, int radius) throws BuberSQLException, BuberLogicException {
+        List<Driver> users = new ArrayList<>();
+        Connection connection = connectionPool.getConnection();
         try (CallableStatement st = connection.prepareCall(SQL_SELECT_NEAREST_DRIVERS)) {
             st.setString(1, login);
             st.setInt(2, radius);
@@ -129,14 +136,11 @@ public class DriverDAO extends CommonDAO<Driver> implements RoleInfoDAO<Driver> 
                 }
             }
         } catch (SQLException e) {
-            throw new BuberSQLException("Something went wrong.", e);
+            LOGGER.error("SQLException was occurred while executing query.", e);
+            throw new BuberSQLException("Something went wrong.");
         } finally {
-            dbPool.putConnection(connection);
+            connectionPool.putConnection(connection);
         }
         return users;
-    }
-
-    public Driver find(String login, boolean isBusy) throws BuberSQLException {
-        return super.find(login, isBusy, SQL_SELECT_DRIVER_WITH_STATUS);
     }
 }

@@ -1,6 +1,7 @@
 package com.lateroad.tag;
 
 import com.lateroad.buber.entity.role.User;
+import org.apache.log4j.Logger;
 
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyContent;
@@ -10,6 +11,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class UserCard extends BodyTagSupport {
+    private static final Logger LOGGER = Logger.getLogger(UserCard.class);
+
     private User user;
 
 
@@ -48,7 +51,7 @@ public class UserCard extends BodyTagSupport {
             out.write("    </div>");
             out.write("</div>");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("ERROR during displaying UserCard tag.", e);
         }
         return SKIP_BODY;
     }

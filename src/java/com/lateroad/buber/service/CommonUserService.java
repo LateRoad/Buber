@@ -12,7 +12,7 @@ public interface CommonUserService<E extends CommonUser> {
     E registration(String... params) throws BuberSQLException, BuberLogicException;
 
 
-    default void setOnline(String login, boolean status) throws BuberSQLException {
+    default void setOnline(String login, boolean status) throws BuberSQLException, BuberLogicException {
         CommonUserDAO.getInstance().setOnline(login, status);
     }
 }

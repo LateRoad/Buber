@@ -1,6 +1,7 @@
 package com.lateroad.tag;
 
 import com.lateroad.buber.entity.role.CommonUser;
+import org.apache.log4j.Logger;
 
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -9,6 +10,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class SideMenu extends TagSupport {
+    private static final Logger LOGGER = Logger.getLogger(SideMenu.class);
+
     private CommonUser user;
 
 
@@ -47,8 +50,7 @@ public class SideMenu extends TagSupport {
                         adminMenu(out, bundle);
                         break;
                     default:
-                        //smth went wrong
-                        //log menu is broken by undefined role
+                        LOGGER.error("ERROR during displaying SideMenu tag. Unknown role.");
                         break;
                 }
             }
@@ -96,7 +98,7 @@ public class SideMenu extends TagSupport {
 
             logOutModal(out, bundle);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("ERROR during displaying SideMenu tag.", e);
         }
         return SKIP_BODY;
     }

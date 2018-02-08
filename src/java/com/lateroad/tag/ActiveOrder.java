@@ -1,6 +1,7 @@
 package com.lateroad.tag;
 
 import com.lateroad.buber.entity.role.User;
+import org.apache.log4j.Logger;
 
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -9,6 +10,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ActiveOrder extends TagSupport {
+    private static final Logger LOGGER = Logger.getLogger(ActiveOrder.class);
+
     private User client;
     private int orderID;
 
@@ -47,7 +50,7 @@ public class ActiveOrder extends TagSupport {
             out.write("    </div>");
             out.write("</div>");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("ERROR during displaying ActiveOrder tag.", e);
         }
         return SKIP_BODY;
     }
