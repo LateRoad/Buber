@@ -28,6 +28,11 @@ public class AdminService implements CommonUserService<CurrentModel> {
         return model;
     }
 
+    @Override
+    public CurrentModel registration(String... params) throws BuberSQLException {
+        throw new UnsupportedOperationException();
+    }
+
     public List<Order> findAllOrders() throws BuberSQLException {
         return OrderDAO.getInstance().findAll();
     }

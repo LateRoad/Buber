@@ -36,6 +36,11 @@ public class ClientService implements CommonUserService<CurrentModel> {
         return model;
     }
 
+    @Override
+    public CurrentModel registration(String... params) throws BuberSQLException {
+        return null;
+    }
+
 
 //    private ClientDAO clientInfoDAO = ClientDAO.getInstance();
 //

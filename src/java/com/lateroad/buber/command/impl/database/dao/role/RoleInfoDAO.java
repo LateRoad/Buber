@@ -19,4 +19,5 @@ public interface RoleInfoDAO<E extends CommonUser> {
     void update(String login, E roleInfo) throws BuberSQLException;
 
     void update(String login, boolean isOnline) throws BuberSQLException;
+
 }

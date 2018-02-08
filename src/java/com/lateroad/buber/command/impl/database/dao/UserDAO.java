@@ -19,6 +19,14 @@ public class UserDAO extends CommonDAO<CommonUser> implements DAO {
                     "SET user.is_muted = ? " +
                     "WHERE user.login = ? ";
 
+    private static final String SQL_INSERT_USER =
+            "INSERT INTO `buber`.`user` (`login`, `password`) " +
+                    "VALUES (?, ?);";
+
+    private static final String SQL_INSERT_USER_INFO =
+            "INSERT INTO `buber`.`user_info` (`login`, `name`, `surname`, `lastname`, `email`) " +
+                    "VALUES (?, ?, ?, ?, ?);";
+
     private static final String SQL_UPDATE_ONLINE =
             "UPDATE user " +
                     "SET user.is_online = ? " +
@@ -62,6 +70,23 @@ public class UserDAO extends CommonDAO<CommonUser> implements DAO {
 
     public CommonUser find(String login, String password) throws BuberSQLException {
         return super.find(login, password, SQL_SELECT_USER);
+    }
+
+    public void insert(String login, String password) throws BuberSQLException {
+        Connection connection = dbPool.getConnection();
+        try (PreparedStatement statement = connection.prepareStatement(SQL_INSERT_USER)) {
+            statement.setString(1, login);
+            statement.setString(2, password);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new BuberSQLException("Something went wrong.", e);
+        } finally {
+            dbPool.putConnection(connection);
+        }
+    }
+
+    public void insert(String login) throws BuberSQLException {
+        super.
     }
 
     public void setRole(String login, UserType role) throws BuberSQLException {

@@ -32,6 +32,11 @@ public class DriverService implements CommonUserService<CurrentModel> {
         return model;
     }
 
+    @Override
+    public CurrentModel registration(String... params) throws BuberSQLException {
+        return null;
+    }
+
     public List<Driver> getNearestDrivers(String clientLogin) throws BuberSQLException {
         List<Driver> nearestDrivers = null;
         for (int i = 1; i <= COUNT_OF_ITERATION && nearestDrivers == null; ++i) {

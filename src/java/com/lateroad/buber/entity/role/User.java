@@ -5,7 +5,7 @@ import com.lateroad.buber.entity.type.UserType;
 
 import java.util.Objects;
 
-public abstract class User extends CommonUser implements Entity {
+public class User extends CommonUser implements Entity {
     protected String name;
     protected String surname;
     protected String lastname;

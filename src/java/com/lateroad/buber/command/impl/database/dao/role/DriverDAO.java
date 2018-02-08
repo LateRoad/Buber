@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class DriverDAO extends CommonDAO<Driver> {
+public class DriverDAO extends CommonDAO<Driver> implements RoleInfoDAO<Driver> {
     private static final String SQL_SELECT_NEAREST_DRIVERS = "{CALL `buber`.findDriversInRadius(?, ?)}";
 
     private static final String SQL_SELECT_DRIVER =
@@ -35,7 +35,7 @@ public class DriverDAO extends CommonDAO<Driver> {
                     "JOIN `buber`.`driver_info` AS di ON (u.`login` = di.`login`);";
 
     private static final String SQL_INSERT_DRIVER =
-            "INSERT INTO `buber`.`driver_info` (`car_number`, `phone_number`, `login`) " +
+            "INSERT INTO `buber`.`driver_info` (`car_number`, `phone_number`, `login` ) " +
                     "VALUES (?, ?, ?);";
 
     private static final String SQL_DELETE_DRIVER =
