@@ -21,14 +21,18 @@ public class DriverService implements CommonUserService<Driver> {
     public Driver authentication(String login, String password) throws BuberSQLException, BuberLogicException {
         Driver driver;
         driver = DriverDAO.getInstance().find(login, password);
-        CommonUserDAO.getInstance().setOnline(login, true);
-        CommonUserDAO.getInstance().setRole(login, UserType.DRIVER);
+        if (driver != null) {
+            CommonUserDAO.getInstance().setOnline(login, true);
+            CommonUserDAO.getInstance().setRole(login, UserType.DRIVER);
+        } else {
+            throw new BuberLogicException("Wrong credentials.");
+        }
         return driver;
     }
 
     @Override
     public Driver registration(Driver driver, String password, String confirmPassword) throws BuberSQLException, BuberLogicException {
-        if (FormValidator.checkNessesaryFields(driver)) {
+        if (FormValidator.checkNecessaryFields(driver)) {
             if (FormValidator.checkPasswords(password, confirmPassword)) {
                 if (!CommonUserDAO.getInstance().isExist(driver.getLogin())) {
                     CommonUserDAO.getInstance().insert(driver.getLogin(), password, driver.getRole());

@@ -19,9 +19,9 @@ public class GetDriversCommand implements ICommand {
         try {
             List<Driver> drivers = adminService.findAllDrivers();
             req.setAttribute("drivers", drivers);
-            JSPSwitcher.redirect(req, resp, "success", "/drivers.jsp");
+            JSPSwitcher.redirect(req, resp, "success", "/drivers.jsp", 200);
         } catch (BuberSQLException | BuberLogicException e) {
-            JSPSwitcher.redirect(req, resp, e, null);
+            JSPSwitcher.redirect(req, resp, e, null, 500);
         }
     }
 }

@@ -94,10 +94,12 @@
 <script src="src/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- Core plugin JavaScript-->
 <script src="src/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="src/vendor/datatables/jquery.dataTables.js"></script>
+<script src="src/vendor/datatables/dataTables.bootstrap4.js"></script>
 <!-- Custom scripts for all pages-->
 <script src="src/js/script.js"></script>
-<script src="src/js/script-datatables.js"></script>
 <script src="src/js/role/admin.js"></script>
 <script src="src/js/role/commonOperation.js"></script>
+<script src="src/js/script-datatables.min.js"></script>
 </body>
 </html>

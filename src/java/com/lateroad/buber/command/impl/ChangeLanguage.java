@@ -12,6 +12,6 @@ public class ChangeLanguage implements ICommand {
     public void execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
         String language = req.getParameter("lang");
         req.getSession().setAttribute("language", language);
-        JSPSwitcher.redirect(req, resp, "success", null);
+        JSPSwitcher.redirect(req, resp, "success", null, 200);
     }
 }

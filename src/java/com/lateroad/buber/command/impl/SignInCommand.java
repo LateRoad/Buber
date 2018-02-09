@@ -1,6 +1,5 @@
 package com.lateroad.buber.command.impl;
 
-import com.google.gson.Gson;
 import com.lateroad.buber.command.ICommand;
 import com.lateroad.buber.entity.role.CommonUser;
 import com.lateroad.buber.entity.type.UserType;
@@ -50,16 +49,17 @@ public class SignInCommand implements ICommand {
                     SessionTimer.setInactiveInterval(session, currentUser.getRole());
                     UserType role = currentUser.getRole();
                     session.setAttribute("user", currentUser);
-                    String json = new Gson().toJson(currentUser);
                     if (UserType.ADMIN.equals(role)) {
-                        JSPSwitcher.redirect(req, resp, json, "/clients.jsp");
+                        JSPSwitcher.redirect(req, resp, role.name(), "/clients.jsp",200);
                     } else {
-                        JSPSwitcher.redirect(req, resp, json, "/home.jsp");
+                        JSPSwitcher.redirect(req, resp, role.name(), "/home.jsp", 200);
                     }
                 }
             }
-        } catch (BuberSQLException | BuberLogicException e) {
-            JSPSwitcher.redirect(req, resp, e, null);
+        }  catch (BuberLogicException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 400);
+        } catch (BuberSQLException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 500);
         }
     }
 }

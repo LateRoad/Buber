@@ -23,7 +23,7 @@ public class SecurityFilter implements Filter {
         new DOMConfigurator().doConfigure("log4j2.xml", LogManager.getLoggerRepository());
     }
 
-    private static final Logger logger = Logger.getLogger(SecurityFilter.class);
+    private static final Logger LOGGER = Logger.getLogger(SecurityFilter.class);
 
     private static final List<String> adminFilterPaths = Arrays.asList(
             "/index.jsp",
@@ -78,7 +78,7 @@ public class SecurityFilter implements Filter {
         CommonUser user = (CommonUser) session.getAttribute("user");
 
         String uri = req.getRequestURI();
-        logger.info("URI: " + uri + req.getMethod());
+        LOGGER.info("URI: " + uri + req.getMethod());
 
         try {
             if ("/".equals(uri)) {
@@ -130,10 +130,8 @@ public class SecurityFilter implements Filter {
                 }
             }
             filterChain.doFilter(req, resp);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (ServletException | IOException e) {
+            LOGGER.error("ServletException was occurred in SecurityFilter.");
         }
     }
 
@@ -156,11 +154,3 @@ public class SecurityFilter implements Filter {
         return remoteAddr;
     }
 }
-
-//        if("/index.jsp".equals(uri) || "/".equals(uri)) {
-//            System.out.println(getClientIp((HttpServletRequest)request));
-//            if("0:0:0:0:0:0:0:1".equals(getClientIp((HttpServletRequest)request))){
-//                ((HttpServletResponse)response).sendRedirect("/auth-admin.jsp");
-//                return;
-//            }
-//        }

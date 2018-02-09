@@ -19,9 +19,11 @@ public class SetOrderStatusCommand implements ICommand {
             OrderType status = OrderType.valueOf(req.getParameter("status"));
             UserService service = new UserService();
             service.setOrderStatus(orderID, status);
-            JSPSwitcher.redirect(req, resp, "success", null);
-        } catch (BuberSQLException | BuberLogicException e) {
-            JSPSwitcher.redirect(req, resp, e, null);
+            JSPSwitcher.redirect(req, resp, "success", null,200);
+        } catch (BuberLogicException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 400);
+        } catch (BuberSQLException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 500);
         }
     }
 }

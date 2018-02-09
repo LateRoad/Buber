@@ -118,33 +118,6 @@ public abstract class CommonDAO<E extends Entity> implements DAO {
         }
     }
 
-    protected E find(String login, String password, String query) throws BuberSQLException, BuberLogicException {
-        E info = null;
-        Connection connection = connectionPool.getConnection();
-        try (PreparedStatement st = connection.prepareStatement(query)) {
-            st.setString(1, login);
-            try (ResultSet resultSet = st.executeQuery()) {
-                while (resultSet.next()) {
-                    if (resultSet.getInt("is_online") == 0) {
-                        if (resultSet.getString("password").equals(password)) {
-                            info = (E) builder.build(resultSet);
-                        } else {
-                            throw new BuberLogicException("Wrong login or password.");
-                        }
-                    } else {
-                        throw new BuberLogicException("User is already online.");
-                    }
-                }
-            } finally {
-                connectionPool.putConnection(connection);
-            }
-        } catch (SQLException e) {
-            LOGGER.error("SQLException was occurred while executing query.", e);
-            throw new BuberSQLException("Something went wrong.");
-        }
-        return info;
-    }
-
     protected void update(String login, boolean modifier, String query) throws BuberSQLException, BuberLogicException {
         Connection connection = connectionPool.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(query)) {

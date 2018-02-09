@@ -118,12 +118,6 @@
     </tag>
 
     <tag>
-        <name>success-modal</name>
-        <tag-class>com.lateroad.tag.SuccessOrderModal</tag-class>
-        <body-content>scriptless</body-content>
-    </tag>
-
-    <tag>
         <name>active-order</name>
         <tag-class>com.lateroad.tag.ActiveOrder</tag-class>
         <body-content>scriptless</body-content>

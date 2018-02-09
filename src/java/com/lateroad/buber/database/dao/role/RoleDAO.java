@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public abstract class RoleDAO<E extends CommonUser> extends CommonDAO<E> {
@@ -29,6 +30,37 @@ public abstract class RoleDAO<E extends CommonUser> extends CommonDAO<E> {
         } finally {
             connectionPool.putConnection(connection);
         }
+    }
+
+    protected E find(String login, String password, String query) throws BuberSQLException, BuberLogicException {
+        E info = null;
+        Connection connection = connectionPool.getConnection();
+        try (PreparedStatement st = connection.prepareStatement(query)) {
+            st.setString(1, login);
+            try (ResultSet resultSet = st.executeQuery()) {
+                while (resultSet.next()) {
+                    if (!resultSet.getBoolean("is_online")) {
+                        if (!resultSet.getBoolean("is_muted")) {
+                            if (resultSet.getString("password").equals(password)) {
+                                info = (E) builder.build(resultSet);
+                            } else {
+                                throw new BuberLogicException("Wrong login or password.");
+                            }
+                        } else {
+                            throw new BuberLogicException("User is muted.");
+                        }
+                    } else {
+                        throw new BuberLogicException("User is already online.");
+                    }
+                }
+            } finally {
+                connectionPool.putConnection(connection);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("SQLException was occurred while executing query.", e);
+            throw new BuberSQLException("Something went wrong.");
+        }
+        return info;
     }
 
 }

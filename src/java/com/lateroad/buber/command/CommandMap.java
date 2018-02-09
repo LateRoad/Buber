@@ -46,8 +46,6 @@ public class CommandMap {
         commandsMap.put("setCurrentLocation", new SetCurrentLocation());
         commandsMap.put("setMuted", new SetMutedCommand());
         commandsMap.put("setOrderStatus", new SetOrderStatusCommand());
-//        commandsMap.put("deleteUser", new DeleteUserCommand());
-//        commandsMap.put("setDiscount", new SetDiscount());
     }
 
     public ICommand getCommandsMap(String key) {

@@ -12,31 +12,30 @@ public final class JSPSwitcher {
     private static final Logger LOGGER = Logger.getLogger(JSPSwitcher.class);
 
 
-    public static void redirect(HttpServletRequest request, HttpServletResponse response, String answer, String jspPath) {
+    public static void redirect(HttpServletRequest request, HttpServletResponse response, String answer, String jspPath, int respStatus) {
         boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 
         try {
             if (ajax) {
-                response.setStatus(200);
-                response.setContentType("application/json");
+                response.setStatus(respStatus);
+                response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(answer);
             } else {
                 if (jspPath != null) {
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher(jspPath);
-                    requestDispatcher.forward(request, response);
+                    response.sendRedirect(jspPath);
                 }
             }
-        } catch (IOException | ServletException e) {
+        } catch (IOException e) {
             LOGGER.error("ERROR: CAN'T SEND RESPONSE.", e);
         }
     }
 
-    public static void redirect(HttpServletRequest request, HttpServletResponse response, Exception exception, String jspPath) {
+    public static void redirect(HttpServletRequest request, HttpServletResponse response, Exception exception, String jspPath, int respStatus) {
         boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
         try {
             if (ajax) {
-                response.setStatus(500);
-                response.setContentType("text");
+                response.setStatus(respStatus);
+                response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(exception.getMessage());
             } else {
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(jspPath);

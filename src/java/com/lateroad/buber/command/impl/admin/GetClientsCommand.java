@@ -19,9 +19,9 @@ public class GetClientsCommand implements ICommand {
         try {
             List<Client> clients = adminService.findAllClients();
             req.setAttribute("clients", clients);
-            JSPSwitcher.redirect(req, resp, "success", "/clients.jsp");
+            JSPSwitcher.redirect(req, resp, "success", "/clients.jsp", 200);
         } catch (BuberSQLException | BuberLogicException e) {
-            JSPSwitcher.redirect(req, resp,  e, null);
+            JSPSwitcher.redirect(req, resp,  e, null, 500);
         }
     }
 }

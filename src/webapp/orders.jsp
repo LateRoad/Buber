@@ -34,7 +34,60 @@
 
 <div class="content-wrapper">
     <div class="container-fluid">
-        <ctg:trips-table trips="${orders}"/>
+
+        <div class="card mb-3">
+            <div class="card-header"><i class="fa fa-table"></i> <fmt:message key="trips-table-yo-trips"/></div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+                        <c:if test="${orders != null }">
+                            <thead>
+                            <tr>
+                                <th><fmt:message key="driver"/></th>
+                                <th><fmt:message key="client"/></th>
+                                <th><fmt:message key="trips-table-order-price"/></th>
+                                <th><fmt:message key="trips-table-order-date"/></th>
+                                <th><fmt:message key="trips-table-order-status"/></th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th><fmt:message key="driver"/></th>
+                                <th><fmt:message key="client"/></th>
+                                <th><fmt:message key="trips-table-order-price"/></th>
+                                <th><fmt:message key="trips-table-order-date"/></th>
+                                <th><fmt:message key="trips-table-order-status"/></th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            <c:forEach var="trip" items="${orders}">
+                                <tr>
+                                    <td>${trip.driverLogin}</td>
+                                    <td>${trip.clientLogin}</td>
+                                    <td>${trip.money}</td>
+                                    <td>${trip.date}</td>
+                                    <c:if test="${trip.status == \"DONE\" }">
+                                        <td><fmt:message key="order-status-done"/></td>
+                                    </c:if>
+                                    <c:if test="${trip.status == \"UNDONE\" }">
+                                        <td><fmt:message key="order-status-active"/></td>
+                                    </c:if>
+                                    <c:if test="${trip.status == \"CANCELLED\" }">
+                                        <td><fmt:message key="order-status-cancelled"/></td>
+                                    </c:if>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </c:if>
+
+                        <c:if test="${orders == null }">
+                            <td>Не сделано ни одной поездки.</td>
+                        </c:if>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>

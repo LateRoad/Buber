@@ -115,8 +115,25 @@
             </div>
         </div>
     </div>
-
 </div>
+
+<div id="modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!--Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Заказ успешно выполнен.</h4>
+            </div>
+            <%--<div class="modal-body">--%>
+            <%--<p>Наш водитель приедет за вами в ближайшее время.</p>--%>
+            <%--</div>--%>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>
 <!-- Bootstrap core JavaScript-->
 <script src="src/vendor/jquery/jquery.min.js"></script>

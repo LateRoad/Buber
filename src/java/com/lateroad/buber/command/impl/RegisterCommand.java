@@ -52,10 +52,12 @@ public class RegisterCommand implements ICommand {
                 req.getSession().setAttribute("user", currentUser);
                 SessionTimer.setInactiveInterval(req.getSession(), role);
                 String json = new Gson().toJson(currentUser);
-                JSPSwitcher.redirect(req, resp, json, "home.jsp");
+                JSPSwitcher.redirect(req, resp, json, "home.jsp", 200);
             }
-        } catch (BuberLogicException | BuberSQLException e) {
-            JSPSwitcher.redirect(req, resp, e, null);
+        } catch (BuberLogicException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 400);
+        } catch (BuberSQLException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 500);
         }
     }
 

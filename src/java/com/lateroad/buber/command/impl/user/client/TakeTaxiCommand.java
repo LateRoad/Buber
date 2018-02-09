@@ -22,9 +22,11 @@ public class TakeTaxiCommand implements ICommand {
         req.getSession().setAttribute("nearestDrivers", null);
         try {
             clientService.takeTaxi(currentUser.getLogin(), driver, money);
-            JSPSwitcher.redirect(req, resp, "success", null);
-        } catch (BuberSQLException | BuberLogicException e) {
-            JSPSwitcher.redirect(req, resp, e, null);
+            JSPSwitcher.redirect(req, resp, "success", null, 200);
+        }  catch (BuberLogicException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 400);
+        } catch (BuberSQLException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 500);
         }
     }
 }

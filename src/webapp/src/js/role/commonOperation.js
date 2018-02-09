@@ -5,18 +5,17 @@ function signIn(role) {
         url: "/commonOperation?action=signIn&login=" + login + "&password=" + password + "&role=" + role,
         type: 'post',
         async: true,
-        success: function (data, response, options) {
-            if (response.status = 200) {
-                if (data === "ADMIN") {
-                    window.location.assign("/clients.jsp");
-                }
-                else {
-                    window.location.assign("/home.jsp");
-                }
+        success: function (data) {
+            if (data === "ADMIN") {
+                window.location.assign("/clients.jsp");
+            }
+            else {
+                window.location.assign("/home.jsp");
             }
         },
-        error: function () {
-            alert("fuck");
+        error: function (data) {
+            $('.modal-title').text(data.responseText);
+            $('#modal').modal('show');
         }
     });
     event.preventDefault();
@@ -26,30 +25,29 @@ function changeLang(lang) {
     $.ajax({
         url: "/commonOperation?action=changeLanguage&lang=" + lang,
         type: 'GET',
-        success: function () {
+        success: function (data) {
+
             location.reload();
         }
     });
 }
 
 function register(role) {
-    alert("/commonOperation?action=register&role=" + role + "&" + $("#registration_form").serialize());
     $.ajax({
         url: "/commonOperation?action=register&role=" + role + "&" + $("#registration_form").serialize(),
         type: 'post',
         async: true,
-        success: function (data, response, options) {
-            if (response.status = 200) {
-                if (data === "ADMIN") {
-                    window.location.assign("/clients.jsp");
-                }
-                else {
-                    window.location.assign("/home.jsp");
-                }
+        success: function (data) {
+            if (data === "ADMIN") {
+                window.location.assign("/clients.jsp");
+            }
+            else {
+                window.location.assign("/home.jsp");
             }
         },
-        error: function () {
-            alert("fuck");
+        error: function (data) {
+            $('.modal-title').text(data.responseText);
+            $('#modal').modal('show');
         }
     });
     event.preventDefault();

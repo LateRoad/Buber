@@ -23,9 +23,11 @@ public class SignOutCommand implements ICommand {
                 commonUserService.setOnline(user.getLogin(), false);
             }
             req.getSession().invalidate();
-            JSPSwitcher.redirect(req, resp, "success", "/index.jsp");
-        } catch (BuberSQLException | BuberLogicException e) {
-            JSPSwitcher.redirect(req, resp, e, null);
+            JSPSwitcher.redirect(req, resp, "success", "/index.jsp",200);
+        }  catch (BuberLogicException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 400);
+        } catch (BuberSQLException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 500);
         }
     }
 

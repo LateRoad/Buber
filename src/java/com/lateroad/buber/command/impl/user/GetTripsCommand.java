@@ -20,9 +20,11 @@ public class GetTripsCommand implements ICommand {
         try {
             List<Order> trips = orderService.findTrips(((CommonUser) req.getSession().getAttribute("user")));
             req.setAttribute("trips", trips);
-            JSPSwitcher.redirect(req, resp, "success", "/trips.jsp");
-        } catch (BuberSQLException | BuberLogicException e) {
-            JSPSwitcher.redirect(req, resp, e, null);
+            JSPSwitcher.redirect(req, resp, "success", "/trips.jsp", 200);
+        }  catch (BuberLogicException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 400);
+        } catch (BuberSQLException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 500);
         }
     }
 }

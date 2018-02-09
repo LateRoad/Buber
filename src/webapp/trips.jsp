@@ -31,9 +31,72 @@
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 <ctg:side-menu user="${user}"/>
 
+
 <div class="content-wrapper">
     <div class="container-fluid">
-        <ctg:trips-table trips="${trips}"/>
+
+        <div class="card mb-3">
+            <div class="card-header"><i class="fa fa-table"></i> <fmt:message key="trips-table-yo-trips"/></div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+                        <c:if test="${orders != null }">
+                            <thead>
+                            <tr>
+                                <th><fmt:message key="driver"/></th>
+                                <th><fmt:message key="client"/></th>
+                                <th><fmt:message key="trips-table-order-price"/></th>
+                                <th><fmt:message key="trips-table-order-date"/></th>
+                                <th><fmt:message key="trips-table-order-status"/></th>
+                                <th><fmt:message key="actions"/></th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th><fmt:message key="driver"/></th>
+                                <th><fmt:message key="client"/></th>
+                                <th><fmt:message key="trips-table-order-price"/></th>
+                                <th><fmt:message key="trips-table-order-date"/></th>
+                                <th><fmt:message key="trips-table-order-status"/></th>
+                                <th><fmt:message key="actions"/></th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            <c:forEach var="trip" items="${orders}">
+                                <tr>
+                                    <td>${trip.driverLogin}</td>
+                                    <td>${trip.clientLogin}</td>
+                                    <td>${trip.money}</td>
+                                    <td>${trip.date}</td>
+                                    <c:if test="${trip.status == \"DONE\" }">
+                                        <td><fmt:message key="order-status-done"/></td>
+                                        <td></td>
+                                    </c:if>
+                                    <c:if test="${trip.status == \"UNDONE\" }">
+                                        <td><fmt:message key="order-status-active"/></td>
+                                        <td>
+                                            <button onclick="setOrderStatus(${trip.id}, 'CANCELLED')" type="button"
+                                                    class="btn btn-primary">
+                                                <fmt:message key="button-cancel"/></button>
+                                        </td>
+                                    </c:if>
+                                    <c:if test="${trip.status == \"CANCELLED\" }">
+                                        <td><fmt:message key="order-status-cancelled"/></td>
+                                        <td></td>
+                                    </c:if>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </c:if>
+
+                        <c:if test="${orders == null }">
+                            <td>Не сделано ни одной поездки.</td>
+                        </c:if>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -48,9 +111,9 @@
 <script src="src/vendor/datatables/dataTables.bootstrap4.js"></script>
 <!-- Custom scripts for all pages-->
 <script src="src/js/script.js"></script>
-<script src="src/js/script-datatables.min.js"></script>
 <script src="src/js/role/admin.js"></script>
 <script src="src/js/role/user/user.js"></script>
 <script src="src/js/role/commonOperation.js"></script>
+<script src="src/js/script-datatables.min.js"></script>
 </body>
 </html>

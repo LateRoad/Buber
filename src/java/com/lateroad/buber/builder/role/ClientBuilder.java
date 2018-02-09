@@ -42,9 +42,9 @@ public class ClientBuilder implements RoleBuilder<Client> {
                 req.getParameter("lastname"),
                 req.getParameter("email"),
                 req.getParameter("phone_number"),
-                Integer.parseInt(req.getParameter("trips_number")),
-                Integer.parseInt(req.getParameter("reputation")),
-                Boolean.parseBoolean(req.getParameter("is_muted")));
+                req.getParameter("trips_number") == null ? 0 : Integer.parseInt(req.getParameter("trips_number")),
+                req.getParameter("reputation") == null ? 0 : Integer.parseInt(req.getParameter("reputation")),
+                req.getParameter("is_muted") == null ? false : Boolean.parseBoolean(req.getParameter("is_muted")));
     }
 
 

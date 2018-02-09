@@ -18,9 +18,9 @@ public class SetMutedCommand implements ICommand {
             String login = req.getParameter("user");
             AdminService adminService = new AdminService();
             adminService.setMuted(login, status);
-            JSPSwitcher.redirect(req, resp, "success", null);
+            JSPSwitcher.redirect(req, resp, "success", null, 200);
         } catch (BuberSQLException | BuberLogicException e) {
-            JSPSwitcher.redirect(req, resp, e, null);
+            JSPSwitcher.redirect(req, resp, e, null, 500);
         }
     }
 }

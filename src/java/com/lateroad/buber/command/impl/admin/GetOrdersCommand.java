@@ -19,9 +19,9 @@ public class GetOrdersCommand implements ICommand {
         try {
             List<Order> orders = adminService.findAllOrders();
             req.setAttribute("orders", orders);
-            JSPSwitcher.redirect(req, resp, "success", "/orders.jsp");
+            JSPSwitcher.redirect(req, resp, "success", "/orders.jsp", 200);
         } catch (BuberSQLException | BuberLogicException e) {
-            JSPSwitcher.redirect(req, resp, e, null);
+            JSPSwitcher.redirect(req, resp, e, null, 500);
         }
     }
 }

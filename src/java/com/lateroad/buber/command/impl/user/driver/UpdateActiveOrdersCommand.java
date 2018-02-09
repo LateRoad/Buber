@@ -29,9 +29,11 @@ public class UpdateActiveOrdersCommand implements ICommand {
                 map.put(activeOrder.getId(), ClientDAO.getInstance().find(activeOrder.getClientLogin()));
             }
             req.getSession().setAttribute("activeOrders", map);
-            JSPSwitcher.redirect(req, resp, "success", null);
-        } catch (BuberSQLException | BuberLogicException e) {
-            JSPSwitcher.redirect(req, resp, e, null);
+            JSPSwitcher.redirect(req, resp, "success", null, 200);
+        }  catch (BuberLogicException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 400);
+        } catch (BuberSQLException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 500);
         }
 
     }

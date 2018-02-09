@@ -7,9 +7,9 @@ public class FormValidator {
         return password != null && repeatPassword != null && password.equals(repeatPassword);
     }
 
-    public static boolean checkNessesaryFields(User user) {
+    public static boolean checkNecessaryFields(User user) {
         boolean status = true;
-        if (user.getLogin() == null || user.getName() == null || user.getSurname() == null || user.getEmail() == null) {
+        if ("".equals(user.getLogin()) || "".equals(user.getName()) || "".equals(user.getSurname()) || "".equals(user.getEmail())) {
             status = false;
         }
         return status;

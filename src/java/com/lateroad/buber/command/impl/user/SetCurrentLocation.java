@@ -20,9 +20,11 @@ public class SetCurrentLocation implements ICommand {
             CommonUser user = (CommonUser) req.getSession().getAttribute("user");
             UserService service = new UserService();
             service.setLocation(user.getLogin(), lat, lng);
-            JSPSwitcher.redirect(req, resp, "success", null);
-        } catch (BuberSQLException | BuberLogicException e) {
-            JSPSwitcher.redirect(req, resp, e, null);
+            JSPSwitcher.redirect(req, resp, "success", null, 200);
+        }  catch (BuberLogicException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 400);
+        } catch (BuberSQLException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 500);
         }
     }
 }

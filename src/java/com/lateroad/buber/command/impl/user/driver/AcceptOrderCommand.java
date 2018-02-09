@@ -21,9 +21,11 @@ public class AcceptOrderCommand implements ICommand {
         req.getSession().setAttribute("activeOrders", null);
         try {
             driverService.acceptOrder(user.getLogin(), id);
-            JSPSwitcher.redirect(req, resp, "success", null);
-        } catch (BuberSQLException | BuberLogicException e) {
-            JSPSwitcher.redirect(req, resp, e, null);
+            JSPSwitcher.redirect(req, resp, "success", null, 200);
+        }  catch (BuberLogicException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 400);
+        } catch (BuberSQLException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 500);
         }
     }
 }

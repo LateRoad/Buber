@@ -20,14 +20,18 @@ public class ClientService implements CommonUserService<Client> {
     @Override
     public Client authentication(String login, String password) throws BuberSQLException, BuberLogicException {
         Client client = ClientDAO.getInstance().find(login, password);
-        CommonUserDAO.getInstance().setOnline(login, true);
-        CommonUserDAO.getInstance().setRole(login, UserType.CLIENT);
+        if (client != null) {
+            CommonUserDAO.getInstance().setOnline(login, true);
+            CommonUserDAO.getInstance().setRole(login, UserType.CLIENT);
+        } else {
+            throw new BuberLogicException("Wrong credentials.");
+        }
         return client;
     }
 
     @Override
     public Client registration(Client client, String password, String confirmPassword) throws BuberSQLException, BuberLogicException {
-        if (FormValidator.checkNessesaryFields(client)) {
+        if (FormValidator.checkNecessaryFields(client)) {
             if (FormValidator.checkPasswords(password, confirmPassword)) {
                 if (!CommonUserDAO.getInstance().isExist(client.getLogin())) {
                     CommonUserDAO.getInstance().insert(client.getLogin(), password, client.getRole());

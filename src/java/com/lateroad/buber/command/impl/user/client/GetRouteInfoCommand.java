@@ -35,9 +35,11 @@ public class GetRouteInfoCommand implements ICommand {
             req.getSession().setAttribute("time", time);
             req.getSession().setAttribute("distance", distance);
             req.getSession().setAttribute("price", calculatePrice(time, distance));
-            JSPSwitcher.redirect(req, resp, "success", null);
-        } catch (BuberSQLException | BuberLogicException e) {
-            JSPSwitcher.redirect(req, resp, e, null);
+            JSPSwitcher.redirect(req, resp, "success", null,200);
+        }  catch (BuberLogicException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 400);
+        } catch (BuberSQLException e) {
+            JSPSwitcher.redirect(req, resp, e, null, 500);
         }
     }
 
