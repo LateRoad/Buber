@@ -1,17 +1,18 @@
 function acceptOrder(orderId) {
     $.ajax({
         url: "/userOperation?action=acceptOrder&id=" + orderId,
-        data: {name: 'abc'},
         type: 'POST',
         cache: false,
         success: function (data) {
-            alert(data)
             $('#activeOrders').load("/home.jsp" + ' #activeOrders');
-            alert(origin);
-            showDirection(origin, );
+            $('.modal-title').text("Заказ успешно принят.");
+            $('#modal').modal('show');
+            // alert(origin);
+            // showDirection(origin, );
         },
-        error: function () {
-            alert('error');
+        error: function (data) {
+            $('.modal-title').text(data.responseText);
+            $('#modal').modal('show');
         }
     });
 }
@@ -19,14 +20,14 @@ function acceptOrder(orderId) {
 function updateActiveOrders() {
     $.ajax({
         url: "/userOperation?action=updateActiveOrders",
-        data: {name: 'abc'},
         type: 'post',
         cache: false,
         success: function () {
             $('#activeOrders').load("/home.jsp" + ' #activeOrders');
         },
-        error: function () {
-            alert('error');
+        error: function (data) {
+            $('.modal-title').text(data.responseText);
+            $('#modal').modal('show');
         }
     });
 }

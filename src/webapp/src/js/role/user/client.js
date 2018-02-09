@@ -1,14 +1,14 @@
 function calculateRouteInfo() {
     $.ajax({
         url: "/userOperation?action=getRouteInfo&from=" + $originInput.val() + "&to=" + $destinationInput.val() + "&fromLat=" + origin.position.lat() + "&fromLng=" + origin.position.lng() + "&toLat=" + destination.position.lat() + "&toLng=" + destination.position.lng(),
-        data: {name: 'abc'},
         type: 'post',
         cache: false,
         success: function () {
             $('#routeClientInfo').load("/home.jsp" + ' #routeClientInfo');
         },
-        error: function () {
-            alert('errort');
+        error: function (data) {
+            $('.modal-title').text(data.responseText);
+            $('#modal').modal('show');
         }
     });
 }
@@ -17,15 +17,15 @@ function calculateRouteInfo() {
 function takeTaxi(driver, money) {
     $.ajax({
         url: "/userOperation?action=takeTaxi&driver=" + driver + "&money=" + money,
-        data: {name: 'abc'},
         type: 'POST',
         cache: false,
-        success: function () {
+        success: function (data) {
             $('#routeClientInfo').hide();
             $('#modal').modal('show');
         },
-        error: function () {
-            alert('error Taxi');
+        error: function (data) {
+            $('.modal-title').text(data.responseText);
+            $('#modal').modal('show');
         }
     });
 }

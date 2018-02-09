@@ -25,14 +25,16 @@ function setOrderStatus(id, status) {
     alert("/userOperation?action=setOrderStatus&id=" + id + "&status=" + status);
     $.ajax({
         url: "/userOperation?action=setOrderStatus&id=" + id + "&status=" + status ,
-        data: {name: 'abc'},
         type: 'post',
         cache: false,
-        success: function () {
+        success: function (data) {
             $('#activeOrders').load("/home.jsp" + ' #activeOrders');
+            $('.modal-title').text(data.responseText);
+            $('#modal').modal('show');
         },
-        error: function () {
-            alert('error');
+        error: function (data) {
+            $('.modal-title').text(data.responseText);
+            $('#modal').modal('show');
         }
     });
 }
