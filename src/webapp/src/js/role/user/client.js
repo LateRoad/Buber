@@ -22,7 +22,7 @@ function takeTaxi(driver, money) {
         cache: false,
         success: function () {
             $('#routeClientInfo').hide();
-            $('#successOrder').modal('show');
+            $('#modal').modal('show');
         },
         error: function () {
             alert('error Taxi');

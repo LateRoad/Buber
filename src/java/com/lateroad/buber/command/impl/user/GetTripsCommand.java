@@ -19,9 +19,9 @@ public class GetTripsCommand implements ICommand {
         OrderService orderService = new OrderService();
         try {
             List<Order> trips = orderService.findTrips(((CommonUser) req.getSession().getAttribute("user")));
-            req.setAttribute("trips", trips);
+            req.getSession().setAttribute("trips", trips);
             JSPSwitcher.redirect(req, resp, "success", "/trips.jsp", 200);
-        }  catch (BuberLogicException e) {
+        } catch (BuberLogicException e) {
             JSPSwitcher.redirect(req, resp, e, null, 400);
         } catch (BuberSQLException e) {
             JSPSwitcher.redirect(req, resp, e, null, 500);

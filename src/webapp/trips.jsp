@@ -41,7 +41,7 @@
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 
-                        <c:if test="${orders != null }">
+                        <c:if test="${trips != null }">
                             <thead>
                             <tr>
                                 <th><fmt:message key="driver"/></th>
@@ -63,7 +63,7 @@
                             </tr>
                             </tfoot>
                             <tbody>
-                            <c:forEach var="trip" items="${orders}">
+                            <c:forEach var="trip" items="${trips}">
                                 <tr>
                                     <td>${trip.driverLogin}</td>
                                     <td>${trip.clientLogin}</td>
@@ -85,12 +85,16 @@
                                         <td><fmt:message key="order-status-cancelled"/></td>
                                         <td></td>
                                     </c:if>
+                                    <c:if test="${trip.status == \"ACCEPTED\" }">
+                                        <td><fmt:message key="order-status-accepted"/></td>
+                                        <td></td>
+                                    </c:if>
                                 </tr>
                             </c:forEach>
                             </tbody>
                         </c:if>
 
-                        <c:if test="${orders == null }">
+                        <c:if test="${trips == null }">
                             <td>Не сделано ни одной поездки.</td>
                         </c:if>
                     </table>

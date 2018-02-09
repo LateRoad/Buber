@@ -5,6 +5,7 @@ import com.lateroad.buber.database.dao.OrderDAO;
 import com.lateroad.buber.database.dao.UserDAO;
 import com.lateroad.buber.database.dao.role.DriverDAO;
 import com.lateroad.buber.entity.role.Driver;
+import com.lateroad.buber.entity.type.OrderType;
 import com.lateroad.buber.entity.type.UserType;
 import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
@@ -62,5 +63,6 @@ public class DriverService implements CommonUserService<Driver> {
 
     public void acceptOrder(String login, int id) throws BuberSQLException, BuberLogicException {
         OrderDAO.getInstance().update(login, id);
+        OrderDAO.getInstance().update(id, OrderType.ACCEPTED);
     }
 }

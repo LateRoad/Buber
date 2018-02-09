@@ -7,6 +7,8 @@ function acceptOrder(orderId) {
         success: function (data) {
             alert(data)
             $('#activeOrders').load("/home.jsp" + ' #activeOrders');
+            alert(origin);
+            showDirection(origin, );
         },
         error: function () {
             alert('error');

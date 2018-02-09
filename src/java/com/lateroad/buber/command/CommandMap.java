@@ -36,7 +36,7 @@ public class CommandMap {
         commandsMap.put("getTrips", new GetTripsCommand());
         commandsMap.put("getRouteInfo", new GetRouteInfoCommand());
         commandsMap.put("takeTaxi", new TakeTaxiCommand());
-        commandsMap.put("acceptClient", new AcceptOrderCommand());
+        commandsMap.put("acceptOrder", new AcceptOrderCommand());
         commandsMap.put("updateActiveOrders", new UpdateActiveOrdersCommand());
         commandsMap.put("getDrivers", new GetDriversCommand());
         commandsMap.put("getClients", new GetClientsCommand());

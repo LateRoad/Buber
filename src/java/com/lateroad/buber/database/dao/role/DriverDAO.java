@@ -67,6 +67,10 @@ public class DriverDAO extends RoleDAO<Driver> {
                     "SET `car_number` = ?, `reputation` = ?, `phone_number` = ?, `trips_number` = ?, `driver_license` = ? " +
                     "WHERE `driver_info`.`login` = ?;";
 
+    private static final String SQL_UPDATE_DRIVER_STATUS =
+            "UPDATE `buber`.`driver_info` " +
+                    "SET  `is_busy` = ? " +
+                    "WHERE `driver_info`.`login` = ?;";
 
     public static DriverDAO getInstance() {
         if (!instanceCreated.get()) {
@@ -116,7 +120,7 @@ public class DriverDAO extends RoleDAO<Driver> {
     }
 
     public void update(String login, boolean isBusy) throws BuberSQLException, BuberLogicException {
-        super.update(login, isBusy, SQL_UPDATE_DRIVER_INFO_AND_STATUS);
+        super.update(login, isBusy, SQL_UPDATE_DRIVER_STATUS);
     }
 
     public Driver find(String login, boolean isBusy) throws BuberSQLException, BuberLogicException {
