@@ -2,15 +2,14 @@ package com.lateroad.buber.command.impl.admin;
 
 import com.lateroad.buber.command.ICommand;
 import com.lateroad.buber.entity.role.Driver;
+import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.service.role.AdminService;
+import com.lateroad.buber.switcher.JSPSwitcher;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 public class GetDriversCommand implements ICommand {
@@ -20,13 +19,9 @@ public class GetDriversCommand implements ICommand {
         try {
             List<Driver> drivers = adminService.findAllDrivers();
             req.setAttribute("drivers", drivers);
-
-            RequestDispatcher requestDispatcher = servlet.getServletContext().getRequestDispatcher("/drivers.jsp");
-            requestDispatcher.forward(req, resp);
-        } catch (ServletException | IOException e) {
-            e.printStackTrace();
-        } catch (BuberSQLException e) {
-            e.printStackTrace();
+            JSPSwitcher.redirect(req, resp, "success", "/drivers.jsp");
+        } catch (BuberSQLException | BuberLogicException e) {
+            JSPSwitcher.redirect(req, resp, e, null);
         }
     }
 }

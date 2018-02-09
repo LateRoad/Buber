@@ -11,10 +11,10 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-public class SessionListener implements ServletContextListener,
+public final class SessionListener implements ServletContextListener,
         HttpSessionListener, HttpSessionAttributeListener {
 
-    private static final Logger logger = Logger.getLogger(SessionListener.class);
+    private static final Logger LOGGER = Logger.getLogger(SessionListener.class);
 
     // Public constructor is required by servlet spec
     public SessionListener() {
@@ -42,12 +42,12 @@ public class SessionListener implements ServletContextListener,
     // -------------------------------------------------------
     public void sessionCreated(HttpSessionEvent se) {
         /* Session is created. */
-        logger.info("Session created. " + se.getSession().getMaxInactiveInterval());
+        LOGGER.info("Session created. " + se.getSession().getMaxInactiveInterval());
     }
 
     public void sessionDestroyed(HttpSessionEvent se) {
         CommonUser user = (CommonUser) se.getSession().getAttribute("user");
-        logger.info("Session destroyed." + se.getSession().getLastAccessedTime() + " " + user.getLogin());
+        LOGGER.info("Session destroyed." + se.getSession().getLastAccessedTime() + " " + user.getLogin());
         SignOutCommand command = new SignOutCommand();
         command.execute(se.getSession());
     }

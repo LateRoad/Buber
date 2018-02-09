@@ -1,7 +1,6 @@
 package com.lateroad.buber.database.dao.role;
 
 import com.lateroad.buber.builder.role.DriverBuilder;
-import com.lateroad.buber.database.dao.CommonDAO;
 import com.lateroad.buber.entity.role.Driver;
 import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class DriverDAO extends CommonDAO<Driver> implements RoleDAO<Driver> {
+public class DriverDAO extends RoleDAO<Driver> {
     private static final Logger LOGGER = Logger.getLogger(DriverDAO.class);
 
     private static DriverDAO instance = null;

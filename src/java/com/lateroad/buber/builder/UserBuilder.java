@@ -5,10 +5,12 @@ import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.exception.BuberUnsupportedOperationException;
 import org.apache.log4j.Logger;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserBuilder implements StatementBuilder<User> {
+public class UserBuilder implements EntityBuilder<User> {
     private static final Logger LOGGER = Logger.getLogger(UserBuilder.class);
 
 
@@ -28,6 +30,16 @@ public class UserBuilder implements StatementBuilder<User> {
 
     @Override
     public void makeUpdateStatement(String login, User entity, PreparedStatement statement) throws BuberSQLException {
+        throw new BuberUnsupportedOperationException();
+    }
+
+    @Override
+    public User build(HttpServletRequest request) throws BuberSQLException {
+        throw new BuberUnsupportedOperationException();
+    }
+
+    @Override
+    public User build(ResultSet resultSet) throws BuberSQLException {
         throw new BuberUnsupportedOperationException();
     }
 }

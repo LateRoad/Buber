@@ -8,11 +8,11 @@ import com.lateroad.buber.entity.role.User;
 import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.service.OrderService;
+import com.lateroad.buber.switcher.JSPSwitcher;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,14 +29,9 @@ public class UpdateActiveOrdersCommand implements ICommand {
                 map.put(activeOrder.getId(), ClientDAO.getInstance().find(activeOrder.getClientLogin()));
             }
             req.getSession().setAttribute("activeOrders", map);
-            System.out.println(activeOrders);
-            resp.getWriter().write("success");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (BuberSQLException e) {
-            e.printStackTrace();
-        } catch (BuberLogicException e) {
-            e.printStackTrace();
+            JSPSwitcher.redirect(req, resp, "success", null);
+        } catch (BuberSQLException | BuberLogicException e) {
+            JSPSwitcher.redirect(req, resp, e, null);
         }
 
     }

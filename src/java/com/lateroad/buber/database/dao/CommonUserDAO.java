@@ -1,6 +1,7 @@
 package com.lateroad.buber.database.dao;
 
 import com.lateroad.buber.builder.role.CommonUserBuilder;
+import com.lateroad.buber.database.dao.role.RoleDAO;
 import com.lateroad.buber.entity.role.CommonUser;
 import com.lateroad.buber.entity.type.UserType;
 import com.lateroad.buber.exception.BuberLogicException;
@@ -13,7 +14,7 @@ import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class CommonUserDAO extends CommonDAO<CommonUser> {
+public class CommonUserDAO extends RoleDAO<CommonUser> {
     private static final Logger LOGGER = Logger.getLogger(CommonUserDAO.class);
 
     private static CommonUserDAO instance = null;

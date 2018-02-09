@@ -3,15 +3,14 @@ package com.lateroad.buber.command.impl.user;
 import com.lateroad.buber.command.ICommand;
 import com.lateroad.buber.entity.Order;
 import com.lateroad.buber.entity.role.CommonUser;
+import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.service.OrderService;
+import com.lateroad.buber.switcher.JSPSwitcher;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 public class GetTripsCommand implements ICommand {
@@ -21,13 +20,9 @@ public class GetTripsCommand implements ICommand {
         try {
             List<Order> trips = orderService.findTrips(((CommonUser) req.getSession().getAttribute("user")));
             req.setAttribute("trips", trips);
-
-            RequestDispatcher requestDispatcher = servlet.getServletContext().getRequestDispatcher("/trips.jsp");
-            requestDispatcher.forward(req, resp);
-        } catch (ServletException | IOException e) {
-            e.printStackTrace();
-        } catch (BuberSQLException e) {
-            e.printStackTrace();
+            JSPSwitcher.redirect(req, resp, "success", "/trips.jsp");
+        } catch (BuberSQLException | BuberLogicException e) {
+            JSPSwitcher.redirect(req, resp, e, null);
         }
     }
 }

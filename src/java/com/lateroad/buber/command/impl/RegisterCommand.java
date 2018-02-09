@@ -2,54 +2,60 @@ package com.lateroad.buber.command.impl;
 
 import com.google.gson.Gson;
 import com.lateroad.buber.builder.role.ClientBuilder;
+import com.lateroad.buber.builder.role.DriverBuilder;
+import com.lateroad.buber.builder.role.RoleBuilder;
 import com.lateroad.buber.command.ICommand;
-import com.lateroad.buber.entity.role.Client;
 import com.lateroad.buber.entity.role.CommonUser;
-import com.lateroad.buber.entity.role.Driver;
 import com.lateroad.buber.entity.type.UserType;
 import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.service.CommonUserService;
 import com.lateroad.buber.service.role.ClientService;
+import com.lateroad.buber.service.role.DriverService;
 import com.lateroad.buber.switcher.JSPSwitcher;
 import com.lateroad.buber.timer.SessionTimer;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class RegisterCommand implements ICommand {
+    private static final Logger LOGGER = Logger.getLogger(RegisterCommand.class);
+
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
         UserType role = UserType.valueOf(req.getParameter("role").toUpperCase());
+        String password = req.getParameter("password");
+        String confirmPassword = req.getParameter("conformPassword");
 
+        RoleBuilder builder;
+        CommonUserService service;
         try {
-            CommonUser currentUser = null;
+            CommonUser currentUser;
             switch (role) {
                 case CLIENT:
-                    Client client = ClientBuilder();
-                    currentUser = register(client, password, confirmPassword, new ClientService());
+                    builder = new ClientBuilder();
+                    service = new ClientService();
                     break;
                 case DRIVER:
-                    Driver driver = new Driver(login, name, surname, lastname, email, phoneNumber, carNumber);
-                    currentUser = register(driver, password, confirmPassword, new ClientService());
+                    builder = new DriverBuilder();
+                    service = new DriverService();
                     break;
                 default:
-                    //logger
-                    break;
+                    LOGGER.error("ERROR: UNEXPECTED ROLE FIND DURING REGISTRATION: " + role + ".");
+                    throw new BuberLogicException("Something went wrong.");
             }
-
+            currentUser = register(builder.build(req), password, confirmPassword, service);
             if (currentUser != null) {
                 req.getSession().setAttribute("user", currentUser);
+                SessionTimer.setInactiveInterval(req.getSession(), role);
                 String json = new Gson().toJson(currentUser);
                 JSPSwitcher.redirect(req, resp, json, "home.jsp");
-                SessionTimer.setInactiveInterval(req.getSession(), currentUser.getRole());
             }
-        } catch (BuberLogicException e) {
-            e.printStackTrace();
-        } catch (BuberSQLException e) {
-            e.printStackTrace();
+        } catch (BuberLogicException | BuberSQLException e) {
+            JSPSwitcher.redirect(req, resp, e, null);
         }
     }
 

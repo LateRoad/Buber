@@ -27,7 +27,7 @@ public final class SessionTimer {
                 session.setMaxInactiveInterval(ADMIN_INACTIVE_SESSION_TIME);
                 break;
             default:
-                LOGGER.error("UNEXPECTED ROLE FIND WHILE SETTING SESSION INACTIVE TIME: " + role + ".");
+                LOGGER.warn("WARNING: UNEXPECTED ROLE FIND WHILE SETTING SESSION INACTIVE TIME: " + role + ".");
                 session.setMaxInactiveInterval(DEFAULT_INACTIVE_SESSION_TIME);
                 break;
         }

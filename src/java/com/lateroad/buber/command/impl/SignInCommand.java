@@ -1,34 +1,36 @@
 package com.lateroad.buber.command.impl;
 
+import com.google.gson.Gson;
 import com.lateroad.buber.command.ICommand;
 import com.lateroad.buber.entity.role.CommonUser;
+import com.lateroad.buber.entity.type.UserType;
 import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.service.CommonUserService;
 import com.lateroad.buber.service.role.AdminService;
 import com.lateroad.buber.service.role.ClientService;
 import com.lateroad.buber.service.role.DriverService;
+import com.lateroad.buber.switcher.JSPSwitcher;
 import com.lateroad.buber.timer.SessionTimer;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 public class SignInCommand implements ICommand {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
-        switch (req.getParameter("role")) {
-            case "client":
-                auth(req, resp, servlet, new ClientService());
+        switch (UserType.valueOf(req.getParameter("role").toUpperCase())) {
+            case CLIENT:
+                auth(req, resp, new ClientService());
                 break;
-            case "driver":
-                auth(req, resp, servlet, new DriverService());
+            case DRIVER:
+                auth(req, resp, new DriverService());
                 break;
-            case "admin":
-                auth(req, resp, servlet, new AdminService());
+            case ADMIN:
+                auth(req, resp, new AdminService());
                 break;
             default:
                 //logger
@@ -36,27 +38,28 @@ public class SignInCommand implements ICommand {
         }
     }
 
-    private void auth(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet, CommonUserService service) {
+    private void auth(HttpServletRequest req, HttpServletResponse resp, CommonUserService service) {
         HttpSession session = req.getSession();
         String login = req.getParameter("login");
         String password = req.getParameter("password");
 
         try {
             if (login != null && password != null) {
-                CommonUser user = service.authentication(login, password);
-                if (user != null) {
-                    session.setAttribute("user", user);
-                    resp.setStatus(200);
-                    resp.getWriter().write(user.getRole().toString());
-                    SessionTimer.setInactiveInterval(session, user.getRole());
+                CommonUser currentUser = service.authentication(login, password);
+                if (currentUser != null) {
+                    SessionTimer.setInactiveInterval(session, currentUser.getRole());
+                    UserType role = currentUser.getRole();
+                    session.setAttribute("user", currentUser);
+                    String json = new Gson().toJson(currentUser);
+                    if (UserType.ADMIN.equals(role)) {
+                        JSPSwitcher.redirect(req, resp, json, "/clients.jsp");
+                    } else {
+                        JSPSwitcher.redirect(req, resp, json, "/home.jsp");
+                    }
                 }
             }
-        } catch (BuberSQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (BuberLogicException e) {
-            e.printStackTrace();
+        } catch (BuberSQLException | BuberLogicException e) {
+            JSPSwitcher.redirect(req, resp, e, null);
         }
     }
 }

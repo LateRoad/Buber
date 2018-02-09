@@ -1,7 +1,6 @@
 package com.lateroad.buber.database.dao.role;
 
 import com.lateroad.buber.builder.role.ClientBuilder;
-import com.lateroad.buber.database.dao.CommonDAO;
 import com.lateroad.buber.entity.role.Client;
 import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
@@ -10,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ClientDAO extends CommonDAO<Client> implements RoleDAO<Client> {
+public class ClientDAO extends RoleDAO<Client> {
 
     private static ClientDAO instance = null;
     private static ReentrantLock lock = new ReentrantLock();
@@ -74,22 +73,19 @@ public class ClientDAO extends CommonDAO<Client> implements RoleDAO<Client> {
     }
 
 
-    @Override
     public Client find(String login, String password) throws BuberSQLException, BuberLogicException {
         return super.find(login, password, SQL_SELECT_CLIENT);
     }
 
-    @Override
+
     public Client find(String login) throws BuberSQLException, BuberLogicException {
         return super.find(login, SQL_SELECT_CLIENT);
     }
 
-    @Override
     public List<Client> findAll() throws BuberSQLException, BuberLogicException {
         return super.findAll(SQL_SELECT_ALL_CLIENTS);
     }
 
-    @Override
     public void insert(String login, Client client) throws BuberSQLException, BuberLogicException {
         super.insert(login, client, SQL_INSERT_CLIENT_INFO);
     }
@@ -98,17 +94,14 @@ public class ClientDAO extends CommonDAO<Client> implements RoleDAO<Client> {
         super.insert(login, password, client, SQL_INSERT_CLIENT);
     }
 
-    @Override
     public void delete(String login) throws BuberSQLException, BuberLogicException {
         super.delete(login, SQL_DELETE_CLIENT);
     }
 
-    @Override
     public void update(String login, Client client) throws BuberSQLException, BuberLogicException {
         super.update(login, client, SQL_UPDATE_CLIENT_INFO);
     }
 
-    @Override
     public void update(String login, boolean isWait) throws BuberSQLException, BuberLogicException {
         super.update(login, isWait, SQL_UPDATE_CLIENT_STATUS);
     }

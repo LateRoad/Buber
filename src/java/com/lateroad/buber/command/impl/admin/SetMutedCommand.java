@@ -1,8 +1,10 @@
 package com.lateroad.buber.command.impl.admin;
 
 import com.lateroad.buber.command.ICommand;
+import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.service.role.AdminService;
+import com.lateroad.buber.switcher.JSPSwitcher;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,8 +18,9 @@ public class SetMutedCommand implements ICommand {
             String login = req.getParameter("user");
             AdminService adminService = new AdminService();
             adminService.setMuted(login, status);
-        } catch (BuberSQLException e) {
-            e.printStackTrace();
+            JSPSwitcher.redirect(req, resp, "success", null);
+        } catch (BuberSQLException | BuberLogicException e) {
+            JSPSwitcher.redirect(req, resp, e, null);
         }
     }
 }
