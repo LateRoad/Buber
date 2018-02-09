@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ClientDAO extends CommonDAO<Client> implements RoleInfoDAO<Client> {
+public class ClientDAO extends CommonDAO<Client> implements RoleDAO<Client> {
 
     private static ClientDAO instance = null;
     private static ReentrantLock lock = new ReentrantLock();

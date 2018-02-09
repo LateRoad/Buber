@@ -5,11 +5,12 @@ import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.exception.BuberUnsupportedOperationException;
 import org.apache.log4j.Logger;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CardBuilder implements StatementBuilder<Card> {
+public class CardBuilder implements EntityBuilder<Card> {
     private static final Logger LOGGER = Logger.getLogger(CardBuilder.class);
 
 
@@ -29,6 +30,15 @@ public class CardBuilder implements StatementBuilder<Card> {
     }
 
     @Override
+    public Card build(HttpServletRequest req) {
+        return new Card(
+                Integer.parseInt(req.getParameter("id")),
+                req.getParameter("hash_cardnumber"),
+                req.getParameter("login"));
+    }
+
+
+    @Override
     public void makeInsertStatement(String login, Card card, PreparedStatement statement) throws BuberSQLException {
         try {
             statement.setString(1, card.getHashNumber());
@@ -44,8 +54,4 @@ public class CardBuilder implements StatementBuilder<Card> {
         throw new BuberUnsupportedOperationException();
     }
 
-    @Override
-    public void makeSecurityInsertStatement(String login, String password, Card entity, PreparedStatement statement) throws BuberSQLException {
-        throw new BuberUnsupportedOperationException();
-    }
 }

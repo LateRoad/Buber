@@ -10,6 +10,7 @@ import com.lateroad.buber.entity.role.CommonUser;
 import com.lateroad.buber.entity.role.Driver;
 import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
+import com.lateroad.buber.exception.BuberUnsupportedOperationException;
 import com.lateroad.buber.service.CommonUserService;
 
 import java.util.List;
@@ -23,8 +24,8 @@ public class AdminService implements CommonUserService<CommonUser> {
     }
 
     @Override
-    public CommonUser registration(String... params) throws BuberSQLException {
-        throw new UnsupportedOperationException();
+    public CommonUser registration(CommonUser commonUser, String password, String confirmPassword) throws BuberSQLException {
+        throw new BuberUnsupportedOperationException();
     }
 
     public List<Order> findAllOrders() throws BuberSQLException, BuberLogicException {

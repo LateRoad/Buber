@@ -9,7 +9,7 @@ public interface CommonUserService<E extends CommonUser> {
 
     E authentication(String login, String password) throws BuberSQLException, BuberLogicException;
 
-    E registration(String... params) throws BuberSQLException, BuberLogicException;
+    E registration(E user, String password, String confirmPassword) throws BuberSQLException, BuberLogicException;
 
 
     default void setOnline(String login, boolean status) throws BuberSQLException, BuberLogicException {

@@ -2,14 +2,14 @@ package com.lateroad.buber.builder;
 
 import com.lateroad.buber.entity.Location;
 import com.lateroad.buber.exception.BuberSQLException;
-import com.lateroad.buber.exception.BuberUnsupportedOperationException;
 import org.apache.log4j.Logger;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class LocationBuilder implements StatementBuilder<Location> {
+public class LocationBuilder implements EntityBuilder<Location> {
     private static final Logger LOGGER = Logger.getLogger(LocationBuilder.class);
 
 
@@ -26,6 +26,14 @@ public class LocationBuilder implements StatementBuilder<Location> {
             throw new BuberSQLException("Something went wrong.");
         }
         return location;
+    }
+
+    @Override
+    public Location build(HttpServletRequest req) {
+        return new Location(
+                req.getParameter("login"),
+                req.getParameter("lat"),
+                req.getParameter("lng"));
     }
 
     @Override
@@ -50,10 +58,5 @@ public class LocationBuilder implements StatementBuilder<Location> {
             LOGGER.error("SQLException was occurred building an update statement for location.", e);
             throw new BuberSQLException("Something went wrong.");
         }
-    }
-
-    @Override
-    public void makeSecurityInsertStatement(String login, String password, Location entity, PreparedStatement statement) throws BuberSQLException {
-        throw new BuberUnsupportedOperationException();
     }
 }

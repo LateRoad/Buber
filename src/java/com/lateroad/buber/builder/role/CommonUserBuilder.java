@@ -1,16 +1,18 @@
-package com.lateroad.buber.builder;
+package com.lateroad.buber.builder.role;
 
 import com.lateroad.buber.entity.role.CommonUser;
+import com.lateroad.buber.entity.role.Driver;
 import com.lateroad.buber.entity.type.UserType;
 import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.exception.BuberUnsupportedOperationException;
 import org.apache.log4j.Logger;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CommonUserBuilder implements StatementBuilder<CommonUser> {
+public class CommonUserBuilder implements RoleBuilder<CommonUser> {
     private static final Logger LOGGER = Logger.getLogger(CommonUserBuilder.class);
 
 
@@ -26,6 +28,20 @@ public class CommonUserBuilder implements StatementBuilder<CommonUser> {
             throw new BuberSQLException("Something went wrong.");
         }
         return user;
+    }
+
+    public CommonUser build(HttpServletRequest req) {
+        return new Driver(
+                req.getParameter("login"),
+                req.getParameter("name"),
+                req.getParameter("surname"),
+                req.getParameter("lastname"),
+                req.getParameter("email"),
+                req.getParameter("phone_number"),
+                Integer.parseInt(req.getParameter("trips_number")),
+                Integer.parseInt(req.getParameter("reputation")),
+                Boolean.parseBoolean(req.getParameter("is_muted")),
+                req.getParameter("car_number"));
     }
 
     @Override

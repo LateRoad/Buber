@@ -1,6 +1,6 @@
 package com.lateroad.buber.database.dao;
 
-import com.lateroad.buber.builder.CommonUserBuilder;
+import com.lateroad.buber.builder.role.CommonUserBuilder;
 import com.lateroad.buber.entity.role.CommonUser;
 import com.lateroad.buber.entity.type.UserType;
 import com.lateroad.buber.exception.BuberLogicException;

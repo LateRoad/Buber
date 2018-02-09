@@ -1,6 +1,6 @@
 package com.lateroad.buber.database.dao;
 
-import com.lateroad.buber.builder.StatementBuilder;
+import com.lateroad.buber.builder.EntityBuilder;
 import com.lateroad.buber.database.DAO;
 import com.lateroad.buber.entity.Entity;
 import com.lateroad.buber.exception.BuberLogicException;
@@ -14,10 +14,10 @@ import java.util.List;
 public abstract class CommonDAO<E extends Entity> implements DAO {
     private static final Logger LOGGER = Logger.getLogger(CommonDAO.class);
 
-    protected StatementBuilder builder;
+    protected EntityBuilder builder;
 
 
-    protected CommonDAO(StatementBuilder builder) {
+    protected CommonDAO(EntityBuilder builder) {
         this.builder = builder;
     }
 
@@ -104,18 +104,6 @@ public abstract class CommonDAO<E extends Entity> implements DAO {
         }
     }
 
-    protected void insert(String login, String password, E entity, String query) throws BuberSQLException, BuberLogicException {
-        Connection connection = connectionPool.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            builder.makeSecurityInsertStatement(login, password, entity, statement);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            LOGGER.error("SQLException was occurred while executing query.", e);
-            throw new BuberSQLException("Something went wrong.");
-        } finally {
-            connectionPool.putConnection(connection);
-        }
-    }
 
     protected void update(String login, E entity, String query) throws BuberSQLException, BuberLogicException {
         Connection connection = connectionPool.getConnection();

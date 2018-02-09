@@ -6,7 +6,6 @@ import com.lateroad.buber.exception.BuberUnsupportedOperationException;
 import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserBuilder implements StatementBuilder<User> {
@@ -29,16 +28,6 @@ public class UserBuilder implements StatementBuilder<User> {
 
     @Override
     public void makeUpdateStatement(String login, User entity, PreparedStatement statement) throws BuberSQLException {
-        throw new BuberUnsupportedOperationException();
-    }
-
-    @Override
-    public void makeSecurityInsertStatement(String login, String password, User entity, PreparedStatement statement) throws BuberSQLException {
-        throw new BuberUnsupportedOperationException();
-    }
-
-    @Override
-    public User build(ResultSet resultSet) throws BuberSQLException {
         throw new BuberUnsupportedOperationException();
     }
 }

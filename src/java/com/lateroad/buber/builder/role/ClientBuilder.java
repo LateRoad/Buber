@@ -1,16 +1,15 @@
 package com.lateroad.buber.builder.role;
 
-import com.lateroad.buber.builder.StatementBuilder;
 import com.lateroad.buber.entity.role.Client;
-import com.lateroad.buber.entity.type.UserType;
 import com.lateroad.buber.exception.BuberSQLException;
 import org.apache.log4j.Logger;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ClientBuilder implements StatementBuilder<Client> {
+public class ClientBuilder implements RoleBuilder<Client> {
     private static final Logger LOGGER = Logger.getLogger(ClientBuilder.class);
 
 
@@ -20,7 +19,6 @@ public class ClientBuilder implements StatementBuilder<Client> {
         try {
             client = new Client(
                     resultSet.getString("login"),
-                    UserType.CLIENT,
                     resultSet.getString("name"),
                     resultSet.getString("surname"),
                     resultSet.getString("lastname"),
@@ -34,6 +32,19 @@ public class ClientBuilder implements StatementBuilder<Client> {
             throw new BuberSQLException("Something went wrong.");
         }
         return client;
+    }
+
+    public Client build(HttpServletRequest req) {
+        return new Client(
+                req.getParameter("login"),
+                req.getParameter("name"),
+                req.getParameter("surname"),
+                req.getParameter("lastname"),
+                req.getParameter("email"),
+                req.getParameter("phone_number"),
+                Integer.parseInt(req.getParameter("trips_number")),
+                Integer.parseInt(req.getParameter("reputation")),
+                Boolean.parseBoolean(req.getParameter("is_muted")));
     }
 
 

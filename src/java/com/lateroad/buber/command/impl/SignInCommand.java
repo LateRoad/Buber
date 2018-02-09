@@ -2,13 +2,13 @@ package com.lateroad.buber.command.impl;
 
 import com.lateroad.buber.command.ICommand;
 import com.lateroad.buber.entity.role.CommonUser;
-import com.lateroad.buber.entity.type.UserType;
 import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.service.CommonUserService;
 import com.lateroad.buber.service.role.AdminService;
 import com.lateroad.buber.service.role.ClientService;
 import com.lateroad.buber.service.role.DriverService;
+import com.lateroad.buber.timer.SessionTimer;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -48,9 +48,7 @@ public class SignInCommand implements ICommand {
                     session.setAttribute("user", user);
                     resp.setStatus(200);
                     resp.getWriter().write(user.getRole().toString());
-                    if (user.getRole().equals(UserType.CLIENT)) {
-                        session.setMaxInactiveInterval(60 * 10);
-                    }
+                    SessionTimer.setInactiveInterval(session, user.getRole());
                 }
             }
         } catch (BuberSQLException e) {

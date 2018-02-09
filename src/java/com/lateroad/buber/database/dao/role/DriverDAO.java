@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class DriverDAO extends CommonDAO<Driver> implements RoleInfoDAO<Driver> {
+public class DriverDAO extends CommonDAO<Driver> implements RoleDAO<Driver> {
     private static final Logger LOGGER = Logger.getLogger(DriverDAO.class);
 
     private static DriverDAO instance = null;

@@ -9,6 +9,7 @@ import com.lateroad.buber.entity.type.UserType;
 import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.service.CommonUserService;
+import com.lateroad.buber.validator.FormValidator;
 
 import java.util.List;
 
@@ -26,15 +27,22 @@ public class DriverService implements CommonUserService<Driver> {
     }
 
     @Override
-    public Driver registration(String... params) throws BuberSQLException, BuberLogicException {
-        Driver driver = new Driver(params[0], UserType.DRIVER, params[2], params[3], params[4], params[5], params[6], params[7]);
-        if (!CommonUserDAO.getInstance().isExist(params[0])) {
-            CommonUserDAO.getInstance().insert(driver.getLogin(), params[1], driver.getRole());
-            UserDAO.getInstance().insert(driver.getLogin(), driver);
-            DriverDAO.getInstance().insert(driver.getLogin(), driver);
-            CommonUserDAO.getInstance().setOnline(driver.getLogin(), true);
+    public Driver registration(Driver driver, String password, String confirmPassword) throws BuberSQLException, BuberLogicException {
+        if (FormValidator.checkNessesaryFields(driver)) {
+            if (FormValidator.checkPasswords(password, confirmPassword)) {
+                if (!CommonUserDAO.getInstance().isExist(driver.getLogin())) {
+                    CommonUserDAO.getInstance().insert(driver.getLogin(), password, driver.getRole());
+                    UserDAO.getInstance().insert(driver.getLogin(), driver);
+                    DriverDAO.getInstance().insert(driver.getLogin(), driver);
+                    CommonUserDAO.getInstance().setOnline(driver.getLogin(), true);
+                } else {
+                    DriverDAO.getInstance().insert(driver.getLogin(), driver);
+                }
+            } else {
+                throw new BuberLogicException("Passwords are different.");
+            }
         } else {
-            DriverDAO.getInstance().insert(driver.getLogin(), driver);
+            throw new BuberLogicException("Fill in all fields.");
         }
         return driver;
     }

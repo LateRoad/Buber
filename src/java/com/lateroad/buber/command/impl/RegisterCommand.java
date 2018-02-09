@@ -1,73 +1,60 @@
 package com.lateroad.buber.command.impl;
 
+import com.google.gson.Gson;
+import com.lateroad.buber.builder.role.ClientBuilder;
 import com.lateroad.buber.command.ICommand;
+import com.lateroad.buber.entity.role.Client;
 import com.lateroad.buber.entity.role.CommonUser;
+import com.lateroad.buber.entity.role.Driver;
 import com.lateroad.buber.entity.type.UserType;
 import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.service.CommonUserService;
 import com.lateroad.buber.service.role.ClientService;
-import com.lateroad.buber.service.role.DriverService;
+import com.lateroad.buber.switcher.JSPSwitcher;
+import com.lateroad.buber.timer.SessionTimer;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public class RegisterCommand implements ICommand {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
-        String login = req.getParameter("login");
-        String role = req.getParameter("role");
-        String name = req.getParameter("name");
-        String surname = req.getParameter("surname");
-        String lastname = req.getParameter("lastname");
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
-        String confirmPassword = req.getParameter("confirmPassword");
-        String carNumber = req.getParameter("carNumber");
-        String phoneNumber = req.getParameter("phoneNumber");
-
-        CommonUserService service;
-        CommonUser user = null;
+        UserType role = UserType.valueOf(req.getParameter("role").toUpperCase());
 
         try {
-            if (!"".equals(login) && !"".equals(name) && !"".equals(surname) && !"".equals(password) && !"".equals(confirmPassword)) {
-                if (password.equals(confirmPassword)) {
-                    switch (role) {
-                        case "client":
-                            service = new ClientService();
-                            user = service.registration(login, password, name, surname, lastname, email, phoneNumber);
-                            break;
-                        case "driver":
-                            service = new DriverService();
-                            user = service.registration(login, password, name, surname, lastname, email, phoneNumber, carNumber);
-                            break;
-                        default:
-                            //logger
-                            break;
-                    }
-                } else {
-                    throw new BuberLogicException("Passwords are different.");
-                }
-            } else {
-                throw new BuberLogicException("Fill in all fields.");
+            CommonUser currentUser = null;
+            switch (role) {
+                case CLIENT:
+                    Client client = ClientBuilder();
+                    currentUser = register(client, password, confirmPassword, new ClientService());
+                    break;
+                case DRIVER:
+                    Driver driver = new Driver(login, name, surname, lastname, email, phoneNumber, carNumber);
+                    currentUser = register(driver, password, confirmPassword, new ClientService());
+                    break;
+                default:
+                    //logger
+                    break;
             }
-            if (user != null) {
-                req.getSession().setAttribute("user", user);
-                resp.setStatus(200);
-                resp.getWriter().write(user.getRole().toString());
-                if (user.getRole().equals(UserType.CLIENT)) {
-                    req.getSession().setMaxInactiveInterval(60 * 10);
-                }
+
+            if (currentUser != null) {
+                req.getSession().setAttribute("user", currentUser);
+                String json = new Gson().toJson(currentUser);
+                JSPSwitcher.redirect(req, resp, json, "home.jsp");
+                SessionTimer.setInactiveInterval(req.getSession(), currentUser.getRole());
             }
         } catch (BuberLogicException e) {
             e.printStackTrace();
         } catch (BuberSQLException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+    }
+
+
+    private CommonUser register(CommonUser user, String password, String confirmPassword, CommonUserService service) throws BuberLogicException, BuberSQLException {
+        return service.registration(user, password, confirmPassword);
     }
 }

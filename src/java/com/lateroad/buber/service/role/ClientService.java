@@ -13,28 +13,35 @@ import com.lateroad.buber.entity.type.UserType;
 import com.lateroad.buber.exception.BuberLogicException;
 import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.service.CommonUserService;
+import com.lateroad.buber.validator.FormValidator;
 
 public class ClientService implements CommonUserService<Client> {
 
     @Override
     public Client authentication(String login, String password) throws BuberSQLException, BuberLogicException {
-        Client client = null;
-        client = ClientDAO.getInstance().find(login, password);
+        Client client = ClientDAO.getInstance().find(login, password);
         CommonUserDAO.getInstance().setOnline(login, true);
         CommonUserDAO.getInstance().setRole(login, UserType.CLIENT);
         return client;
     }
 
     @Override
-    public Client registration(String... params) throws BuberSQLException, BuberLogicException {
-        Client client = new Client(params[0], UserType.CLIENT, params[2], params[3], params[4], params[5], params[6]);
-        if (!CommonUserDAO.getInstance().isExist(params[0])) {
-            CommonUserDAO.getInstance().insert(client.getLogin(), params[1], client.getRole());
-            UserDAO.getInstance().insert(client.getLogin(), client);
-            ClientDAO.getInstance().insert(client.getLogin(), client);
-            CommonUserDAO.getInstance().setOnline(client.getLogin(), true);
+    public Client registration(Client client, String password, String confirmPassword) throws BuberSQLException, BuberLogicException {
+        if (FormValidator.checkNessesaryFields(client)) {
+            if (FormValidator.checkPasswords(password, confirmPassword)) {
+                if (!CommonUserDAO.getInstance().isExist(client.getLogin())) {
+                    CommonUserDAO.getInstance().insert(client.getLogin(), password, client.getRole());
+                    UserDAO.getInstance().insert(client.getLogin(), client);
+                    ClientDAO.getInstance().insert(client.getLogin(), client);
+                    CommonUserDAO.getInstance().setOnline(client.getLogin(), true);
+                } else {
+                    ClientDAO.getInstance().insert(client.getLogin(), client);
+                }
+            } else {
+                throw new BuberLogicException("Passwords are different.");
+            }
         } else {
-            ClientDAO.getInstance().insert(client.getLogin(), client);
+            throw new BuberLogicException("Fill in all fields.");
         }
         return client;
     }
