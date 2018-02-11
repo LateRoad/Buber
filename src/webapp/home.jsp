@@ -116,7 +116,7 @@
                 <h4 class="modal-title">Заказ успешно выполнен.</h4>
             </div>
             <%--<div class="modal-body">--%>
-                <%--<p>Наш водитель приедет за вами в ближайшее время.</p>--%>
+            <%--<p>Наш водитель приедет за вами в ближайшее время.</p>--%>
             <%--</div>--%>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
@@ -132,8 +132,8 @@
 <!-- Core plugin JavaScript-->
 <script src="src/vendor/jquery-easing/jquery.easing.min.js"></script>
 <!-- Custom scripts for all pages-->
-<script async src="src/js/script.js"></script>
-<script async src="src/js/googlemap.js"></script>
+<script src="src/js/script.js"></script>
+<script src="src/js/googlemap.js"></script>
 <script src="src/js/role/user/driver.js"></script>
 <script src="src/js/role/user/client.js"></script>
 <script src="src/js/role/user/user.js"></script>

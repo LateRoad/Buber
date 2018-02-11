@@ -36,7 +36,7 @@ public class DriverService implements CommonUserService<Driver> {
     public Driver authentication(String login, String password) throws BuberSQLException, BuberLogicException {
         Driver driver;
         driver = DriverDAO.getInstance().find(login, password);
-        if (driver != null && driver.getRole().equals(UserType.CLIENT)) {
+        if (driver != null && driver.getRole().equals(UserType.DRIVER)) {
             CommonUserDAO.getInstance().setOnline(login, true);
             CommonUserDAO.getInstance().setRole(login, UserType.DRIVER);
         } else {

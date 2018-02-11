@@ -103,6 +103,30 @@ public abstract class CommonDAO<E extends Entity> implements DAO {
     }
 
     /**
+     * Find all <code>Entity</code> objects for specified login.
+     *
+     * @return <code>List of Entity</code> object.
+     */
+    protected List<E> findAll(String login, String query) throws BuberSQLException, BuberLogicException {
+        List<E> list = new ArrayList<>();
+        Connection connection = connectionPool.getConnection();
+        try (PreparedStatement st = connection.prepareStatement(query)) {
+            st.setString(1, login);
+            try (ResultSet resultSet = st.executeQuery()) {
+                while (resultSet.next()) {
+                    list.add((E) builder.build(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error("SQLException was occurred while executing query.", e);
+            throw new BuberSQLException("Something went wrong.");
+        } finally {
+            connectionPool.putConnection(connection);
+        }
+        return list;
+    }
+
+    /**
      * Insert <code>Entity</code> object into relevant database.
      */
     protected void insert(String login, E entity, String query) throws BuberSQLException, BuberLogicException {

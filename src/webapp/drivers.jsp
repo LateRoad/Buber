@@ -38,6 +38,9 @@
         <div class="card mb-3">
             <div class="card-header">
                 <i class="fa fa-table"></i> <fmt:message key="title-drivers"/>
+                <a class="btn btn-primary" href="/userOperation?action=getDrivers"><fmt:message
+                        key="update"/></a>
+
             </div>
             <div class="card-body">
                 <div class="table-responsive">

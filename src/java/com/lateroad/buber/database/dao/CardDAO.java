@@ -36,6 +36,8 @@ public class CardDAO extends CommonDAO<Card> implements DAO {
 
     private static final String SQL_SELECT_ALL_CARDS = "SELECT * FROM `buber`.`card_detail` ";
 
+    private static final String SQL_SELECT_ALL_CARDS_BY_LOGIN = "SELECT * FROM `buber`.`card_detail` WHERE `login` = ?; ";
+
     private static final String SQL_INSERT_CARD =
             "INSERT INTO `buber`.`card_detail` (`hash_cardnumber`, `login`) " +
                     "VALUES (?, ?, ?, ?); ";
@@ -90,6 +92,15 @@ public class CardDAO extends CommonDAO<Card> implements DAO {
      */
     public List<Card> findAll() throws BuberSQLException, BuberLogicException {
         return super.findAll(SQL_SELECT_ALL_CARDS);
+    }
+
+    /**
+     * Find all <code>Card</code> objects for specified user.
+     *
+     * @return <code>List of Card</code> objects.
+     */
+    public List<Card> findAll(String login) throws BuberSQLException, BuberLogicException {
+        return super.findAll(login, SQL_SELECT_ALL_CARDS_BY_LOGIN);
     }
 
     /**

@@ -33,6 +33,42 @@
 
 <div class="content-wrapper">
     <div class="container-fluid">
+        <div class="card mb-3">
+            <div class="card-header"><i class="fa fa-table"></i> <fmt:message key="nav-payments"/></div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+                        <c:if test="${cards != null }">
+                            <thead>
+                            <tr>
+                                <th><fmt:message key="card_number"/></th>
+                                <th><fmt:message key="actions"/></th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th><fmt:message key="card_number"/></th>
+                                <th><fmt:message key="actions"/></th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            <c:forEach var="card" items="${cards}">
+                                <tr>
+                                    <td>${card.hashNumber}</td>
+                                    <td></td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </c:if>
+
+                        <c:if test="${cards == null }">
+                            <td>Способы оплаты отсутствуют.</td>
+                        </c:if>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <ctg:footer project="<small>b</small>Uber" developer="LateRoad" year="2018"/>

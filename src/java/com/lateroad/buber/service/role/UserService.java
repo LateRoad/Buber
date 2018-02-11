@@ -1,7 +1,9 @@
 package com.lateroad.buber.service.role;
 
+import com.lateroad.buber.database.dao.CardDAO;
 import com.lateroad.buber.database.dao.LocationDAO;
 import com.lateroad.buber.database.dao.OrderDAO;
+import com.lateroad.buber.entity.Card;
 import com.lateroad.buber.entity.Location;
 import com.lateroad.buber.entity.Order;
 import com.lateroad.buber.entity.role.CommonUser;
@@ -60,6 +62,17 @@ public class UserService {
      */
     public List<Order> findTrips(CommonUser user) throws BuberSQLException, BuberLogicException {
         return OrderDAO.getInstance().findAll(user.getLogin(), user.getRole());
+    }
+
+    /**
+     * Perform a search of orders for specified user.
+     *
+     * @return <code>List of Orders</code> object.
+     * @throws BuberSQLException   throws if something was wrong in DAO layout.
+     * @throws BuberLogicException if correct way of the search all orders was broken.
+     */
+    public List<Card> findCards(CommonUser user) throws BuberSQLException, BuberLogicException {
+        return CardDAO.getInstance().findAll(user.getLogin());
     }
 
 }

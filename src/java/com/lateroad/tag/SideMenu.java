@@ -126,7 +126,7 @@ public class SideMenu extends TagSupport {
 
     private void userMenu(JspWriter out, ResourceBundle bundle) throws IOException {
         out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\" " + bundle.getString("nav-profile") + "\"><a class=\"nav-link\" href=\"/profile.jsp\"><i class=\"fa fa-user fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-profile") + "</span></a></li>");
-        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\" " + bundle.getString("nav-payments") + "\"><a class=\"nav-link\" href=\"/payment.jsp\"><i class=\"fa fa-credit-card fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-payments") + "</span></a></li>");
+        out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\" " + bundle.getString("nav-payments") + "\"><a class=\"nav-link\" href=\"/userOperation?action=getCards\"><i class=\"fa fa-credit-card fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-payments") + "</span></a></li>");
         out.write("<li class=\"nav-item\" data-toggle=\"tooltip\" data-placement=\"right\" title=\" " + bundle.getString("nav-trips") + "\">");
         out.write("    <a class=\"nav-link\" href=\"/userOperation?action=getTrips\"><i class=\"fa fa-car fa-fw\"></i><span class=\"nav-link-text\"> " + bundle.getString("nav-trips") + "</span></a>");
         out.write("</li>");

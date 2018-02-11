@@ -20,7 +20,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @see ConnectorDB
  * @since JDK1.8
  */
-public final class ConnectionPool {
+public class ConnectionPool {
     private static final Logger LOGGER = Logger.getLogger(ConnectionPool.class);
 
     private static final int DEFAULT_POOL_SIZE = 15;

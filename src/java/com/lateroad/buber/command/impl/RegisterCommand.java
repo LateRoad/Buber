@@ -40,7 +40,7 @@ public class RegisterCommand implements ICommand {
     public void execute(HttpServletRequest req, HttpServletResponse resp) {
         UserType role = UserType.valueOf(req.getParameter("role").toUpperCase());
         String password = req.getParameter("password");
-        String confirmPassword = req.getParameter("conformPassword");
+        String confirmPassword = req.getParameter("confirmPassword");
 
         RoleBuilder builder;
         CommonUserService service;
