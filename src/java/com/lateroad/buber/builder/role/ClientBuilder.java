@@ -9,10 +9,29 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Class {@code ClientBuilder} is the builder for client entity.
+ * This class allow you building client entity from <code>ResultSet</code>,
+ * <code>HttpServletRequest</code> and making necessarily statements for
+ * inserting and updating information in database.
+ *
+ * @author LateRoad
+ * @see RoleBuilder
+ * @since JDK1.8
+ */
 public class ClientBuilder implements RoleBuilder<Client> {
     private static final Logger LOGGER = Logger.getLogger(ClientBuilder.class);
 
-
+    /**
+     * Returns a Client object made from <code>ResultSet</code>. Can throw
+     * <code>BuberSQLException</code> if <code>resultSet.getString()</code> get wrong
+     * string as param.
+     *
+     * @param resultSet from statement.
+     * @return <code>Client</code> object.
+     * @throws BuberSQLException if <code>resultSet.getString()</code> get wrong string as param.
+     * @see PreparedStatement
+     */
     @Override
     public Client build(ResultSet resultSet) throws BuberSQLException {
         Client client;
@@ -34,6 +53,14 @@ public class ClientBuilder implements RoleBuilder<Client> {
         return client;
     }
 
+    /**
+     * Returns a <code>Client</code> object made from <code>HttpServletRequest</code>.
+     * params for <code>Client</code> is getting from constant from constants.properties.
+     *
+     * @param req that represent a request for java server.
+     * @return <code>Client</code> object.
+     * @see HttpServletRequest
+     */
     public Client build(HttpServletRequest req) {
         return new Client(
                 req.getParameter("login"),
@@ -48,25 +75,16 @@ public class ClientBuilder implements RoleBuilder<Client> {
     }
 
 
-    @Override
-    public void makeSecurityInsertStatement(String login, String password, Client client, PreparedStatement statement) throws BuberSQLException {
-        try {
-            statement.setString(1, login);
-            statement.setString(2, password);
-            statement.setString(3, client.getRole().name());
-            statement.setString(4, login);
-            statement.setString(5, client.getName());
-            statement.setString(6, client.getSurname());
-            statement.setString(7, client.getLastname());
-            statement.setString(8, client.getEmail());
-            statement.setString(9, login);
-            statement.setString(10, client.getPhoneNumber());
-        } catch (SQLException e) {
-            LOGGER.error("SQLException was occurred building a security insert statement for client.", e);
-            throw new BuberSQLException("Something went wrong.");
-        }
-    }
-
+    /**
+     * Filling in the insert statement for executing in DAO. Throws a BuberSQLException if
+     * count of fields for filling in in statement is not equals to count that method
+     * provides.
+     *
+     * @param statement is a statement for filling in.
+     * @throws BuberSQLException if count of fields for filling in in statement is not
+     *                           equals to count that method provides.
+     * @see PreparedStatement
+     */
     @Override
     public void makeInsertStatement(String login, Client client, PreparedStatement statement) throws BuberSQLException {
         try {
@@ -78,11 +96,23 @@ public class ClientBuilder implements RoleBuilder<Client> {
         }
     }
 
+    /**
+     * Filling in the update statement for executing in DAO. Throw a BuberSQLException if
+     * count of fields for filling in in statement is not equals to count that method
+     * provides.
+     *
+     * @param statement is a statement for filling in.
+     * @throws BuberSQLException if count of fields for filling in in statement is not
+     *                           equals to count that method provides.
+     * @see PreparedStatement
+     */
     @Override
     public void makeUpdateStatement(String login, Client client, PreparedStatement statement) throws BuberSQLException {
         try {
-            statement.setString(1, login);
-            statement.setString(2, client.getPhoneNumber());
+            statement.setInt(1 , client.getTripsNumber());
+            statement.setInt(2 , client.getReputation());
+            statement.setString(3, client.getPhoneNumber());
+            statement.setString(4, login);
         } catch (SQLException e) {
             LOGGER.error("SQLException was occurred building an update statement for client.", e);
             throw new BuberSQLException("Something went wrong.");

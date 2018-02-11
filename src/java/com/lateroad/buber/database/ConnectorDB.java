@@ -3,21 +3,30 @@ package com.lateroad.buber.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
-public class ConnectorDB {
+/**
+ * Service class which take care of connection to database.
+ *
+ * @author LateRoad
+ * @since JDK1.8
+ */
+public final class ConnectorDB {
+
+    private ConnectorDB() {
+    }
+
+    /**
+     * Creates a connection to database.
+     *
+     * @return connection.
+     */
     public static Connection getConnection() throws SQLException {
-//        ResourceBundle resource = ResourceBundle.getBundle("database");
-//
-//        Properties properties = new Properties();
-//        String url = new String(resource.getString("url"));
-//        properties.put("user", resource.getString("user"));
-//        properties.put("password", resource.getString("password"));
-        DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-//        try {
-//            Class.forName("com.mysql.jdbc.Driver");
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/buber?useSSL=false&characterEncoding=UTF-8", "root", "021929");
+        ResourceBundle resource = ResourceBundle.getBundle("database");
+        String url = resource.getString("url");
+        String password = resource.getString("password");
+        String user = resource.getString("user");
+        DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+        return DriverManager.getConnection(url, user, password);
     }
 }

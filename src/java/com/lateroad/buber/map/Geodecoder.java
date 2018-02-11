@@ -34,10 +34,6 @@ public class Geodecoder {
 
             newLocation.setLat(lat);
             newLocation.setLng(lng);
-            newLocation.setHouseNumber(location.getJSONArray("address_components").getJSONObject(0).getString("short_name"));
-            newLocation.setStreet(location.getJSONArray("address_components").getJSONObject(1).getString("short_name"));
-            newLocation.setCity(location.getJSONArray("address_components").getJSONObject(5).getString("long_name"));
-            newLocation.setCountry(location.getJSONArray("address_components").getJSONObject(6).getString("long_name"));
         } catch (UnsupportedEncodingException e) {
             LOGGER.error("UnsupportedEncodingException was occurred due to bad encoding while making url for Google Map API.", e);
             throw new BuberLogicException("Can't find route.");

@@ -1,9 +1,9 @@
 package com.lateroad.buber.service.role;
 
-import com.lateroad.buber.database.dao.CommonUserDAO;
 import com.lateroad.buber.database.dao.OrderDAO;
 import com.lateroad.buber.database.dao.UserDAO;
 import com.lateroad.buber.database.dao.role.ClientDAO;
+import com.lateroad.buber.database.dao.role.CommonUserDAO;
 import com.lateroad.buber.database.dao.role.DriverDAO;
 import com.lateroad.buber.entity.Order;
 import com.lateroad.buber.entity.role.Client;
@@ -15,12 +15,26 @@ import com.lateroad.buber.exception.BuberSQLException;
 import com.lateroad.buber.service.CommonUserService;
 import com.lateroad.buber.validator.FormValidator;
 
+/**
+ * Class provides client operations and incapsulate using of DAO layout.
+ *
+ * @author LateRoad
+ * @since JDK1.8
+ */
 public class ClientService implements CommonUserService<Client> {
 
+
+    /**
+     * Perform a authentication operation.
+     *
+     * @return <code>Client</code> object.
+     * @throws BuberSQLException   throws if something was wrong in DAO layout.
+     * @throws BuberLogicException if correct way of authentication was broken.
+     */
     @Override
     public Client authentication(String login, String password) throws BuberSQLException, BuberLogicException {
         Client client = ClientDAO.getInstance().find(login, password);
-        if (client != null) {
+        if (client != null && client.getRole().equals(UserType.CLIENT)) {
             CommonUserDAO.getInstance().setOnline(login, true);
             CommonUserDAO.getInstance().setRole(login, UserType.CLIENT);
         } else {
@@ -29,6 +43,13 @@ public class ClientService implements CommonUserService<Client> {
         return client;
     }
 
+    /**
+     * Perform a registration operation.
+     *
+     * @return <code>Client</code> object.
+     * @throws BuberSQLException   throws if something was wrong in DAO layout.
+     * @throws BuberLogicException if correct way of registration was broken.
+     */
     @Override
     public Client registration(Client client, String password, String confirmPassword) throws BuberSQLException, BuberLogicException {
         if (FormValidator.checkNecessaryFields(client)) {
@@ -50,7 +71,12 @@ public class ClientService implements CommonUserService<Client> {
         return client;
     }
 
-
+    /**
+     * Inserts order into database and set isBusy status of driver into true.
+     *
+     * @throws BuberSQLException   throws if something was wrong in DAO layout.
+     * @throws BuberLogicException if correct way of the operation was broken.
+     */
     public void takeTaxi(String login, String driverLogin, String money) throws BuberSQLException, BuberLogicException {
         User driver = DriverDAO.getInstance().find(driverLogin, false);
         if (driver == null) {

@@ -6,10 +6,22 @@ import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Class provides common for every operations with map.
+ *
+ * @author LateRoad
+ * @since JDK1.8
+ */
 public class MapService {
     private static final Logger LOGGER = Logger.getLogger(MapService.class);
 
 
+    /**
+     * Calculate duration for route according to origin and destination as latitude and
+     * longitude points.
+     *
+     * @throws BuberLogicException if correct way of the operation was broken.
+     */
     public String calculateDuration(String from, String to) throws BuberLogicException {
         String duration;
         try {
@@ -22,6 +34,12 @@ public class MapService {
         return duration;
     }
 
+    /**
+     * Calculate distance for route according to origin and destination as latitude and
+     * longitude points.
+     *
+     * @throws BuberLogicException if correct way of the operation was broken.
+     */
     public String calculateDistance(String from, String to) throws BuberLogicException {
         String duration;
         try {

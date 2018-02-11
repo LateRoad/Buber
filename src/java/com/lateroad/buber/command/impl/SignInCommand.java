@@ -12,15 +12,28 @@ import com.lateroad.buber.service.role.DriverService;
 import com.lateroad.buber.switcher.JSPSwitcher;
 import com.lateroad.buber.timer.SessionTimer;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * The command which find user in database and set "user" for session. Then it
+ * redirects client to relevant jsp and send response.
+ *
+ * @author LateRoad
+ * @see ICommand
+ * @since JDK1.8
+ */
 public class SignInCommand implements ICommand {
 
+    /**
+     * Executes command for server. At the end of execution get possibility for
+     * send response and send redirect to client.
+     *
+     * @param req for getting params from client.
+     */
     @Override
-    public void execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
+    public void execute(HttpServletRequest req, HttpServletResponse resp) {
         switch (UserType.valueOf(req.getParameter("role").toUpperCase())) {
             case CLIENT:
                 auth(req, resp, new ClientService());
@@ -57,9 +70,9 @@ public class SignInCommand implements ICommand {
                 }
             }
         }  catch (BuberLogicException e) {
-            JSPSwitcher.redirect(req, resp, e, null, 400);
+            JSPSwitcher.redirect(req, resp, e.getMessage(), null, 400);
         } catch (BuberSQLException e) {
-            JSPSwitcher.redirect(req, resp, e, null, 500);
+            JSPSwitcher.redirect(req, resp, e.getMessage(), null, 500);
         }
     }
 }

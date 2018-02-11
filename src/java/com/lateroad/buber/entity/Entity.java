@@ -1,7 +1,10 @@
 package com.lateroad.buber.entity;
 
-import java.io.Serializable;
-
-public interface Entity extends Serializable, Cloneable {
-
+/**
+ * The root interface for all of entity classes.
+ *
+ * @author LateRoad
+ * @since JDK1.8
+ */
+public interface Entity {
 }

@@ -2,119 +2,107 @@ package com.lateroad.buber.entity;
 
 import java.util.Objects;
 
+/**
+ * Class {@code Location} is an object with driver data.
+ * Contains latitude and longitude of user.
+ *
+ * @author LateRoad
+ * @see Entity
+ * @since JDK1.8
+ */
 public class Location implements Entity {
     private String login;
-    private String country;
-    private String city;
-    private String street;
-    private String houseNumber;
     private String lat;
     private String lng;
 
 
-    public Location(String login, String country, String city, String street, String houseNumber, String lat, String lng) {
-        this.login = login;
-        this.country = country;
-        this.city = city;
-        this.street = street;
-        this.houseNumber = houseNumber;
-        this.lat = lat;
-        this.lng = lng;
-    }
-
+    /**
+     * Public constructor for Location class.
+     */
     public Location() {
-
     }
 
+    /**
+     * Public constructor for Location class.
+     */
     public Location(String login, String lat, String lng) {
         this.login = login;
         this.lat = lat;
         this.lng = lng;
     }
 
+
+    /**
+     * Standard getter for login variable.
+     */
     public String getLogin() {
         return login;
     }
 
+    /**
+     * Standard setter for login variable.
+     */
     public void setLogin(String login) {
         this.login = login;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getHouseNumber() {
-        return houseNumber;
-    }
-
-    public void setHouseNumber(String houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
+    /**
+     * Standard getter for lat variable.
+     */
     public String getLat() {
         return lat;
     }
 
+    /**
+     * Standard setter for lat variable.
+     */
     public void setLat(String lat) {
         this.lat = lat;
     }
 
+    /**
+     * Standard getter for lng variable.
+     */
     public String getLng() {
         return lng;
     }
 
+    /**
+     * Standard setter for lng variable.
+     */
     public void setLng(String lng) {
         this.lng = lng;
     }
 
+
+    /**
+     * Standard equals method for Location class.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Location location = (Location) o;
         return Objects.equals(login, location.login) &&
-                Objects.equals(country, location.country) &&
-                Objects.equals(city, location.city) &&
-                Objects.equals(street, location.street) &&
-                Objects.equals(houseNumber, location.houseNumber) &&
                 Objects.equals(lat, location.lat) &&
                 Objects.equals(lng, location.lng);
     }
 
+    /**
+     * Standard hashCode method for Location class.
+     */
     @Override
     public int hashCode() {
-        return Objects.hash(login, country, city, street, houseNumber, lat, lng);
+        return Objects.hash(login, lat, lng);
     }
 
+    /**
+     * Standard toString method for Location class.
+     */
     @Override
     public String toString() {
         return "Location{" +
                 "login='" + login + '\'' +
-                ", country='" + country + '\'' +
-                ", city='" + city + '\'' +
-                ", street='" + street + '\'' +
-                ", houseNumber='" + houseNumber + '\'' +
                 ", lat='" + lat + '\'' +
                 ", lng='" + lng + '\'' +
                 '}';

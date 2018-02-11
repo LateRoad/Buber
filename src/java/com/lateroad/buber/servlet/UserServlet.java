@@ -17,12 +17,12 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         LOGGER.info("Executing " + req.getParameter("action") + " action. Get request.");
-        CommandManager.execute(req.getParameter("action"), req, resp, this);
+        CommandManager.execute(req.getParameter("action"), req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         LOGGER.info("Executing " + req.getParameter("action") + " action. Post request.");
-        CommandManager.execute(req.getParameter("action"), req, resp, this);
+        CommandManager.execute(req.getParameter("action"), req, resp);
     }
 }

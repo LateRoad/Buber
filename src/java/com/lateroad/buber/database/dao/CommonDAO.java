@@ -11,17 +11,31 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DAO abstract class which handling actions with <code>Entity</code> objects. Provides common kit of
+ * command such as selecting, inserting, updating and deleting for relevant object.
+ *
+ * @author LateRoad
+ * @see DAO
+ * @since JDK1.8
+ */
 public abstract class CommonDAO<E extends Entity> implements DAO {
     private static final Logger LOGGER = Logger.getLogger(CommonDAO.class);
 
     protected EntityBuilder builder;
 
-
+    /**
+     * Protected constructor for <code>CommonDAO</code>. Necessary for descendant.
+     */
     protected CommonDAO(EntityBuilder builder) {
         this.builder = builder;
     }
 
-
+    /**
+     * Find the <code>Entity</code> using only login.
+     *
+     * @return <code>Entity</code> object.
+     */
     protected E find(String login, String query) throws BuberSQLException, BuberLogicException {
         E info = null;
         Connection connection = connectionPool.getConnection();
@@ -41,6 +55,11 @@ public abstract class CommonDAO<E extends Entity> implements DAO {
         return info;
     }
 
+    /**
+     * Find the <code>Entity</code> with specifying modifier.
+     *
+     * @return <code>Entity</code> object.
+     */
     protected E find(String login, boolean modifier, String query) throws BuberSQLException, BuberLogicException {
         E info = null;
         Connection connection = connectionPool.getConnection();
@@ -61,6 +80,11 @@ public abstract class CommonDAO<E extends Entity> implements DAO {
         return info;
     }
 
+    /**
+     * Find all <code>Entity</code> objects.
+     *
+     * @return <code>List of Entity</code> object.
+     */
     protected List<E> findAll(String query) throws BuberSQLException, BuberLogicException {
         List<E> list = new ArrayList<>();
         Connection cn = connectionPool.getConnection();
@@ -78,19 +102,9 @@ public abstract class CommonDAO<E extends Entity> implements DAO {
         return list;
     }
 
-    protected void delete(String login, String query) throws BuberSQLException, BuberLogicException {
-        Connection connection = connectionPool.getConnection();
-        try (PreparedStatement st = connection.prepareStatement(query)) {
-            st.setString(1, login);
-            st.executeUpdate();
-        } catch (SQLException e) {
-            LOGGER.error("SQLException was occurred while executing query.", e);
-            throw new BuberSQLException("Something went wrong.");
-        } finally {
-            connectionPool.putConnection(connection);
-        }
-    }
-
+    /**
+     * Insert <code>Entity</code> object into relevant database.
+     */
     protected void insert(String login, E entity, String query) throws BuberSQLException, BuberLogicException {
         Connection connection = connectionPool.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -104,7 +118,9 @@ public abstract class CommonDAO<E extends Entity> implements DAO {
         }
     }
 
-
+    /**
+     * Update <code>Entity</code> info in relevant database.
+     */
     protected void update(String login, E entity, String query) throws BuberSQLException, BuberLogicException {
         Connection connection = connectionPool.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -118,6 +134,9 @@ public abstract class CommonDAO<E extends Entity> implements DAO {
         }
     }
 
+    /**
+     * Update <code>Entity</code> status in relevant database.
+     */
     protected void update(String login, boolean modifier, String query) throws BuberSQLException, BuberLogicException {
         Connection connection = connectionPool.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -131,4 +150,21 @@ public abstract class CommonDAO<E extends Entity> implements DAO {
             connectionPool.putConnection(connection);
         }
     }
+
+    /**
+     * Delete <code>Entity</code> object from relevant database.
+     */
+    protected void delete(String login, String query) throws BuberSQLException, BuberLogicException {
+        Connection connection = connectionPool.getConnection();
+        try (PreparedStatement st = connection.prepareStatement(query)) {
+            st.setString(1, login);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("SQLException was occurred while executing query.", e);
+            throw new BuberSQLException("Something went wrong.");
+        } finally {
+            connectionPool.putConnection(connection);
+        }
+    }
+
 }

@@ -76,6 +76,9 @@
                                     <c:if test="${trip.status == \"CANCELLED\" }">
                                         <td><fmt:message key="order-status-cancelled"/></td>
                                     </c:if>
+                                    <c:if test="${trip.status == \"ACCEPTED\" }">
+                                        <td><fmt:message key="order-status-accepted"/></td>
+                                    </c:if>
                                 </tr>
                             </c:forEach>
                             </tbody>

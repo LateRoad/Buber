@@ -15,6 +15,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Service class of filter which trace the security of request from client side.
+ *
+ * @author LateRoad
+ * @since JDK1.8
+ */
 @WebFilter(urlPatterns = {"*.jsp", "/userOperation", "/commonOperation"},
         initParams = {@WebInitParam(name = "INDEX_PATH", value = "/index.jsp"),
                 @WebInitParam(name = "ERROR_PATH", value = "/error.jsp")})
@@ -31,7 +37,7 @@ public class SecurityFilter implements Filter {
             "/clients.jsp",
             "/drivers.jsp",
             "/userOperation",
-            "commonOperation");
+            "/commonOperation");
 
     private static final List<String> clientFilterPaths = Arrays.asList(
             "/index.jsp",
@@ -40,7 +46,7 @@ public class SecurityFilter implements Filter {
             "/profile.jsp",
             "/trips.jsp",
             "/userOperation",
-            "commonOperation");
+            "/commonOperation");
 
     private static final List<String> driverFilterPaths = Arrays.asList(
             "/index.jsp",
@@ -50,7 +56,7 @@ public class SecurityFilter implements Filter {
             "/profile.jsp",
             "/trips.jsp",
             "/userOperation",
-            "commonOperation");
+            "/commonOperation");
 
     private static final List<String> guestFilterPaths = Arrays.asList(
             "/index.jsp",
@@ -59,6 +65,12 @@ public class SecurityFilter implements Filter {
             "/auth-client.jsp",
             "/signin.jsp",
             "/commonOperation");
+
+    private static final List<String> afterAuthPaths = Arrays.asList(
+            "/auth-admin.jsp",
+            "/auth-driver.jsp",
+            "/auth-client.jsp",
+            "/signin.jsp");
 
 
     private String indexPath;
@@ -100,7 +112,8 @@ public class SecurityFilter implements Filter {
             }
 
             if (user != null) {
-                if (guestFilterPaths.contains(uri)) {
+                if (afterAuthPaths.contains(uri)) {
+                    req.getRequestDispatcher(errorPath).forward(req, resp);
                     filterChain.doFilter(req, resp);
                     return;
                 }

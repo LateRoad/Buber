@@ -20,14 +20,30 @@ import com.lateroad.buber.command.impl.user.driver.UpdateActiveOrdersCommand;
 
 import java.util.HashMap;
 
+/**
+ * Class that represent a map with command for server and relevant <code>String</code>
+ * representation for this commands.
+ *
+ * @author LateRoad
+ * @see ICommand
+ * @since JDK1.8
+ */
 public class CommandMap {
     private HashMap<String, ICommand> commandsMap;
     private static final CommandMap instance = new CommandMap();
 
+    /**
+     * Returns a singleton of the map.
+     *
+     * @return CommandMap instance.
+     */
     public static CommandMap getInstance() {
         return instance;
     }
 
+    /**
+     * Private constructor of CommandMap in which occurs an initialization of the map.
+     */
     private CommandMap() {
         commandsMap = new HashMap<>();
         commandsMap.put("signIn", new SignInCommand());
@@ -48,6 +64,11 @@ public class CommandMap {
         commandsMap.put("setOrderStatus", new SetOrderStatusCommand());
     }
 
+    /**
+     * Method which return relevant command based on String representation of the command.
+     *
+     * @return ICommand entity
+     */
     public ICommand getCommandsMap(String key) {
         return commandsMap.get(key);
     }

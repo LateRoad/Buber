@@ -16,16 +16,28 @@ import com.lateroad.buber.switcher.JSPSwitcher;
 import com.lateroad.buber.timer.SessionTimer;
 import org.apache.log4j.Logger;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * The command which create new user in database and set "user" for session. Then it
+ * redirects client to relevant jsp and send response.
+ *
+ * @author LateRoad
+ * @see ICommand
+ * @since JDK1.8
+ */
 public class RegisterCommand implements ICommand {
     private static final Logger LOGGER = Logger.getLogger(RegisterCommand.class);
 
-
+    /**
+     * Executes command for server. At the end of execution get possibility for
+     * send response and send redirect to client.
+     *
+     * @param req for getting params from client.
+     */
     @Override
-    public void execute(HttpServletRequest req, HttpServletResponse resp, HttpServlet servlet) {
+    public void execute(HttpServletRequest req, HttpServletResponse resp) {
         UserType role = UserType.valueOf(req.getParameter("role").toUpperCase());
         String password = req.getParameter("password");
         String confirmPassword = req.getParameter("conformPassword");
@@ -55,9 +67,9 @@ public class RegisterCommand implements ICommand {
                 JSPSwitcher.redirect(req, resp, json, "home.jsp", 200);
             }
         } catch (BuberLogicException e) {
-            JSPSwitcher.redirect(req, resp, e, null, 400);
+            JSPSwitcher.redirect(req, resp, e.getMessage(), null, 400);
         } catch (BuberSQLException e) {
-            JSPSwitcher.redirect(req, resp, e, null, 500);
+            JSPSwitcher.redirect(req, resp, e.getMessage(), null, 500);
         }
     }
 

@@ -10,6 +10,12 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+/**
+ * Service class for calculate distance from one point to another.
+ *
+ * @author LateRoad
+ * @since JDK1.8
+ */
 public class DirectionCalculator {
     private static final Logger LOGGER = Logger.getLogger(DirectionCalculator.class);
 
@@ -17,7 +23,13 @@ public class DirectionCalculator {
     private DirectionCalculator() {
     }
 
-    public static JSONObject calculateRoute(String pointFrom, String pointTo) throws BuberLogicException {
+    /**
+     * Calculate route details according to origin and destination as latitude and
+     * longitude points.
+     *
+     * @throws BuberLogicException if correct way of the operation was broken.
+     */
+    public static JSONObject calculateRoute(String origin, String destination) throws BuberLogicException {
         JSONObject answer;
         final String baseUrl = "http://maps.googleapis.com/maps/api/directions/json";
         try {
@@ -35,10 +47,10 @@ public class DirectionCalculator {
             builder.append(URLEncoder.encode("driving", "utf-8"));
             builder.append("&origin");
             builder.append('=');
-            builder.append(URLEncoder.encode(pointFrom, "utf-8"));
+            builder.append(URLEncoder.encode(origin, "utf-8"));
             builder.append("&destination");
             builder.append('=');
-            builder.append(URLEncoder.encode(pointTo, "utf-8"));
+            builder.append(URLEncoder.encode(destination, "utf-8"));
 
             //final String url = baseUrl + '?' + MapEncoder.encodeParams(params);// генерируем путь с параметрами
             final JSONObject response = JsonReader.read(builder.toString());

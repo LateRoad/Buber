@@ -11,6 +11,12 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+/**
+ * Service class of filter which handling session events.
+ *
+ * @author LateRoad
+ * @since JDK1.8
+ */
 public final class SessionListener implements ServletContextListener,
         HttpSessionListener, HttpSessionAttributeListener {
 
@@ -25,14 +31,14 @@ public final class SessionListener implements ServletContextListener,
     // -------------------------------------------------------
     public void contextInitialized(ServletContextEvent sce) {
       /* This method is called when the servlet context is
-         initialized(when the Web application is deployed). 
+         initialized(when the Web application is deployed).
          You can initialize servlet context related data here.
       */
     }
 
     public void contextDestroyed(ServletContextEvent sce) {
-      /* This method is invoked when the Servlet Context 
-         (the Web application) is undeployed or 
+      /* This method is invoked when the Servlet Context
+         (the Web application) is undeployed or
          Application Server shuts down.
       */
     }

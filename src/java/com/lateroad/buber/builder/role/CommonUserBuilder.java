@@ -12,10 +12,29 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Class {@code CommonUser} is the builder for commonUser entity.
+ * This class allow you building commonUser entity from <code>ResultSet</code>,
+ * <code>HttpServletRequest</code> and making necessarily statements for
+ * inserting and updating information in database.
+ *
+ * @author LateRoad
+ * @see RoleBuilder
+ * @since JDK1.8
+ */
 public class CommonUserBuilder implements RoleBuilder<CommonUser> {
     private static final Logger LOGGER = Logger.getLogger(CommonUserBuilder.class);
 
-
+    /**
+     * Returns a CommonUser object made from <code>ResultSet</code>. Can throw
+     * <code>BuberSQLException</code> if <code>resultSet.getString()</code> get wrong
+     * string as param.
+     *
+     * @param resultSet from statement.
+     * @return <code>CommonUser</code> object.
+     * @throws BuberSQLException if <code>resultSet.getString()</code> get wrong string as param.
+     * @see PreparedStatement
+     */
     @Override
     public CommonUser build(ResultSet resultSet) throws BuberSQLException {
         CommonUser user;
@@ -30,6 +49,15 @@ public class CommonUserBuilder implements RoleBuilder<CommonUser> {
         return user;
     }
 
+    /**
+     * Returns a <code>CommonUser</code> object made from <code>HttpServletRequest</code>.
+     * params for <code>CommonUser</code> is getting from constant from constants.properties.
+     *
+     * @param req that represent a request for java server.
+     * @return <code>CommonUser</code> object.
+     * @see HttpServletRequest
+     */
+    @Override
     public CommonUser build(HttpServletRequest req) {
         return new Driver(
                 req.getParameter("login"),
@@ -44,17 +72,16 @@ public class CommonUserBuilder implements RoleBuilder<CommonUser> {
                 req.getParameter("car_number"));
     }
 
-    @Override
-    public void makeInsertStatement(String login, CommonUser entity, PreparedStatement statement) throws BuberSQLException {
-        throw new BuberUnsupportedOperationException();
-    }
-
-    @Override
-    public void makeUpdateStatement(String login, CommonUser entity, PreparedStatement statement) throws BuberSQLException {
-        throw new BuberUnsupportedOperationException();
-    }
-
-    @Override
+    /**
+     * Filling in the insert statement using password for executing in DAO.
+     * Throws a BuberSQLException if count of fields for filling in in statement is not
+     * equals to count that method provides.
+     *
+     * @param statement is a statement for filling in.
+     * @throws BuberSQLException if count of fields for filling in in statement is not
+     *                           equals to count that method provides.
+     * @see PreparedStatement
+     */
     public void makeSecurityInsertStatement(String login, String password, CommonUser entity, PreparedStatement statement) throws BuberSQLException {
         try {
             statement.setString(1, login);
@@ -64,5 +91,31 @@ public class CommonUserBuilder implements RoleBuilder<CommonUser> {
             LOGGER.error("SQLException was occurred building a security insert statement for common user.", e);
             throw new BuberSQLException("Something went wrong.");
         }
+    }
+
+    /**
+     * Is not supported yet.
+     *
+     * @param statement is a statement for filling in.
+     * @throws BuberSQLException if count of fields for filling in in statement is not
+     *                           equals to count that method provides.
+     * @see PreparedStatement
+     */
+    @Override
+    public void makeInsertStatement(String login, CommonUser entity, PreparedStatement statement) throws BuberSQLException {
+        throw new BuberUnsupportedOperationException();
+    }
+
+    /**
+     * Is not supported yet.
+     *
+     * @param statement is a statement for filling in.
+     * @throws BuberSQLException if count of fields for filling in in statement is not
+     *                           equals to count that method provides.
+     * @see PreparedStatement
+     */
+    @Override
+    public void makeUpdateStatement(String login, CommonUser entity, PreparedStatement statement) throws BuberSQLException {
+        throw new BuberUnsupportedOperationException();
     }
 }

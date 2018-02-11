@@ -12,26 +12,28 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * DAO abstract class which extend CommonDAO class for Role objects as <code>Client</code>,
+ * <code>Driver</code>, etc.
+ *
+ * @author LateRoad
+ * @see CommonDAO
+ * @since JDK1.8
+ */
 public abstract class RoleDAO<E extends CommonUser> extends CommonDAO<E> {
     private static final Logger LOGGER = Logger.getLogger(RoleDAO.class);
 
-    protected RoleDAO(RoleBuilder builder) {
+    /**
+     * Protected constructor for <code>RoleDAO</code>. Necessary for descendant.
+     */
+    RoleDAO(RoleBuilder builder) {
         super(builder);
     }
 
-    protected void insert(String login, String password, E entity, String query) throws BuberSQLException, BuberLogicException {
-        Connection connection = connectionPool.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            ((RoleBuilder) builder).makeSecurityInsertStatement(login, password, entity, statement);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            LOGGER.error("SQLException was occurred while executing query.", e);
-            throw new BuberSQLException("Something went wrong.");
-        } finally {
-            connectionPool.putConnection(connection);
-        }
-    }
 
+    /**
+     * Find <code>CommonUser</code> object using login, password, needed and query for database.
+     */
     protected E find(String login, String password, String query) throws BuberSQLException, BuberLogicException {
         E info = null;
         Connection connection = connectionPool.getConnection();

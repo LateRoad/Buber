@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MapEncoder {
-    public MapEncoder() {
-    }
 
     public static String encodeParams(final Map<String, String> params) {
         return Joiner.on('&').join(

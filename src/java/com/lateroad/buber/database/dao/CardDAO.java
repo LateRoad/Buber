@@ -15,6 +15,15 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * DAO Class which handling actions with <code>Card</code> object. Provides common kit of
+ * command such as selecting, inserting, updating and deleting for relevant object.
+ *
+ * @author LateRoad
+ * @see CommonDAO
+ * @see DAO
+ * @since JDK1.8
+ */
 public class CardDAO extends CommonDAO<Card> implements DAO {
     private static final Logger LOGGER = Logger.getLogger(CardDAO.class);
 
@@ -38,6 +47,18 @@ public class CardDAO extends CommonDAO<Card> implements DAO {
             "DELETE FROM `buber`.`card` WHERE `card`.`id` = ?; ";
 
 
+    /**
+     * Private constructor for <code>CardDAO</code>.
+     */
+    private CardDAO() {
+        super(new CardBuilder());
+    }
+
+    /**
+     * Returns a thread-safe singleton of the CardDAO.
+     *
+     * @return CardDAO instance.
+     */
     public static CardDAO getInstance() {
         if (!instanceCreated.get()) {
             lock.lock();
@@ -53,34 +74,48 @@ public class CardDAO extends CommonDAO<Card> implements DAO {
         return instance;
     }
 
-    private CardDAO() {
-        super(new CardBuilder());
-    }
-
-
+    /**
+     * Find the <code>Card</code> using only login.
+     *
+     * @return <code>Card</code> object.
+     */
     public Card find(String login) throws BuberSQLException, BuberLogicException {
         return super.find(login, SQL_SELECT_CARD);
     }
 
-
+    /**
+     * Find all <code>Card</code> objects.
+     *
+     * @return <code>List of Card</code> object.
+     */
     public List<Card> findAll() throws BuberSQLException, BuberLogicException {
         return super.findAll(SQL_SELECT_ALL_CARDS);
     }
 
-
+    /**
+     * Insert <code>Card</code> object into card database for specified user.
+     */
     public void insert(String login, Card card) throws BuberSQLException, BuberLogicException {
         super.insert(login, card, SQL_INSERT_CARD);
     }
 
-
-    public void delete(String login) throws BuberSQLException, BuberLogicException {
-        super.delete(login, SQL_DELETE_CARD_BY_LOGIN);
-    }
-
+    /**
+     * Is not supported yet.
+     */
     public void update(Card card) {
         throw new BuberUnsupportedOperationException();
     }
 
+    /**
+     * Delete <code>Card</code> object from card database.
+     */
+    public void delete(String login) throws BuberSQLException, BuberLogicException {
+        super.delete(login, SQL_DELETE_CARD_BY_LOGIN);
+    }
+
+    /**
+     * Delete <code>Card</code> object from card database using card id.
+     */
     public void delete(int id) throws BuberSQLException, BuberLogicException {
         Connection connection = connectionPool.getConnection();
         try (PreparedStatement st = connection.prepareStatement(SQL_DELETE_CARD_BY_ID)) {

@@ -11,16 +11,45 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Connection pool which supplies DAO methods with connections to database. Keep alive
+ * connections in itself. Default count of connections is 15. Provides with such methods as
+ * <code>getConnection()</code> and <code>putConnection</code>.
+ *
+ * @author LateRoad
+ * @see ConnectorDB
+ * @since JDK1.8
+ */
 public final class ConnectionPool {
     private static final Logger LOGGER = Logger.getLogger(ConnectionPool.class);
 
-    private static final int POOL_SIZE = 15;
+    private static final int DEFAULT_POOL_SIZE = 15;
     private static ConnectionPool instance = null;
     private static ReentrantLock lock = new ReentrantLock();
     private static AtomicBoolean instanceCreated = new AtomicBoolean(false);
-    private BlockingQueue<Connection> pool = new ArrayBlockingQueue<>(POOL_SIZE, true);
+    private static BlockingQueue<Connection> pool = new ArrayBlockingQueue<>(DEFAULT_POOL_SIZE, true);
 
+    /**
+     * Private constructor for <code>ConnectionPool</code>.
+     * Initialize connections for pool.
+     */
+    private ConnectionPool() {
+        for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
+            try {
+                pool.add(ConnectorDB.getConnection());
+            } catch (SQLException e) {
+                LOGGER.error("SQLException was occurred during pool creation.", e);
+                throw new BuberFatalException(e);
+            }
+        }
+        LOGGER.info("Connection pool was successfully initialized.");
+    }
 
+    /**
+     * Returns a thread-safe singleton of the ConnectionPool.
+     *
+     * @return ConnectionPool instance.
+     */
     public static ConnectionPool getInstance() {
         if (!instanceCreated.get()) {
             lock.lock();
@@ -36,18 +65,11 @@ public final class ConnectionPool {
         return instance;
     }
 
-    private ConnectionPool() {
-        for (int i = 0; i < POOL_SIZE; i++) {
-            try {
-                pool.add(ConnectorDB.getConnection());
-            } catch (SQLException e) {
-                LOGGER.error("SQLException was occurred during pool creation.", e);
-                throw new BuberFatalException(e);
-            }
-        }
-        LOGGER.info("Connection pool was successfully initialized.");
-    }
-
+    /**
+     * Returns a connection to database.
+     *
+     * @return connection.
+     */
     public Connection getConnection() throws BuberLogicException {
         Connection connection = null;
         try {
@@ -59,6 +81,9 @@ public final class ConnectionPool {
         return connection;
     }
 
+    /**
+     * Put connection into connection pool and save it alive.
+     */
     public void putConnection(Connection connection) throws BuberLogicException {
         if (connection != null) {
             try {

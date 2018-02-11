@@ -9,10 +9,29 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Class {@code DriverBuilder} is the builder for driver entity.
+ * This class allow you building driver entity from <code>ResultSet</code>,
+ * <code>HttpServletRequest</code> and making necessarily statements for
+ * inserting and updating information in database.
+ *
+ * @author LateRoad
+ * @see RoleBuilder
+ * @since JDK1.8
+ */
 public class DriverBuilder implements RoleBuilder<Driver> {
     private static final Logger LOGGER = Logger.getLogger(DriverBuilder.class);
 
-
+    /**
+     * Returns a Driver object made from <code>ResultSet</code>. Can throw
+     * <code>BuberSQLException</code> if <code>resultSet.getString()</code> get wrong
+     * string as param.
+     *
+     * @param resultSet from statement.
+     * @return <code>Driver</code> object.
+     * @throws BuberSQLException if <code>resultSet.getString()</code> get wrong string as param.
+     * @see PreparedStatement
+     */
     @Override
     public Driver build(ResultSet resultSet) throws BuberSQLException {
         Driver driver;
@@ -35,7 +54,14 @@ public class DriverBuilder implements RoleBuilder<Driver> {
         return driver;
     }
 
-
+    /**
+     * Returns a <code>Driver</code> object made from <code>HttpServletRequest</code>.
+     * params for <code>Driver</code> is getting from constant from constants.properties.
+     *
+     * @param req that represent a request for java server.
+     * @return <code>Driver</code> object.
+     * @see HttpServletRequest
+     */
     public Driver build(HttpServletRequest req) {
         return new Driver(
                 req.getParameter("login"),
@@ -50,26 +76,17 @@ public class DriverBuilder implements RoleBuilder<Driver> {
                 req.getParameter("car_number"));
     }
 
-    @Override
-    public void makeSecurityInsertStatement(String login, String password, Driver driver, PreparedStatement statement) throws BuberSQLException {
-        try {
-            statement.setString(1, login);
-            statement.setString(2, password);
-            statement.setString(3, driver.getRole().name());
-            statement.setString(4, login);
-            statement.setString(5, driver.getName());
-            statement.setString(6, driver.getSurname());
-            statement.setString(7, driver.getLastname());
-            statement.setString(8, driver.getEmail());
-            statement.setString(9, login);
-            statement.setString(10, driver.getPhoneNumber());
-            statement.setString(11, driver.getCarNumber());
-        } catch (SQLException e) {
-            LOGGER.error("SQLException was occurred building a security insert statement for driver.", e);
-            throw new BuberSQLException("Something went wrong.");
-        }
-    }
 
+    /**
+     * Filling in the insert statement for executing in DAO. Throws a BuberSQLException if
+     * count of fields for filling in in statement is not equals to count that method
+     * provides.
+     *
+     * @param statement is a statement for filling in.
+     * @throws BuberSQLException if count of fields for filling in in statement is not
+     *                           equals to count that method provides.
+     * @see PreparedStatement
+     */
     @Override
     public void makeInsertStatement(String login, Driver driver, PreparedStatement statement) throws BuberSQLException {
         try {
@@ -82,12 +99,24 @@ public class DriverBuilder implements RoleBuilder<Driver> {
         }
     }
 
+    /**
+     * Filling in the update statement for executing in DAO. Throw a BuberSQLException if
+     * count of fields for filling in in statement is not equals to count that method
+     * provides.
+     *
+     * @param statement is a statement for filling in.
+     * @throws BuberSQLException if count of fields for filling in in statement is not
+     *                           equals to count that method provides.
+     * @see PreparedStatement
+     */
     @Override
     public void makeUpdateStatement(String login, Driver driver, PreparedStatement statement) throws BuberSQLException {
         try {
-            statement.setString(1, login);
-            statement.setString(2, driver.getPhoneNumber());
-            statement.setString(3, driver.getCarNumber());
+            statement.setString(1, driver.getCarNumber());
+            statement.setInt(2, driver.getReputation());
+            statement.setString(3, driver.getPhoneNumber());
+            statement.setInt(4, driver.getTripsNumber());
+            statement.setString(5, login);
         } catch (SQLException e) {
             LOGGER.error("SQLException was occurred building an update statement for driver.", e);
             throw new BuberSQLException("Something went wrong.");
