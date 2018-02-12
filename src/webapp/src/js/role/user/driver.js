@@ -7,7 +7,7 @@ function acceptOrder(orderId) {
             $('#activeOrders').load("/home.jsp" + ' #activeOrders');
             $('.modal-title').text("Заказ успешно принят.");
             $('#modal').modal('show');
-            alert(origin);
+
             // showDirection(origin, );
         },
         error: function (data) {

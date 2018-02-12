@@ -29,9 +29,9 @@ public class FormValidator {
      * @return <code>boolean</code>.
      */
     public static boolean checkNecessaryFields(User user) {
-        return (user.getLogin() != null && user.getLogin().matches("\\p{ASCII}+") ||
-                user.getName() != null && user.getName().matches("\\p{ASCII}+") ||
-                user.getSurname() != null && user.getSurname().matches("\\p{ASCII}+") ||
+        return (user.getLogin() != null && user.getLogin().matches("\\p{ASCII}+") &&
+                user.getName() != null && user.getName().matches("\\p{ASCII}+") &&
+                user.getSurname() != null && user.getSurname().matches("\\p{ASCII}+") &&
                 user.getEmail() != null && user.getEmail().matches("\\p{ASCII}+"));
     }
 }

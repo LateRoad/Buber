@@ -33,7 +33,6 @@ function changeLang(lang) {
 }
 
 function register(role) {
-    alert($("#registration_form").serialize());
     $.ajax({
         url: "/commonOperation?action=register&role=" + role + "&" + $("#registration_form").serialize(),
         type: 'post',
