@@ -14,6 +14,7 @@ import com.lateroad.buber.command.impl.user.client.GetRouteInfoCommand;
 import com.lateroad.buber.command.impl.user.client.TakeTaxiCommand;
 import com.lateroad.buber.command.impl.user.driver.AcceptOrderCommand;
 import com.lateroad.buber.command.impl.user.driver.UpdateActiveOrdersCommand;
+import com.lateroad.buber.exception.BuberLogicException;
 
 import java.util.HashMap;
 
@@ -67,7 +68,11 @@ public class CommandMap {
      *
      * @return ICommand entity
      */
-    public ICommand getCommandsMap(String key) {
-        return commandsMap.get(key);
+    public ICommand getCommand(String key) throws BuberLogicException {
+        ICommand command = commandsMap.get(key);
+        if (command == null) {
+            throw new BuberLogicException("Something went wrong");
+        }
+        return command;
     }
 }

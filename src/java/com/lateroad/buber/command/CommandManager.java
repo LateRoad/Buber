@@ -1,5 +1,7 @@
 package com.lateroad.buber.command;
 
+import com.lateroad.buber.exception.BuberLogicException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,7 +21,7 @@ public class CommandManager {
      *
      * @param action the executing command depends on this param.
      */
-    public static void execute(String action, HttpServletRequest req, HttpServletResponse resp) {
-        commandMap.getCommandsMap(action).execute(req, resp);
+    public static void execute(String action, HttpServletRequest req, HttpServletResponse resp) throws BuberLogicException {
+        commandMap.getCommand(action).execute(req, resp);
     }
 }
